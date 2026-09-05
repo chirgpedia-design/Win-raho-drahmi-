@@ -1,1519 +1,286 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>وين راحو دراهمي؟ V5</title>
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#171821">
+<title>وين راحو دراهمي؟</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-
-:root{
---bg:#f5f6fb;
---card:#fff;
---text:#171923;
---muted:#777b8a;
---primary:#6956e8;
---primary2:#8b5cf6;
---green:#18a66a;
---red:#ef476f;
---border:#e6e7ee;
---input:#fff;
---shadow:0 10px 30px rgba(30,25,70,.08);
-}
-
-body{
-font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
-background:var(--bg);
-color:var(--text);
-min-height:100vh;
-transition:.25s;
-}
-
-body.dark{
---bg:#0d0e14;
---card:#181923;
---text:#f7f7fb;
---muted:#a0a1ae;
---border:#2b2c38;
---input:#20212c;
---shadow:0 10px 30px rgba(0,0,0,.3);
-}
-
-button{
-border:0;
-font:inherit;
-cursor:pointer;
-}
-
-.app{
-width:min(100%,520px);
-margin:auto;
-padding:18px 16px 110px;
-}
-
-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:18px;
-}
-
-.logo{
-font-size:22px;
-font-weight:900;
-}
-
-.logo span{color:var(--primary)}
-
-.date{
-color:var(--muted);
-font-size:12px;
-margin-top:3px;
-}
-
-.theme{
-width:45px;
-height:45px;
-border-radius:15px;
-background:var(--card);
-border:1px solid var(--border);
-box-shadow:var(--shadow);
-font-size:21px;
-}
-
-.hero{
-background:linear-gradient(135deg,#171923,#30264b);
-color:white;
-border-radius:28px;
-padding:24px;
-box-shadow:var(--shadow);
-}
-
-.hero small{color:#bcbaca}
-
-.balance{
-font-size:40px;
-font-weight:950;
-margin:6px 0 20px;
-word-break:break-word;
-}
-
-.stats{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:12px;
-}
-
-.stat{
-background:rgba(255,255,255,.09);
-border:1px solid rgba(255,255,255,.08);
-border-radius:17px;
-padding:13px;
-}
-
-.stat small{
-display:block;
-margin-bottom:5px;
-}
-
-.stat strong{font-size:17px}
-
-.quick{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:12px;
-margin-top:18px;
-}
-
-.quick button{
-padding:17px 10px;
-border-radius:18px;
-font-weight:900;
-background:var(--card);
-color:var(--text);
-border:1px solid var(--border);
-}
-
-.quick .primary{
-background:linear-gradient(135deg,var(--primary),var(--primary2));
-color:white;
-border:0;
-}
-
-.section{margin-top:20px}
-
-.title{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:10px;
-}
-
-.title h2{font-size:18px}
-
-.title span{
-color:var(--muted);
-font-size:12px;
-}
-
-.card{
-background:var(--card);
-border:1px solid var(--border);
-border-radius:23px;
-padding:18px;
-box-shadow:var(--shadow);
-}
-
-.goal-head{
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
-
-.goal-value{
-font-size:24px;
-font-weight:900;
-}
-
-.goal-edit{
-width:42px;
-height:42px;
-border-radius:13px;
-background:#f0effb;
-}
-
-body.dark .goal-edit{
-background:#29283a;
-color:white;
-}
-
-.progress{
-height:11px;
-background:#e9e9f0;
-border-radius:99px;
-overflow:hidden;
-margin:14px 0 8px;
-}
-
-body.dark .progress{background:#30313d}
-
-.progress-bar{
-height:100%;
-width:0%;
-background:linear-gradient(90deg,var(--primary),var(--primary2));
-border-radius:99px;
-transition:.4s;
-}
-
-.muted{
-color:var(--muted);
-font-size:13px;
-}
-
-.report{
-padding:18px;
-border-radius:20px;
-background:#fff1f4;
-border:1px solid #ffd6df;
-}
-
-body.dark .report{
-background:#291921;
-border-color:#4a2935;
-}
-
-.report.good{
-background:#effbf5;
-border-color:#c7efd9;
-}
-
-body.dark .report.good{
-background:#17281f;
-border-color:#254b36;
-}
-
-.report h3{
-font-size:16px;
-margin-bottom:6px;
-}
-
-.report p{
-font-size:13px;
-line-height:1.8;
-color:var(--muted);
-}
-
-.expense{
-display:flex;
-align-items:center;
-gap:12px;
-padding:13px 0;
-border-bottom:1px solid var(--border);
-}
-
-.expense:last-child{border-bottom:0}
-
-.empty{
-text-align:center;
-padding:18px;
-color:var(--muted);
-font-size:13px;
-}
-
-.exp-icon{
-width:43px;
-height:43px;
-border-radius:14px;
-display:grid;
-place-items:center;
-background:#f0effb;
-font-size:20px;
-flex-shrink:0;
-}
-
-body.dark .exp-icon{background:#272536}
-
-.exp-info{flex:1}
-
-.exp-info strong{
-display:block;
-font-size:14px;
-}
-
-.exp-info small{
-color:var(--muted);
-font-size:11px;
-}
-
-.exp-money{
-font-weight:900;
-color:var(--red);
-}
-
-.analysis-box{
-background:linear-gradient(135deg,#171923,#30264b);
-color:white;
-border-radius:22px;
-padding:20px;
-}
-
-.analysis-score{
-font-size:36px;
-font-weight:950;
-margin-top:5px;
-}
-
-.analysis-text{
-margin-top:8px;
-color:#c7c5d1;
-font-size:13px;
-line-height:1.8;
-}
-
-.analysis-grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:10px;
-margin-top:14px;
-}
-
-.analysis-item{
-background:rgba(255,255,255,.08);
-border-radius:15px;
-padding:12px;
-}
-
-.analysis-item small{
-display:block;
-color:#aaa8b8;
-}
-
-.analysis-item strong{
-display:block;
-margin-top:4px;
-}
-
-.pro{
-background:linear-gradient(135deg,#f6f2ff,#fff);
-border:1px solid #ded5ff;
-border-radius:23px;
-padding:20px;
-}
-
-body.dark .pro{
-background:#211d2d;
-border-color:#44376b;
-}
-
-.pro h2{margin-bottom:7px}
-
-.pro p{
-color:var(--muted);
-font-size:13px;
-line-height:1.8;
-}
-
-.pro button{
-width:100%;
-margin-top:15px;
-padding:15px;
-border-radius:16px;
-background:linear-gradient(135deg,var(--primary),var(--primary2));
-color:white;
-font-weight:900;
-}
-
-.bottom{
-position:fixed;
-bottom:12px;
-left:50%;
-transform:translateX(-50%);
-width:min(calc(100% - 28px),490px);
-padding:8px;
-background:rgba(255,255,255,.9);
-backdrop-filter:blur(18px);
-border:1px solid var(--border);
-border-radius:22px;
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:8px;
-box-shadow:0 12px 40px rgba(0,0,0,.15);
-z-index:10;
-}
-
-body.dark .bottom{
-background:rgba(24,25,35,.92);
-}
-
-.bottom button{
-padding:14px;
-border-radius:16px;
-font-weight:900;
-}
-
-.bottom .add{
-background:var(--primary);
-color:white;
-}
-
-.bottom .new{
-background:#eeeef5;
-color:var(--text);
-}
-
-body.dark .bottom .new{
-background:#292a35;
-}
-
-.modal{
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.65);
-display:none;
-align-items:flex-end;
-justify-content:center;
-z-index:100;
-}
-
-.modal.show{display:flex}
-
-.sheet{
-width:min(100%,520px);
-background:var(--card);
-color:var(--text);
-border-radius:28px 28px 0 0;
-padding:22px;
-animation:slideUp .22s ease;
-}
-
-@keyframes slideUp{
-from{transform:translateY(100%)}
-to{transform:translateY(0)}
-}
-
-.close{
-float:left;
-width:36px;
-height:36px;
-border-radius:50%;
-background:#eeeef3;
-color:#333;
-font-size:22px;
-}
-
-body.dark .close{
-background:#292a35;
-color:white;
-}
-
-.sheet h2{margin-bottom:18px}
-
-label{
-display:block;
-margin:12px 0 6px;
-font-size:13px;
-font-weight:800;
-}
-
-input,select{
-width:100%;
-padding:14px;
-border:1px solid var(--border);
-border-radius:14px;
-background:var(--input);
-color:var(--text);
-font:inherit;
-outline:none;
-}
-
-.save-btn{
-width:100%;
-margin-top:18px;
-padding:15px;
-border-radius:15px;
-background:var(--primary);
-color:white;
-font-weight:900;
-}
-
-.price-box{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:10px;
-margin-top:15px;
-}
-
-.price{
-border:1px solid var(--border);
-border-radius:17px;
-padding:16px;
-text-align:center;
-background:var(--input);
-}
-
-.price strong{
-display:block;
-font-size:21px;
-margin:5px 0;
-}
-
-.price button{
-width:100%;
-padding:10px;
-border-radius:12px;
-background:var(--primary);
-color:white;
-font-weight:800;
-margin-top:8px;
-}
-
-.toast{
-position:fixed;
-top:20px;
-left:50%;
-transform:translate(-50%,-100px);
-background:#171923;
-color:white;
-padding:13px 18px;
-border-radius:14px;
-font-size:13px;
-z-index:200;
-transition:.3s;
-}
-
-.toast.show{
-transform:translate(-50%,0);
-}
-
-@media(max-width:380px){
-.balance{font-size:32px}
-.logo{font-size:19px}
-}
+*{box-sizing:border-box}body{margin:0;background:#f4f5f9;color:#171821;font-family:Arial,sans-serif}.app{max-width:620px;margin:auto;padding:16px 15px 105px}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.logo{font-size:22px;font-weight:900}.muted{color:#77798a;font-size:13px}
+.hero{background:#171821;color:#fff;border-radius:27px;padding:21px;margin-bottom:13px}.hero small{color:#b9bbc6}.balance{font-size:40px;font-weight:950;margin:5px 0 18px}.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{background:#252733;border:1px solid #343642;border-radius:18px;padding:12px}.stat b{display:block;font-size:18px}.stat span{font-size:12px;color:#b5b7c1}
+.card{background:#fff;border:1px solid #e7e8ee;border-radius:22px;padding:17px;margin:12px 0}.card h3{margin:0 0 12px;font-size:17px}.row{display:flex;justify-content:space-between;align-items:center;gap:10px}.barbg{height:11px;background:#ececf2;border-radius:99px;overflow:hidden}.bar{height:100%;background:#6c55e8;border-radius:99px}.buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px}.btn{border:0;border-radius:16px;padding:14px;font-weight:900;font-size:14px;cursor:pointer}.primary{background:#6c55e8;color:white}.soft{background:#ededf4;color:#171821}
+.alert{background:#fff1f3;border:1px solid #ffd8df;border-radius:17px;padding:13px;line-height:1.7}.alert b{font-size:15px}.alert p{margin:5px 0 0;color:#555766;font-size:13px}
+.cat{margin:12px 0}.cathead{display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px}.catbar{height:8px;background:#eeeef3;border-radius:99px;overflow:hidden}.catbar i{display:block;height:100%;background:#6c55e8;border-radius:99px}
+.exp{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #eee}.exp:last-child{border:0}.ico{width:40px;height:40px;border-radius:13px;background:#f0effc;display:grid;place-items:center;font-size:20px}.grow{flex:1}.grow b{display:block}.grow small{color:#77798a}.amt{font-weight:900}
+.pro{background:linear-gradient(135deg,#fff,#f3f0ff);border:1px solid #ddd7ff}.pro .btn{width:100%;margin-top:12px}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:#ffffffed;backdrop-filter:blur(12px);border-top:1px solid #ddd;padding:9px max(15px,calc((100vw - 620px)/2));display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.modal{display:none;position:fixed;inset:0;background:#0008;align-items:flex-end;justify-content:center}.modal.show{display:flex}.sheet{width:min(620px,100%);background:#fff;border-radius:26px 26px 0 0;padding:20px}.sheet h2{margin:0 0 15px}label{font-size:12px;color:#77798a}input,select{width:100%;padding:13px;border:1px solid #dddde5;border-radius:14px;margin:6px 0 13px;font-size:16px;background:#fff}
+@media(min-width:700px){.bottom{position:static;background:none;border:0;backdrop-filter:none;margin-top:15px}}
+
+.smart-score{display:flex;justify-content:space-between;align-items:center;background:#171821;color:#fff;border-radius:18px;padding:15px;margin-bottom:10px}
+.smart-score small{display:block;color:#b9bbc6}.smart-score strong{font-size:30px;display:block;margin-top:2px}.smart-score span{font-weight:800;font-size:13px}
+.insight{background:#f3f1ff;border:1px solid #ded8ff;border-radius:16px;padding:12px;line-height:1.7;font-size:13px;margin-bottom:10px}
+.mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.mini-grid>div{background:#f7f7fa;border-radius:15px;padding:11px}.mini-grid small{display:block;color:#77798a;font-size:11px;margin-bottom:5px}.mini-grid b{font-size:14px}
+
+.smart-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.smart-chip{background:var(--card);border:1px solid var(--border);border-radius:17px;padding:10px;display:flex;gap:7px;align-items:center;box-shadow:0 5px 18px rgba(30,25,70,.04)}
+.smart-chip>span{font-size:20px}.smart-chip small{display:block;color:var(--muted);font-size:9px}.smart-chip b{font-size:12px}
+.score-card{background:linear-gradient(135deg,#171923,#30274b);color:#fff;border-radius:25px;padding:18px;display:flex;align-items:center;gap:16px;box-shadow:var(--shadow);overflow:hidden;position:relative}
+.score-card:after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;background:#8b5cf6;opacity:.1;left:-60px;top:-70px}
+.ring{width:92px;height:92px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#9b8cff var(--scoredeg,0deg),rgba(255,255,255,.13) 0);flex:none}
+.ring-inner{width:70px;height:70px;border-radius:50%;background:#1c1d28;display:flex;align-items:baseline;justify-content:center;gap:1px;padding-top:22px}.ring-inner strong{font-size:27px}.ring-inner small{color:#aaa;font-size:11px}
+.score-copy{position:relative;z-index:1}.score-copy b{font-size:16px}.score-copy p{font-size:12px;color:#c8c6d4;line-height:1.7;margin-top:5px}
+.insight-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.insight-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:13px;box-shadow:0 6px 20px rgba(30,25,70,.035)}.insight-card span{font-size:20px;display:block;margin-bottom:7px}.insight-card small{display:block;color:var(--muted);font-size:10px}.insight-card b{font-size:14px;display:block;margin-top:2px}
+.compare-card{padding:17px}.compare-head{display:flex;justify-content:space-between;align-items:center}.compare-head strong{font-size:18px}.compare-line{height:10px;background:#eeeef4;border-radius:99px;margin:13px 0;overflow:hidden}.compare-line div{height:100%;width:0;background:linear-gradient(90deg,var(--primary),var(--primary2));border-radius:99px;transition:.7s}.compare-card p{font-size:11px;color:var(--muted);line-height:1.7}
+.goal-actions{display:flex;gap:7px;margin:12px 0}.goal-actions input{padding:10px;flex:1}.goal-actions button{background:var(--text);color:var(--card);padding:10px 12px;border-radius:12px;font-weight:800;font-size:11px}
+body.dark .goal-actions button{background:#fff;color:#171923}
+
+.v5-welcome{display:flex;justify-content:space-between;align-items:center;margin:4px 0 14px;padding:3px 2px}.v5-welcome small{color:var(--muted);font-size:10px}.v5-welcome h1{font-size:19px;margin-top:2px;letter-spacing:-.3px}.live-dot{font-size:10px;background:var(--card);border:1px solid var(--border);padding:7px 9px;border-radius:99px;color:var(--muted);display:flex;gap:5px;align-items:center}.live-dot i{width:7px;height:7px;border-radius:50%;background:var(--green);display:block;box-shadow:0 0 0 4px rgba(25,169,116,.1)}
+.v5-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.v5-tile{text-align:right;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:15px;box-shadow:0 7px 22px rgba(30,25,70,.04);color:var(--text);transition:.18s}.v5-tile:active{transform:scale(.97)}.v5-tile span{display:block;font-size:25px;margin-bottom:9px}.v5-tile b{display:block;font-size:14px}.v5-tile small{display:block;color:var(--muted);font-size:10px;margin-top:3px}
+.v5-banner{display:flex;gap:12px;align-items:center;background:linear-gradient(135deg,#efeaff,#fff);border:1px solid #ded6ff;border-radius:21px;padding:15px}.banner-icon{width:45px;height:45px;border-radius:15px;background:#fff;display:grid;place-items:center;font-size:23px;box-shadow:0 5px 15px rgba(80,60,150,.08)}.v5-banner b{font-size:14px}.v5-banner p{font-size:11px;color:#666;line-height:1.6;margin-top:3px}
+body.dark .v5-banner{background:#211d32;border-color:#383049}
+
+.pro-hero{background:linear-gradient(135deg,#171923,#3b2c65);color:#fff;border-radius:25px;padding:21px;position:relative;overflow:hidden;box-shadow:var(--shadow)}.pro-hero:after{content:"";position:absolute;width:170px;height:170px;border-radius:50%;background:#9b8cff;opacity:.13;left:-50px;top:-70px}.pro-badge{display:inline-block;background:#fff;color:#4d3ac6;font-size:10px;font-weight:950;padding:5px 9px;border-radius:99px;margin-bottom:10px}.pro-hero h3{font-size:20px}.pro-hero p{color:#d2cede;font-size:12px;line-height:1.8;margin-top:5px;max-width:340px}
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}.plan{background:var(--card);border:1px solid var(--border);border-radius:21px;padding:15px;position:relative;overflow:hidden}.plan.featured{border:2px solid var(--primary)}.plan-top{display:flex;justify-content:space-between;align-items:center}.plan-top b{font-size:14px}.plan-top span{font-size:9px;color:var(--muted);background:#f1f0f7;padding:4px 6px;border-radius:99px}.price{font-size:27px;font-weight:950;margin:10px 0 1px}.price small{font-size:9px;color:var(--muted);font-weight:700}.annual-note{font-size:9px;color:var(--green);font-weight:800;margin-bottom:5px}.plan ul{list-style:none;margin:9px 0}.plan li{font-size:10px;color:var(--muted);padding:4px 0}.plan-btn{width:100%;padding:11px;border-radius:13px;background:var(--text);color:var(--card);font-weight:900;font-size:11px}.featured .plan-btn{background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff}.save-tag{position:absolute;top:0;left:0;background:var(--primary);color:#fff;font-size:8px;padding:5px 8px;border-radius:0 0 10px 0;font-weight:900}.payment-note{text-align:center;color:var(--muted);font-size:9px;margin-top:9px;line-height:1.6}.confirm-plan{display:flex;justify-content:space-between;align-items:center;background:#f6f5fa;border-radius:15px;padding:14px;margin-bottom:10px}.confirm-plan span{font-size:12px;color:#777}.confirm-plan b{font-size:18px}.modal .sheet{max-height:90vh}.dark .confirm-plan{background:#20212c}
+
+.account-card{display:flex;align-items:center;gap:11px;background:var(--card);border:1px solid var(--border);padding:12px;border-radius:20px;box-shadow:0 6px 20px rgba(30,25,70,.04)}.avatar-v5{width:44px;height:44px;border-radius:15px;background:linear-gradient(135deg,#eeeaff,#fff);display:grid;place-items:center;font-size:22px}.account-copy{flex:1}.account-copy small,.account-copy span{display:block;color:var(--muted);font-size:10px}.account-copy b{display:block;font-size:14px;margin:2px 0}.account-copy span{color:var(--primary);font-weight:800}.account-btn{background:#f2f1f7;border-radius:12px;padding:9px;font-size:15px}
+.pro-dashboard{background:linear-gradient(135deg,#15161f,#3a2b61);color:#fff;border-radius:25px;padding:18px;box-shadow:var(--shadow);position:relative;overflow:hidden}.pro-dashboard:after{content:"";position:absolute;width:210px;height:210px;border-radius:50%;background:#9b8cff;opacity:.09;left:-90px;top:-100px}.pro-dashboard-top{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1}.pro-dashboard-top>div{display:flex;align-items:center;gap:9px}.pro-dashboard-top small{font-size:9px;color:#bdb9cf}.pro-dashboard-top h3{font-size:16px;margin-top:2px}.crown{font-size:29px}.pro-live{font-size:9px;font-weight:950;background:#fff;color:#4e3ac8;padding:6px 8px;border-radius:99px}.feature-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0;position:relative;z-index:1}.feature-list>div{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);border-radius:15px;padding:10px;font-size:12px}.feature-list b{font-size:11px}.feature-list small{display:block;color:#c5c1d1;font-size:9px;margin-top:3px}.upgrade-main{width:100%;background:#fff;color:#4934c2;border-radius:14px;padding:12px;font-weight:950;font-size:12px;position:relative;z-index:1}
 </style>
 </head>
-
 <body>
-
 <div class="app">
-
-<header>
-<div>
-<div class="logo">💸 وين راحو <span>دراهمي؟</span></div>
-<div class="date" id="date"></div>
+<header><div class="logo">💸 وين راحو دراهمي؟</div><div class="muted">V5 🇩🇿</div></header>
+<div class="v5-welcome">
+  <div>
+    <small>لوحة التحكم الشخصية</small>
+    <h1>تحكم في دراهمك، قبل ما يهربو 💸</h1>
+  </div>
+  <div class="live-dot"><i></i> مباشر</div>
 </div>
 
-<button class="theme" id="themeBtn">🌙</button>
-</header>
 
-<div class="hero">
+<section class="hero">
+<small>الباقي هذا الشهر</small><div class="balance" id="balance">0 دج</div>
+<div class="stats"><div class="stat"><b id="income">0 دج</b><span>💰 الدخل</span></div><div class="stat"><b id="spent">0 دج</b><span>💸 المصاريف</span></div></div>
+</section>
 
-<small>💰 الباقي هذا الشهر</small>
-
-<div class="balance" id="balance">0 دج</div>
-
-<div class="stats">
-
-<div class="stat">
-<small>📥 الدخل</small>
-<strong id="income">0 دج</strong>
+<div class="buttons">
+<button class="btn soft" onclick="openForm('income')">💰 الدخل</button>
+<button class="btn soft" onclick="openForm('goal')">🎯 هدف الادخار</button>
 </div>
 
-<div class="stat">
-<small>📤 المصاريف</small>
-<strong id="expenses">0 دج</strong>
+<section class="card">
+<div class="row"><h3>🎯 هدفك</h3><b id="goalName">مازال ما حددتش</b></div>
+<div class="barbg"><div class="bar" id="goalBar" style="width:0%"></div></div>
+<div class="muted" id="goalInfo" style="margin-top:7px">حدد هدف باش نعاونك توصل ليه.</div>
+</section>
+
+<section class="card">
+<h3>🚨 وين راه التسريب؟</h3>
+<div class="alert" id="alert"><b>👀 نحتاج مصاريفك</b><p>زيد أول مصروف ونبدأ نفتشلك على وين تروح الدراهم.</p></div>
+</section>
+
+<section class="card">
+<h3>📊 مصاريفك</h3>
+<div id="categories"><div class="muted">مازال ماكان والو.</div></div>
+</section>
+
+<section class="card">
+<h3>🧾 آخر المصاريف</h3>
+<div id="expenses"><div class="muted">أضف مصروف من الزر اللي لتحت.</div></div>
+</section>
+
+<section class="card">
+<h3>🧠 شخصيتك المالية</h3>
+<div class="row"><div style="font-size:30px" id="avatar">😎</div><div style="flex:1"><b id="personality">مازال بكري</b><div class="muted" id="personalityText">كي تسجل شوية مصاريف نكتشفها لك.</div></div></div>
+</section>
+
+
+<section class="card" id="smartCard">
+<h3>🧠 التحليل الذكي V5</h3>
+<div class="smart-score"><div><small>الصحة المالية</small><strong id="score">--/100</strong></div><span id="scoreLabel">نحللوك كي تزيد بياناتك</span></div>
+<div class="insight" id="insight">سجّل الدخل والمصاريف ونمدّلك قراءة واضحة لميزانيتك.</div>
+<div class="mini-grid">
+<div><small>📌 أكبر فئة</small><b id="topCat">—</b></div>
+<div><small>📉 متوسط الصرف/اليوم</small><b id="avgSpend">—</b></div>
+<div><small>💡 تقدر توفر تقريباً</small><b id="savePotential">—</b></div>
+<div><small>🎯 باقي للهدف</small><b id="goalLeft">—</b></div>
 </div>
+</section>
 
-</div>
-</div>
-
-<div class="quick">
-
-<button class="primary" id="incomeBtn">💰 دخل جديد</button>
-<button id="expenseBtn">➕ مصروف جديد</button>
-
-</div>
-
-<div class="section">
-
-<div class="title">
-<h2>🎯 هدف الادخار</h2>
-<span id="goalPercent">0%</span>
-</div>
-
-<div class="card">
-
-<div class="goal-head">
-
-<div>
-<div class="muted">هدفي</div>
-<div class="goal-value" id="goalValue">100,000 دج</div>
-</div>
-
-<button class="goal-edit" id="goalBtn">✏️</button>
-
-</div>
-
-<div class="progress">
-<div class="progress-bar" id="goalBar"></div>
-</div>
-
-<div class="muted" id="goalText">
-حدد هدفك وابدأ الادخار.
-</div>
-
-</div>
-</div>
-
-<div class="section">
-
-<div class="title">
-<h2>🚨 وين راه التسريب؟</h2>
-</div>
-
-<div class="report" id="report">
-
-<h3>👀 نستناو معلوماتك</h3>
-
-<p>
-سجّل الدخل والمصاريف باش نعطيوك تحليل.
-</p>
-
-</div>
-</div>
-
-<div class="section">
-
-<div class="title">
-
-<h2>🧾 آخر المصاريف</h2>
-
-<span id="expenseCount">0 عملية</span>
-
-</div>
-
-<div class="card" id="expenseList">
-
-<div class="empty">
-مازال ما سجلنا حتى مصروف 👀
-</div>
-
-</div>
-</div>
-
-<div class="section">
-
-<div class="title">
-<h2>🧠 التحليل الذكي V5</h2>
-</div>
-
-<div class="analysis-box">
-
-<div>الصحة المالية</div>
-
-<div class="analysis-score" id="score">
---/100
-</div>
-
-<div class="analysis-text" id="analysisText">
-زيد معلومات باش نحللو وضعيتك.
-</div>
-
-<div class="analysis-grid">
-
-<div class="analysis-item">
-<small>📌 أكبر فئة</small>
-<strong id="bigCategory">—</strong>
-</div>
-
-<div class="analysis-item">
-<small>📉 متوسط الصرف</small>
-<strong id="average">—</strong>
-</div>
-
-<div class="analysis-item">
-<small>💡 نسبة الصرف</small>
-<strong id="ratio">—</strong>
-</div>
-
-<div class="analysis-item">
-<small>🎯 باقي للهدف</small>
-<strong id="remaining">—</strong>
-</div>
-
-</div>
-</div>
-</div>
-
-<div class="section">
-
-<div class="pro">
-
-<h2>⭐ Win Raha Drahemi PRO</h2>
-
-<p>
-تقارير متقدمة • أهداف متعددة • تحليل أعمق • كشف التسريبات
-</p>
-
-<button id="proBtn">
-✨ شوف اشتراك PRO
-</button>
-
-</div>
-</div>
-
+<section class="card pro">
+<div class="row"><h3>⭐ PRO</h3><span class="muted">قريباً</span></div>
+<div class="muted">تقارير متقدمة • أهداف متعددة • تحليل أعمق • تصدير PDF</div>
+<button class="btn primary" onclick="alert('سجلنا اهتمامك بالـPRO 🔥')">✨ نحب PRO</button>
+</section>
 </div>
 
 <div class="bottom">
-
-<button class="add" id="bottomExpense">
-➕ زيد مصروف
-</button>
-
-<button class="new" id="resetBtn">
-♻️ بداية جديدة
-</button>
-
+<button class="btn primary" onclick="openForm('expense')">➕ زيد مصروف</button>
+<button class="btn soft" onclick="resetMonth()">♻️ شهر جديد</button>
 </div>
 
-<!-- OPERATION -->
-
-<div class="modal" id="operationModal">
-
-<div class="sheet">
-
-<button class="close" id="closeOperation">×</button>
-
-<h2 id="modalTitle">➕ إضافة مصروف</h2>
-
-<label>المبلغ بالدينار</label>
-
-<input
-id="amount"
-type="number"
-min="1"
-inputmode="numeric"
-placeholder="مثال: 500">
-
-<div id="categoryArea">
-
-<label>الفئة</label>
-
-<select id="category">
-
-<option value="🍔 أكل">🍔 أكل</option>
-<option value="🛒 مشتريات">🛒 مشتريات</option>
-<option value="🚕 نقل">🚕 نقل</option>
-<option value="☕ قهوة">☕ قهوة</option>
-<option value="🎮 ترفيه">🎮 ترفيه</option>
-<option value="📱 هاتف">📱 هاتف</option>
-<option value="🏠 منزل">🏠 منزل</option>
-<option value="💊 صحة">💊 صحة</option>
-<option value="📚 دراسة">📚 دراسة</option>
-<option value="📦 أخرى">📦 أخرى</option>
-
-</select>
-
-</div>
-
-<button class="save-btn" id="saveOperation">
-💾 حفظ العملية
-</button>
-
-</div>
-</div>
-
-<!-- GOAL -->
-
-<div class="modal" id="goalModal">
-
-<div class="sheet">
-
-<button class="close" id="closeGoal">×</button>
-
-<h2>🎯 حدد هدفك</h2>
-
-<label>قيمة الهدف بالدينار</label>
-
-<input
-id="goalInput"
-type="number"
-min="1"
-inputmode="numeric"
-placeholder="مثال: 100000">
-
-<button class="save-btn" id="saveGoal">
-🎯 حفظ الهدف
-</button>
-
-</div>
-</div>
-
-<!-- PRO -->
-
-<div class="modal" id="proModal">
-
-<div class="sheet">
-
-<button class="close" id="closePro">×</button>
-
-<h2>⭐ اشتراك PRO</h2>
-
-<p class="muted">
-اختار الخطة المناسبة ليك.
-</p>
-
-<div class="price-box">
-
-<div class="price">
-
-<div>شهري</div>
-
-<strong>700 دج</strong>
-
-<small class="muted">
-كل شهر
-</small>
-
-<button onclick="choosePlan('شهري - 700 دج')">
-اختيار
-</button>
-
-</div>
-
-<div class="price">
-
-<div>سنوي</div>
-
-<strong>2800 دج</strong>
-
-<small class="muted">
-كل سنة
-</small>
-
-<button onclick="choosePlan('سنوي - 2800 دج')">
-اختيار
-</button>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-<div class="toast" id="toast"></div>
+<div class="modal" id="modal"><div class="sheet">
+<h2 id="title">➕ زيد مصروف</h2>
+<div id="fields"></div>
+<button class="btn primary" style="width:100%" onclick="saveForm()">حفظ</button>
+<button class="btn soft" style="width:100%;margin-top:8px" onclick="closeForm()">إلغاء</button>
+</div></div>
 
 <script>
+const KEY='win_raho_v4';
+let data=JSON.parse(localStorage.getItem(KEY)||localStorage.getItem('win_raho_v3')||'{"income":0,"goal":0,"goalName":"مازال ما حددتش","expenses":[]}');
+let mode='expense';
+const icons={'🍔 أكل':'🍔','☕ قهوة':'☕','🚕 نقل':'🚕','🛍️ شراء':'🛍️','🏠 دار':'🏠','📱 هاتف/إنترنت':'📱','🎮 ترفيه':'🎮','📚 دراسة':'📚','🧾 فواتير':'🧾','➕ أخرى':'➕'};
+const cats=Object.keys(icons);
+function money(n){return Math.round(n).toLocaleString('fr-FR')+' دج'}
+function save(){localStorage.setItem(KEY,JSON.stringify(data))}
 
-const STORAGE_KEY="win_raho_drahmi_v5_fixed";
-
-let data;
-
-try{
-
-data=JSON.parse(
-localStorage.getItem(STORAGE_KEY)
-);
-
-}catch(e){
-
-data=null;
-
+function setGoal(){
+  const v=Number(document.getElementById("goalInput").value);
+  if(!v || v<=0){showToast("دخل هدف صحيح ⚠️");return;}
+  data.goal=v; save(); render(); showToast("الهدف تحدّث 🎯");
 }
 
-if(!data || typeof data!=="object"){
-
-data={
-income:0,
-goal:100000,
-expenses:[]
-};
-
+function renderV4(spent,balance){
+  const income=data.income||0;
+  const ratio=income?spent/income:0;
+  const saving=income?Math.max(0,(income-spent)/income*100):0;
+  const progress=data.goal?Math.min(100,Math.max(0,balance/data.goal*100)):0;
+  const days=Math.max(1,new Date().getDate());
+  const avg=spent/days;
+  const counts={}; data.expenses.forEach(e=>counts[e.category]=(counts[e.category]||0)+e.amount);
+  const entries=Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+  const top=entries[0];
+  const score=Math.max(0,Math.min(100,Math.round(
+    !income ? 45 :
+    ratio>1 ? 20 :
+    ratio>.85 ? 40 :
+    ratio>.7 ? 58 :
+    ratio>.5 ? 72 :
+    ratio>.3 ? 88 : 96
+  )));
+  document.documentElement.style.setProperty("--scoredeg",(score*3.6)+"deg");
+  document.getElementById("score").textContent=score;
+  document.getElementById("savingRate").textContent=Math.round(saving)+"%";
+  document.getElementById("goalMini").textContent=Math.round(progress)+"%";
+  document.getElementById("dailyAvg").textContent=spent?money(avg):"—";
+  document.getElementById("opCount").textContent=data.expenses.length;
+  document.getElementById("leak").textContent=top?top[0].replace(/^\S+\s/,""):"—";
+  document.getElementById("possibleSave").textContent=top?money(top[1]*.15):"—";
+  document.getElementById("compareAmount").textContent=money(spent);
+  document.getElementById("compareBar").style.width=Math.min(100,ratio*100)+"%";
+  document.getElementById("streak").textContent=(data.expenses.length?Math.min(7,data.expenses.length):0)+" يوم";
+  if(!income){
+    document.getElementById("scoreTitle").textContent="ابدأ رحلتك المالية 🚀";
+    document.getElementById("scoreAdvice").textContent="دخل واحد + شوية مصاريف، ونبداو نكتشفو عاداتك.";
+  }else if(ratio>1){
+    document.getElementById("scoreTitle").textContent="🚨 لازم تشد الفرامل";
+    document.getElementById("scoreAdvice").textContent="المصاريف فاقت الدخل. الأولوية دير هامش أمان قبل أي شراء.";
+  }else if(ratio>.7){
+    document.getElementById("scoreTitle").textContent="⚠️ راقب التسريبات";
+    document.getElementById("scoreAdvice").textContent="راك قريب تستهلك معظم دخلك. نقص شوية من أكبر فئة صرف.";
+  }else if(ratio>.5){
+    document.getElementById("scoreTitle").textContent="👍 راك ماشي مليح";
+    document.getElementById("scoreAdvice").textContent="عندك توازن مليح، وحاول تثبت ادخار صغير كل أسبوع.";
+  }else{
+    document.getElementById("scoreTitle").textContent="🔥 ملك التحكم";
+    document.getElementById("scoreAdvice").textContent="صرفك تحت السيطرة. الفرصة الآن باش تكبر الادخار وتوصل لهدفك أسرع.";
+  }
+  document.getElementById("compareText").textContent =
+    income ? "استهلكت "+Math.round(ratio*100)+"% من دخلك هذا الشهر. "+(ratio>.7?"حاول تهبطها شوية.":"ممتاز، خلي عندك هامش للادخار.") :
+    "سجّل دخلك باش نعرفو نسبة الصرف الحقيقية.";
 }
 
-if(!Array.isArray(data.expenses)){
-data.expenses=[];
+
+
+let selectedSubscription="monthly";
+function openSubscribe(plan){
+  selectedSubscription=plan;
+  const yearly=plan==="yearly";
+  document.getElementById("selectedPlan").textContent=yearly?
+    "خطة PRO السنوية: كل ميزات PRO مقابل 2700 دج في السنة.":
+    "خطة PRO الشهرية: كل ميزات PRO مقابل 700 دج في الشهر.";
+  document.getElementById("selectedPrice").textContent=yearly?"2700 دج / سنة":"700 دج / شهر";
+  document.getElementById("subscribeModal").classList.add("show");
+}
+function closeSubscribe(){document.getElementById("subscribeModal").classList.remove("show");}
+function requestSubscription(){
+  closeSubscribe();
+  showToast("💎 الخطة تسجلات! الدفع الحقيقي نربطوه لاحقًا.");
 }
 
-if(typeof data.income!=="number"){
-data.income=Number(data.income)||0;
+function scrollToPro(){document.getElementById("proSection")?.scrollIntoView({behavior:"smooth",block:"start"});}
+function openAccount(){
+  document.getElementById("accountNameInput").value=localStorage.getItem("win_raho_name")||"";
+  document.getElementById("accountModal").classList.add("show");
+}
+function closeAccount(){document.getElementById("accountModal").classList.remove("show");}
+function saveAccount(){
+  const n=document.getElementById("accountNameInput").value.trim();
+  localStorage.setItem("win_raho_name",n||"مستخدم جديد");
+  document.getElementById("accountName").textContent=n||"مستخدم جديد";
+  closeAccount(); showToast("الحساب تحدّث ✅");
 }
 
-if(typeof data.goal!=="number" || data.goal<=0){
-data.goal=100000;
+function focusGoal(){
+  const el=document.getElementById("goalInput");
+  if(el){el.scrollIntoView({behavior:"smooth",block:"center"});el.focus();}
+  showToast("حدد هدفك المالي 🎯");
 }
+function showV5Advice(){
+  const spent=data.expenses.reduce((a,b)=>a+b.amount,0), income=data.income||0;
+  if(!income && !spent){showToast("زيد أول دخل ومصروف باش نحللوك 👀");return;}
+  function render(){
+ const spent=data.expenses.reduce((s,e)=>s+e.amount,0), bal=data.income-spent;
+ income.textContent=money(data.income); document.getElementById('spent').textContent=money(spent); balance.textContent=money(bal);
+ goalName.textContent=data.goal?money(data.goal):'مازال ما حددتش';
+ const pct=data.goal?Math.min(100,Math.round(Math.max(0,bal)/data.goal*100)):0;
+ goalBar.style.width=pct+'%';
+ goalInfo.textContent=data.goal?'راك قريب '+pct+'% من هدفك. باقي '+money(Math.max(0,data.goal-Math.max(0,bal)))+'.':'حدد هدف باش نعاونك توصل ليه.';
+ let sums={}; data.expenses.forEach(e=>sums[e.cat]=(sums[e.cat]||0)+e.amount);
+ let sorted=Object.entries(sums).sort((a,b)=>b[1]-a[1]), total=spent;
+ categories.innerHTML=sorted.length?sorted.map(([c,v])=>`<div class="cat"><div class="cathead"><b>${c}</b><span>${money(v)}</span></div><div class="catbar"><i style="width:${total?v/total*100:0}%"></i></div></div>`).join(''):'<div class="muted">مازال ماكان والو.</div>';
+ expenses.innerHTML=data.expenses.length?data.expenses.slice().reverse().slice(0,8).map(e=>`<div class="exp"><div class="ico">${icons[e.cat]}</div><div class="grow"><b>${e.cat.replace(/^\S+\s/,'')}</b><small>${e.note||e.date}</small></div><div class="amt">${money(e.amount)}</div></div>`).join(''):'<div class="muted">أضف مصروف من الزر اللي لتحت.</div>';
+ if(!spent) alert.innerHTML='<b>👀 نحتاج مصاريفك</b><p>زيد أول مصروف ونبدأ نفتشلك على وين تروح الدراهم.</p>';
+ else {let top=sorted[0]; alert.innerHTML=`<b>🚨 أكبر تسريب: ${top[0]}</b><p>صرفـت ${money(top[1])} هنا، يعني حوالي ${Math.round(top[1]/spent*100)}% من كامل مصاريفك.</p>`}
 
-let operationType="expense";
+ let p='😎',name='الصرف المتوازن',txt='راك ماشي مليح، استمر هكذا.';
+ if(sorted[0]){let t=sorted[0][0];if(t.includes('قهوة')){p='☕';name='ملك القهوة';txt='القهوة راهي حاكمة الميزانية 😂'}else if(t.includes('أكل')){p='🍔';name='سلطان الماكلة';txt='المعدة عندها ميزانية خاصة بيها 😂'}else if(t.includes('شراء')){p='🛍️';name='صياد التخفيضات';txt='كل مرة تقول: غير هذي ونحبس 😅'}}
+ avatar.textContent=p;personality.textContent=name;personalityText.textContent=txt;
 
-function money(value){
+ // V4: smart financial score + actionable advice
+ const days=Math.max(1,new Date().getDate()), avg=spent/days, top=sorted[0];
+ const topPct=spent&&top?Math.round(top[1]/spent*100):0;
+ let score=70;
+ if(data.income<=0) score=45;
+ else {const r=spent/data.income;if(r>1)score=25;else if(r>.8)score=45;else if(r>.6)score=60;else if(r<=.4)score=90;}
+ if(topPct>=50)score-=10; else if(topPct<=30)score+=5;
+ score=Math.max(0,Math.min(100,Math.round(score)));
+ document.getElementById('score').textContent=score+'/100';
+ document.getElementById('scoreLabel').textContent=score>=80?'🔥 ممتاز':score>=60?'👍 مليح':score>=40?'⚠️ لازم تنتبه':'🚨 لازم تحبس التسريب';
+ document.getElementById('topCat').textContent=top?top[0]:'—';
+ document.getElementById('avgSpend').textContent=spent?money(avg):'—';
+ const potential=top?Math.round(top[1]*0.15):0;
+ document.getElementById('savePotential').textContent=potential?money(potential):'—';
+ document.getElementById('goalLeft').textContent=data.goal?money(Math.max(0,data.goal-Math.max(0,bal))):'—';
 
-return new Intl.NumberFormat("fr-FR")
-.format(Math.round(Number(value)||0))+" دج";
-
+ let msg='زيد الدخل والمصاريف باش نعطيك تحليل أقوى.';
+ if(data.income && spent){
+   const r=spent/data.income;
+   if(r>1)msg='🚨 راك صرفت أكثر من دخلك. أول أولوية: حبّس المصاريف غير الضرورية وخلي هامش أمان.';
+   else if(r>.8)msg=`⚠️ راك صرفت حوالي ${Math.round(r*100)}% من دخلك. حاول تخلي جزء ثابت للادخار.`;
+   else if(topPct>=40)msg=`💡 أكبر فرصة للتوفير راهي في ${top[0]}. نقص منها 15% وتقدر توفر تقريباً ${money(potential)}.`;
+   else msg='✅ وضعيتك مليحة. حافظ على العادة وخلي الادخار أولوية قبل المصروف.';
+ }
+ document.getElementById('insight').textContent=msg;
 }
-
-function saveData(){
-
-localStorage.setItem(
-STORAGE_KEY,
-JSON.stringify(data)
-);
-
-}
-
-function showToast(message){
-
-const toast=document.getElementById("toast");
-
-toast.textContent=message;
-toast.classList.add("show");
-
-clearTimeout(window.toastTimer);
-
-window.toastTimer=setTimeout(function(){
-
-toast.classList.remove("show");
-
-},1800);
-
-}
-
-function openExpense(){
-
-operationType="expense";
-
-document.getElementById("modalTitle").textContent=
-"➕ إضافة مصروف";
-
-document.getElementById("categoryArea").style.display=
-"block";
-
-document.getElementById("amount").value="";
-
-document.getElementById("operationModal")
-.classList.add("show");
-
-setTimeout(function(){
-document.getElementById("amount").focus();
-},150);
-
-}
-
-function openIncome(){
-
-operationType="income";
-
-document.getElementById("modalTitle").textContent=
-"💰 إضافة دخل";
-
-document.getElementById("categoryArea").style.display=
-"none";
-
-document.getElementById("amount").value="";
-
-document.getElementById("operationModal")
-.classList.add("show");
-
-setTimeout(function(){
-document.getElementById("amount").focus();
-},150);
-
-}
-
-function closeOperation(){
-
-document.getElementById("operationModal")
-.classList.remove("show");
-
-}
-
-function openGoal(){
-
-document.getElementById("goalInput").value=
-data.goal;
-
-document.getElementById("goalModal")
-.classList.add("show");
-
-setTimeout(function(){
-document.getElementById("goalInput").focus();
-},100);
-
-}
-
-function closeGoal(){
-
-document.getElementById("goalModal")
-.classList.remove("show");
-
-}
-
-function openPro(){
-
-document.getElementById("proModal")
-.classList.add("show");
-
-}
-
-function closePro(){
-
-document.getElementById("proModal")
-.classList.remove("show");
-
-}
-
-function saveOperation(){
-
-const input=document.getElementById("amount");
-
-const amount=Number(input.value);
-
-if(!Number.isFinite(amount) || amount<=0){
-
-showToast("⚠️ دخل مبلغ صحيح");
-
-input.focus();
-
-return;
-
-}
-
-if(operationType==="income"){
-
-data.income+=amount;
-
-}else{
-
-const category=
-document.getElementById("category").value;
-
-data.expenses.push({
-
-amount:amount,
-
-category:category,
-
-date:new Date().toISOString()
-
-});
-
-}
-
-saveData();
-
-closeOperation();
-
+function openForm(m){mode=m;modal.classList.add('show');fields.innerHTML='';if(m==='expense'){title.textContent='➕ زيد مصروف';fields.innerHTML=`<label>المبلغ</label><input id="amount" type="number" inputmode="numeric" placeholder="مثلاً 1500"><label>التصنيف</label><select id="cat">${cats.map(c=>`<option>${c}</option>`).join('')}</select><label>ملاحظة</label><input id="note" placeholder="مثلاً قهوة مع الصحاب">`}else if(m==='income'){title.textContent='💰 الدخل الشهري';fields.innerHTML='<label>قداش تدخل في الشهر؟</label><input id="amount" type="number" inputmode="numeric" value="'+(data.income||'')+'" placeholder="مثلاً 80000">'}else{title.textContent='🎯 هدف الادخار';fields.innerHTML='<label>قداش حاب تجمع؟</label><input id="amount" type="number" inputmode="numeric" value="'+(data.goal||'')+'" placeholder="مثلاً 200000">'}}
+function closeForm(){modal.classList.remove('show')}
+function saveForm(){let v=Number(document.getElementById('amount').value);if(!v)return alert('دخل مبلغ صحيح');if(mode==='expense')data.expenses.push({amount:v,cat:cat.value,note:note.value.trim(),date:new Date().toLocaleDateString('ar-DZ')});if(mode==='income')data.income=v;if(mode==='goal')data.goal=v;save();render();closeForm()}
+function resetMonth(){if(confirm('تمسح مصاريف هذا الشهر؟')){data.expenses=[];save();render()}}
 render();
-
-showToast("✅ تم الحفظ بنجاح");
-
-}
-
-function saveGoal(){
-
-const value=
-Number(document.getElementById("goalInput").value);
-
-if(!Number.isFinite(value) || value<=0){
-
-showToast("⚠️ دخل هدف صحيح");
-
-return;
-
-}
-
-data.goal=value;
-
-saveData();
-
-closeGoal();
-
-render();
-
-showToast("🎯 تم حفظ الهدف");
-
-}
-
-function render(){
-
-const spent=data.expenses.reduce(
-function(total,item){
-return total+(Number(item.amount)||0);
-},0);
-
-const balance=data.income-spent;
-
-document.getElementById("income").textContent=
-money(data.income);
-
-document.getElementById("expenses").textContent=
-money(spent);
-
-document.getElementById("balance").textContent=
-money(balance);
-
-document.getElementById("goalValue").textContent=
-money(data.goal);
-
-renderGoal(balance);
-
-renderReport(spent,balance);
-
-renderExpenses();
-
-renderAnalysis(spent,balance);
-
-}
-
-function renderGoal(balance){
-
-let percent=0;
-
-if(data.goal>0){
-
-percent=
-Math.max(
-0,
-Math.min(
-100,
-(balance/data.goal)*100
-)
-);
-
-}
-
-document.getElementById("goalPercent").textContent=
-Math.round(percent)+"%";
-
-document.getElementById("goalBar").style.width=
-percent+"%";
-
-if(balance>=data.goal){
-
-document.getElementById("goalText").textContent=
-"🔥 وصلت لهدفك! برافو عليك.";
-
-}else{
-
-document.getElementById("goalText").textContent=
-"باقيلك "+
-money(Math.max(0,data.goal-balance))+
-" باش توصل لهدفك.";
-
-}
-
-}
-
-function renderReport(spent,balance){
-
-const box=document.getElementById("report");
-
-if(!data.income && !spent){
-
-box.className="report";
-
-box.innerHTML=
-"<h3>👀 نستناو معلوماتك</h3>"+
-"<p>سجّل الدخل والمصاريف باش نعطيوك تحليل.</p>";
-
-return;
-
-}
-
-if(balance<0){
-
-box.className="report";
-
-box.innerHTML=
-"<h3>🚨 راك صرفت أكثر من دخلك</h3>"+
-"<p>المصاريف تجاوزت الدخل. حاول توقف المصاريف غير الضرورية.</p>";
-
-return;
-
-}
-
-if(data.income>0 && spent/data.income>=.7){
-
-box.className="report";
-
-box.innerHTML=
-"<h3>⚠️ راقب الصرف شوية</h3>"+
-"<p>راك صرفت "+
-Math.round(spent/data.income*100)+
-"% من دخلك. حاول تخلي جزء للادخار.</p>";
-
-return;
-
-}
-
-box.className="report good";
-
-box.innerHTML=
-"<h3>🟢 أمورك مليحة</h3>"+
-"<p>باقيلك "+
-money(balance)+
-". حافظ على نفس الريتم 👌</p>";
-
-}
-
-function renderExpenses(){
-
-const box=document.getElementById("expenseList");
-
-document.getElementById("expenseCount").textContent=
-data.expenses.length+" عملية";
-
-if(!data.expenses.length){
-
-box.innerHTML=
-'<div class="empty">مازال ما سجلنا حتى مصروف 👀</div>';
-
-return;
-
-}
-
-const last=data.expenses
-.slice()
-.reverse()
-.slice(0,10);
-
-box.innerHTML="";
-
-last.forEach(function(item){
-
-const category=String(item.category||"📦 أخرى");
-
-const parts=category.split(" ");
-
-const icon=parts.shift()||"📦";
-
-const name=parts.join(" ")||"أخرى";
-
-const date=item.date
-?new Date(item.date).toLocaleDateString("ar-DZ")
-:"اليوم";
-
-const row=document.createElement("div");
-
-row.className="expense";
-
-row.innerHTML=
-'<div class="exp-icon">'+icon+'</div>'+
-'<div class="exp-info">'+
-'<strong>'+escapeHtml(name)+'</strong>'+
-'<small>'+escapeHtml(date)+'</small>'+
-'</div>'+
-'<div class="exp-money">-'+money(item.amount)+'</div>';
-
-box.appendChild(row);
-
-});
-
-}
-
-function escapeHtml(text){
-
-return String(text)
-.replace(/&/g,"&amp;")
-.replace(/</g,"&lt;")
-.replace(/>/g,"&gt;")
-.replace(/"/g,"&quot;")
-.replace(/'/g,"&#039;");
-
-}
-
-function renderAnalysis(spent,balance){
-
-const scoreEl=document.getElementById("score");
-const textEl=document.getElementById("analysisText");
-const bigEl=document.getElementById("bigCategory");
-const avgEl=document.getElementById("average");
-const ratioEl=document.getElementById("ratio");
-const remainingEl=document.getElementById("remaining");
-
-if(!data.income && !spent){
-
-scoreEl.textContent="--/100";
-textEl.textContent="زيد معلومات باش نحللو وضعيتك.";
-bigEl.textContent="—";
-avgEl.textContent="—";
-ratioEl.textContent="—";
-remainingEl.textContent=money(data.goal);
-
-return;
-
-}
-
-let ratio=0;
-
-if(data.income>0){
-ratio=(spent/data.income)*100;
-}
-
-let score;
-
-if(data.income<=0){
-
-score=40;
-
-}else{
-
-score=Math.round(
-100-Math.min(100,ratio)
-);
-
-if(balance>=data.goal){
-score=Math.min(100,score+15);
-}
-
-}
-
-score=Math.max(0,Math.min(100,score));
-
-scoreEl.textContent=score+"/100";
-
-if(score>=80){
-
-textEl.textContent=
-"🔥 تحكم ممتاز في المصاريف. راك ماشي في الطريق الصحيح.";
-
-}else if(score>=60){
-
-textEl.textContent=
-"🟢 وضعيتك مليحة، بصح حاول تزيد شوية في الادخار.";
-
-}else if(score>=40){
-
-textEl.textContent=
-"🟠 لازم تراقب المصاريف وتعرف وين راه يروح الجزء الكبير من الدخل.";
-
-}else{
-
-textEl.textContent=
-"🔴 المصاريف عالية مقارنة بالدخل. شد الفرامل شوية.";
-
-}
-
-ratioEl.textContent=
-data.income>0
-?Math.round(ratio)+"%"
-:"—";
-
-avgEl.textContent=
-data.expenses.length
-?money(spent/data.expenses.length)
-:"—";
-
-let sums={};
-
-data.expenses.forEach(function(item){
-
-const cat=String(item.category||"📦 أخرى");
-
-sums[cat]=(sums[cat]||0)+(Number(item.amount)||0);
-
-});
-
-const categories=Object.entries(sums)
-.sort(function(a,b){
-return b[1]-a[1];
-});
-
-if(categories.length){
-
-const biggest=categories[0][0];
-
-bigEl.textContent=
-biggest.split(" ").slice(1).join(" ")||"أخرى";
-
-}else{
-
-bigEl.textContent="—";
-
-}
-
-remainingEl.textContent=
-money(Math.max(0,data.goal-balance));
-
-}
-
-function choosePlan(plan){
-
-closePro();
-
-showToast("⭐ اخترت "+plan);
-
-}
-
-function toggleTheme(){
-
-document.body.classList.toggle("dark");
-
-const dark=
-document.body.classList.contains("dark");
-
-localStorage.setItem(
-"win_raho_dark",
-dark?"true":"false"
-);
-
-document.getElementById("themeBtn").textContent= dark?"
-
-}
-
-document.getElementById("incomeBtn") .addEventListener("click", open Income);
-
-document.getElementById("expenseBtn") .addEventListener("click", open Expense);
-
-document.getElementById("bottom Expense") .addEventListener("click", open Expense);
-
-document.getElementById("goalBtn") .addEventListener("click", openGoal);
-
-document.getElementById("proBtn") addEventListener("click", open Pro);
-
-document.getElementById("closeOperation") .addEventListener("click", closeOperation);
-
-document.getElementById("closeGoal") .addEventListener("click", closeGoal);
-
-document.getElementById("closePro") .addEventListener("click", closePro);
-
-document.getElementById("saveOperation") .addEventListener("click", saveOperation);
-
-document.getElementById("saveGoal") .addEventListener("click", saveGoal);
-
-document.getElementById("themeBtn") .addEventListener("click", toggleTheme);
-
-document.getElementById("rSetBtn") .addEventListener("click", function(){
-
-const ok=confirm(
-
-"متأكد تحب تمسح كامل البيانات وتبدأ من جديد؟" );
-
-if(!ok)return;
-
-data={
-
-income:0,
-
-goal:100000,
-
-expenses: []
-
-};
-
-saveData();
-
-render();
-
-showToast)" بدأنا من جديد" (;
-
-});
-
-document.getElementById("amount") .addEventListener("keydown", function(e){
-
-if(e.key==="Enter"){
-
-saveOperation();
-
-}
-
-});
-
-document.getElementById("goalInput") .addEventListener("keydown", function(e){
-
-if(e.key==="Enter"){
-
-saveGoal(); }
-
-});
-
-document.querySelectorAll(".modal")
-
-.forEach(function(modal) {
-
-modal.addEventListener("click", function(e) {
-  if(e.target===modal){
-
-modal.classList.remove("show");
-
-}
-
-});
-
-});
-
-69
-
-document.getElementById("date").textContent=
-
-new Intl.DateTimeFormat("ar-DZ", {
-
-weekday: "long",
-
-day: "numeric",
-
-month:"long"
-
-}).format(new Date());
-
-if(localStorage.getItem("win_raho_dark")==="true"){
-
-document.body.classList.add("dark");
-
-document.getElementById("themeBtn").textContent=""
-
-:
-
-}
-
-saveData();
-
-render();
-
 </script>
-
-</body>
-
-</html>
+</body></html>   
+  
