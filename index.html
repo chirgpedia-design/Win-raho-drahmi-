@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#6d4df2">
-<title>وين راحو دراهمي؟ — V5.3</title>
+<title>وين راحو دراهمي؟ — V5.4</title>
 <style>
 :root{--bg:#f4f5fa;--card:#fff;--text:#171822;--muted:#777b8c;--line:#e5e6ed;--primary:#6d4df2;--primary2:#8b6fff;--green:#17a56d;--red:#e04f68;--orange:#ef9b3d;--blue:#3985e8;--shadow:0 10px 30px rgba(30,25,70,.08)}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Tahoma,sans-serif;transition:.2s}button,input,select{font:inherit}button{cursor:pointer;border:0}.app{width:min(760px,100%);margin:auto;padding:14px 14px 105px}
@@ -25,51 +25,21 @@
 .toast{position:fixed;z-index:120;top:15px;left:50%;transform:translateX(-50%) translateY(-15px);opacity:0;background:#171822;color:#fff;padding:10px 14px;border-radius:13px;font-size:10px;transition:.25s;pointer-events:none}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .empty{text-align:center;padding:15px;color:var(--muted);font-size:10px}.hidden{display:none!important}
 body.dark{--bg:#0d0f15;--card:#171a23;--text:#f4f5fa;--muted:#a3a8b9;--line:#2a2e3a;--shadow:0 12px 35px #0005}
-body.dark .btn{background:#252936;color:#f4f5fa}body.dark .green{background:#123d2e;color:#7be4b4}body.dark .red{background:#411d28;color:#ff9cac}body.dark .blue{background:#172f52;color:#8fbaff}body.dark .catpick button,body.dark .cat{background:#171a23}body.dark .catpick button.selected{background:#29234a}body.dark .advice{background:#211c36;border-color:#3b315e}body.dark .challenge{background:#171a23}body.dark .bottom{background:#11141cf2}body.dark .close{background:#292d38}
-@media(max-width:430px){.app{padding-left:11px;padding-right:11px}.balance{font-size:34px}.cats{gap:5px}.cat{min-height:78px}.section{padding:13px}.stats{gap:5px}.stat{padding:8px}}
+body.dark .btn{background:#252936;color:#f4f5fa}body.dark .green{background:#123d2e;color:#7be4b4}body.dark .red{background:#411d28;color:#ff9cac}body.dark .blue{background:#172f52;color:#8fbaff}body.dark .catpick button,body.dark .cat{background:#171a23}body.dark .catpick button.selected{background:#29234a}body.dark .advice{background:#211c36;border-color:#3b315e}body.dark .challenge{background:#171a23}body.dark .bottom{background:#11141cf2}body.dark .challenge-click{background:var(--card);border-color:var(--line)}body.dark .close{background:#292d38}
+@media(max-width:430px){.app{padding-left:10px;padding-right:10px}.balance{font-size:34px}.cats{grid-template-columns:repeat(3,1fr);gap:6px}.cat{min-height:76px}.section{padding:12px;border-radius:20px}.stats{gap:5px}.stat{padding:8px 6px}.formgrid{grid-template-columns:1fr}.field input,.field select,input.search{font-size:16px;min-width:0}.catpick{grid-template-columns:repeat(3,1fr)}.quick{grid-template-columns:1fr 1fr}.listitem{gap:6px}.li-main{min-width:0}.mini-action{width:32px;height:32px}.sheet{padding:16px 12px 28px}.bottom{padding-left:6px;padding-right:6px}.navbtn{font-size:8px}}
 
 .challenge-click{width:100%;text-align:right;cursor:pointer;display:block;border:1px solid #eee;background:linear-gradient(180deg,#fff,#fbf9ff);font:inherit;color:inherit;padding:14px;border-radius:18px;margin:8px 0;transition:transform .15s,box-shadow .15s}
 .challenge-click:active{transform:scale(.985)}
 .challenge-click:hover{box-shadow:0 7px 22px rgba(90,70,180,.10)}
 .challenge-click small{display:block;margin-top:9px;color:#7b6bb0;font-weight:700}
-
-/* V5.3 — Mobile First polish */
-html,body{width:100%;max-width:100%;overflow-x:hidden}
-.app{width:100%;max-width:760px;min-width:0}
-.formgrid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
-.formgrid>*{min-width:0;max-width:100%}
-.field input,.field select,input.search{min-width:0;max-width:100%;display:block}
-.shoprow{min-width:0}.shopname{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.modal{padding:0;overflow:hidden}.sheet{min-width:0;max-width:760px;width:100%;}
-.challenge-click{min-width:0;overflow:hidden}
-@media(max-width:560px){
-  .app{padding:10px 10px calc(96px + env(safe-area-inset-bottom))}
-  .top{margin-bottom:9px}.brand{font-size:18px}.brand small{font-size:8px}
-  .iconbtn{width:38px;height:38px;border-radius:13px}
-  .hero{padding:18px;border-radius:23px}.balance{font-size:32px;margin:6px 0 14px}
-  .stats{grid-template-columns:repeat(3,minmax(0,1fr))}.stat{min-width:0;padding:8px 6px}.stat b{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.stat span{font-size:8px}
-  .quick{grid-template-columns:1fr 1fr;gap:7px}.quick .btn{padding:13px 7px;font-size:13px}
-  .section{padding:12px;border-radius:19px;margin:8px 0}.section-head{margin-bottom:9px}.section-head h2{font-size:15px}
-  .cats{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.cat{min-height:72px;padding:8px 4px}.cat .emoji{font-size:21px}
-  .formgrid{grid-template-columns:1fr;gap:7px}.formgrid input{width:100%;min-width:0}
-  .chart{height:165px}
-  .challenge-click{padding:12px;border-radius:15px}.challenge-click b{font-size:11px}.challenge-click p{font-size:9px}
-  .scorecircle{width:64px;height:64px}
-  .bottom{padding:6px max(6px,env(safe-area-inset-left)) max(6px,env(safe-area-inset-bottom));gap:3px}
-  .navbtn{padding:6px 1px;font-size:8px}.navbtn b{font-size:16px}
-  .actions{grid-template-columns:1fr}.sheet{padding:15px 12px calc(24px + env(safe-area-inset-bottom));max-height:94vh}
-}
-@media(max-width:360px){
-  .app{padding-left:8px;padding-right:8px}.hero{padding:15px}.balance{font-size:29px}.quick .btn{font-size:12px}.section-head h2{font-size:14px}.cats{gap:5px}.cat{min-height:68px}
-}
-@media(min-width:561px){.formgrid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.mini-action{width:30px;height:30px;border-radius:10px;background:#eeeef3;font-size:12px;flex:0 0 auto}.mini-action.del{background:#fff0f3}.mini-action.edit{background:#eeeaff}
 </style>
 </head>
 <body>
 <div id="toast" class="toast"></div>
 <div class="app">
 <header class="top">
-<div class="brand">💸 وين راحو دراهمي؟<small>خلي كل دينار عندو بلاصتو 🇩🇿 • V5.3</small></div>
+<div class="brand">💸 وين راحو دراهمي؟<small>خلي كل دينار عندو بلاصتو 🇩🇿 • V5.4</small></div>
 <div class="top-actions"><button class="iconbtn" id="themeBtn" onclick="toggleTheme()">🌙</button><button class="iconbtn" onclick="openSettings()">⚙️</button></div>
 </header>
 
@@ -173,7 +143,7 @@ html,body{width:100%;max-width:100%;overflow-x:hidden}
 <div class="field"><label>على واش صرفت؟</label><input id="entryNote" placeholder="مثلاً: قهوة، ماكلة، نقل..."></div>
 <div class="field"><label>التاريخ</label><input id="entryDate" type="date"></div>
 <div class="field"><label>اختار الصنف</label><div id="catPick" class="catpick"></div></div>
-<div class="actions"><button class="btn ghost" onclick="closeModal('entryModal')">رجوع</button><button class="btn primary" onclick="saveEntry()">✅ سجّلها دُرك</button></div>
+<div class="actions"><button class="btn ghost" onclick="closeModal('entryModal')">رجوع</button><button class="btn primary" id="entrySaveBtn" onclick="saveEntry()">✅ سجّلها دُرك</button></div>
 </div></div>
 
 <!-- Goal -->
@@ -214,7 +184,8 @@ const C=[
 {id:'transport',icon:'🚗',name:'النقل'},{id:'home',icon:'🏠',name:'الدار'},{id:'shopping',icon:'🛒',name:'السوق'},{id:'education',icon:'📚',name:'القراية'},
 {id:'family',icon:'👨‍👩‍👧',name:'العائلة'},{id:'fun',icon:'🎮',name:'الترفيه'},{id:'phone',icon:'📱',name:'الهاتف'},{id:'other',icon:'📦',name:'أخرى'}
 ];
-const KEY='winRahoV52Real';
+const KEY='winRahoV54Real';
+let editingId=null;
 let S={income:0,budget:0,entries:[],goals:[],bills:[],shop:[],challengeSeed:0};
 let mode='expense',selectedCat='food';
 
@@ -248,17 +219,28 @@ function renderPick(){
  $('catPick').innerHTML=C.map(c=>`<button class="${selectedCat===c.id?'selected':''}" onclick="selectedCat='${c.id}';renderPick()">${c.icon}<br>${c.name}</button>`).join('');
 }
 function openEntry(m,catId){
- mode=m;selectedCat=catId||selectedCat;
+ editingId=null; mode=m;selectedCat=catId||selectedCat;
  $('entryTitle').textContent=m==='expense'?'➕ زيد مصروف':'💰 سجّل دخل';
+ $('entrySaveBtn').textContent=m==='expense'?'✅ سجّل المصروف':'✅ سجّل الدخل';
  $('entryAmount').value='';$('entryNote').value='';$('entryDate').value=new Date().toISOString().slice(0,10);
  renderPick();openModal('entryModal');setTimeout(()=>$('entryAmount').focus(),150);
+}
+function editEntry(id){
+ const x=S.entries.find(e=>e.id===id); if(!x)return;
+ editingId=id; mode=x.type; selectedCat=x.cat||'other';
+ $('entryTitle').textContent=x.type==='expense'?'✏️ عدّل المصروف':'✏️ عدّل الدخل';
+ $('entrySaveBtn').textContent='💾 حفظ التعديل';
+ $('entryAmount').value=x.amount; $('entryNote').value=x.note||''; $('entryDate').value=x.date||new Date().toISOString().slice(0,10);
+ renderPick(); openModal('entryModal'); setTimeout(()=>$('entryAmount').focus(),150);
 }
 function saveEntry(){
  const a=Number($('entryAmount').value);
  if(!(a>0)){toast('⚠️ دخل المبلغ باش نسجلوه');return}
  if(mode==='expense'&&!selectedCat){toast('اختار الصنف أولاً');return}
- S.entries.push({id:Date.now(),type:mode,amount:a,cat:selectedCat,note:$('entryNote').value.trim(),date:$('entryDate').value});
- save();closeModal('entryModal');render();toast(mode==='expense'?'✅ تسجّل المصروف':'✅ تسجّل الدخل');
+ const data={type:mode,amount:a,cat:selectedCat,note:$('entryNote').value.trim(),date:$('entryDate').value};
+ if(editingId){ const x=S.entries.find(e=>e.id===editingId); if(x)Object.assign(x,data); toast('✅ تبدلـت العملية بنجاح'); }
+ else { S.entries.push({id:Date.now(),...data}); toast(mode==='expense'?'✅ تسجّل المصروف':'✅ تسجّل الدخل'); }
+ save();closeModal('entryModal');editingId=null;render();
 }
 function renderChallenges(){
  const sp=spent(),budget=Number(S.budget||0),food=expenses().filter(x=>x.cat==='food').reduce((a,x)=>a+Number(x.amount),0);
@@ -350,7 +332,7 @@ function renderRecent(){
 }
 function itemHTML(x){
  const c=cat(x.cat),positive=x.type==='income';
- return `<div class="listitem"><div class="emojiBox">${c.icon}</div><div class="li-main"><b>${esc(x.note||c.name)}</b><small>${c.name} • ${x.date}</small></div><span class="li-amount ${positive?'income':'expense'}">${positive?'+':'-'}${money(x.amount)}</span></div>`;
+ return `<div class="listitem"><div class="emojiBox">${c.icon}</div><div class="li-main"><b>${esc(x.note||c.name)}</b><small>${c.name} • ${x.date}</small></div><span class="li-amount ${positive?'income':'expense'}">${positive?'+':'-'}${money(x.amount)}</span><button class="mini-action edit" onclick="editEntry(${x.id})">✏️</button><button class="mini-action del" onclick="deleteEntry(${x.id})">🗑️</button></div>`;
 }
 function openHistory(){
  $('historyCat').innerHTML='<option value="">كل التصنيفات</option>'+C.map(c=>`<option value="${c.id}">${c.icon} ${c.name}</option>`).join('');
@@ -359,7 +341,7 @@ function openHistory(){
 function renderHistory(){
  const q=($('historySearch').value||'').toLowerCase(),t=$('historyType').value,cid=$('historyCat').value;
  const a=[...S.entries].reverse().filter(x=>(!t||x.type===t)&&(!cid||x.cat===cid)&&(!q||((x.note||'')+' '+cat(x.cat).name).toLowerCase().includes(q)));
- $('historyList').innerHTML=a.length?a.map(x=>itemHTML(x)+`<button class="btn red" style="padding:6px 8px;font-size:8px" onclick="deleteEntry(${x.id})">حذف</button>`).join(''):'<div class="empty">ما لقيتش هذي العملية.</div>';
+ $('historyList').innerHTML=a.length?a.map(x=>itemHTML(x)).join(''):'<div class="empty">ما لقيتش هذي العملية.</div>';
 }
 function deleteEntry(id){if(confirm('تحب تحذف العملية؟')){S.entries=S.entries.filter(x=>x.id!==id);save();render();renderHistory();toast('تم حذف العملية')}}
 function renderScore(){
@@ -387,7 +369,7 @@ function openSettings(){ $('setIncome').value=S.income||0;$('setBudget').value=S
 $('setIncome').addEventListener('focus',()=>{}); 
 function saveSettings(){S.income=Number($('setIncome').value)||0;S.budget=Number($('setBudget').value)||0;save();closeModal('settingsModal');render();toast('⚙️ تحفّظت الإعدادات')}
 function resetAll(){if(confirm('⚠️ متأكد تحب تمسح كامل البيانات؟')){localStorage.removeItem(KEY);location.reload()}}
-function backup(){const b=new Blob([JSON.stringify(S,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='win-raho-drahmi-V5.3-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500);toast('💾 خرجت النسخة الاحتياطية')}
+function backup(){const b=new Blob([JSON.stringify(S,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='win-raho-drahmi-V5.2-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500);toast('💾 خرجت النسخة الاحتياطية')}
 function restore(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const x=JSON.parse(r.result);if(!Array.isArray(x.entries))throw Error();S={...S,...x};save();render();toast('♻️ رجعت بياناتك')}catch(z){toast('❌ الملف غير صالح')}};r.readAsText(f);e.target.value=''}
 function exportCSV(){let s='\uFEFFالنوع,المبلغ,التصنيف,الملاحظة,التاريخ\n';S.entries.forEach(x=>s+=`"${x.type==='expense'?'مصروف':'دخل'}",${x.amount},"${cat(x.cat).name}","${String(x.note||'').replace(/"/g,'""')}",${x.date}\n`);const b=new Blob([s],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='win-raho-drahmi-V5.2.csv';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500);toast('📥 خرج الملف')}
 function goHome(){window.scrollTo({top:0,behavior:'smooth'})}
