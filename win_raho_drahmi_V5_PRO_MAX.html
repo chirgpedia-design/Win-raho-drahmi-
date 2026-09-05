@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#171821">
+<title>وين راحو دراهمي؟</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f4f5f9;color:#171821;font-family:Arial,sans-serif}.app{max-width:620px;margin:auto;padding:16px 15px 105px}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.logo{font-size:22px;font-weight:900}.muted{color:#77798a;font-size:13px}
+.hero{background:#171821;color:#fff;border-radius:27px;padding:21px;margin-bottom:13px}.hero small{color:#b9bbc6}.balance{font-size:40px;font-weight:950;margin:5px 0 18px}.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{background:#252733;border:1px solid #343642;border-radius:18px;padding:12px}.stat b{display:block;font-size:18px}.stat span{font-size:12px;color:#b5b7c1}
+.card{background:#fff;border:1px solid #e7e8ee;border-radius:22px;padding:17px;margin:12px 0}.card h3{margin:0 0 12px;font-size:17px}.row{display:flex;justify-content:space-between;align-items:center;gap:10px}.barbg{height:11px;background:#ececf2;border-radius:99px;overflow:hidden}.bar{height:100%;background:#6c55e8;border-radius:99px}.buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px}.btn{border:0;border-radius:16px;padding:14px;font-weight:900;font-size:14px;cursor:pointer}.primary{background:#6c55e8;color:white}.soft{background:#ededf4;color:#171821}
+.alert{background:#fff1f3;border:1px solid #ffd8df;border-radius:17px;padding:13px;line-height:1.7}.alert b{font-size:15px}.alert p{margin:5px 0 0;color:#555766;font-size:13px}
+.cat{margin:12px 0}.cathead{display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px}.catbar{height:8px;background:#eeeef3;border-radius:99px;overflow:hidden}.catbar i{display:block;height:100%;background:#6c55e8;border-radius:99px}
+.exp{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #eee}.exp:last-child{border:0}.ico{width:40px;height:40px;border-radius:13px;background:#f0effc;display:grid;place-items:center;font-size:20px}.grow{flex:1}.grow b{display:block}.grow small{color:#77798a}.amt{font-weight:900}
+.pro{background:linear-gradient(135deg,#fff,#f3f0ff);border:1px solid #ddd7ff}.pro .btn{width:100%;margin-top:12px}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:#ffffffed;backdrop-filter:blur(12px);border-top:1px solid #ddd;padding:9px max(15px,calc((100vw - 620px)/2));display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.modal{display:none;position:fixed;inset:0;background:#0008;align-items:flex-end;justify-content:center}.modal.show{display:flex}.sheet{width:min(620px,100%);background:#fff;border-radius:26px 26px 0 0;padding:20px}.sheet h2{margin:0 0 15px}label{font-size:12px;color:#77798a}input,select{width:100%;padding:13px;border:1px solid #dddde5;border-radius:14px;margin:6px 0 13px;font-size:16px;background:#fff}
+@media(min-width:700px){.bottom{position:static;background:none;border:0;backdrop-filter:none;margin-top:15px}}
+
+.smart-score{display:flex;justify-content:space-between;align-items:center;background:#171821;color:#fff;border-radius:18px;padding:15px;margin-bottom:10px}
+.smart-score small{display:block;color:#b9bbc6}.smart-score strong{font-size:30px;display:block;margin-top:2px}.smart-score span{font-weight:800;font-size:13px}
+.insight{background:#f3f1ff;border:1px solid #ded8ff;border-radius:16px;padding:12px;line-height:1.7;font-size:13px;margin-bottom:10px}
+.mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.mini-grid>div{background:#f7f7fa;border-radius:15px;padding:11px}.mini-grid small{display:block;color:#77798a;font-size:11px;margin-bottom:5px}.mini-grid b{font-size:14px}
+
+.smart-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.smart-chip{background:var(--card);border:1px solid var(--border);border-radius:17px;padding:10px;display:flex;gap:7px;align-items:center;box-shadow:0 5px 18px rgba(30,25,70,.04)}
+.smart-chip>span{font-size:20px}.smart-chip small{display:block;color:var(--muted);font-size:9px}.smart-chip b{font-size:12px}
+.score-card{background:linear-gradient(135deg,#171923,#30274b);color:#fff;border-radius:25px;padding:18px;display:flex;align-items:center;gap:16px;box-shadow:var(--shadow);overflow:hidden;position:relative}
+.score-card:after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;background:#8b5cf6;opacity:.1;left:-60px;top:-70px}
+.ring{width:92px;height:92px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#9b8cff var(--scoredeg,0deg),rgba(255,255,255,.13) 0);flex:none}
+.ring-inner{width:70px;height:70px;border-radius:50%;background:#1c1d28;display:flex;align-items:baseline;justify-content:center;gap:1px;padding-top:22px}.ring-inner strong{font-size:27px}.ring-inner small{color:#aaa;font-size:11px}
+.score-copy{position:relative;z-index:1}.score-copy b{font-size:16px}.score-copy p{font-size:12px;color:#c8c6d4;line-height:1.7;margin-top:5px}
+.insight-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.insight-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:13px;box-shadow:0 6px 20px rgba(30,25,70,.035)}.insight-card span{font-size:20px;display:block;margin-bottom:7px}.insight-card small{display:block;color:var(--muted);font-size:10px}.insight-card b{font-size:14px;display:block;margin-top:2px}
+.compare-card{padding:17px}.compare-head{display:flex;justify-content:space-between;align-items:center}.compare-head strong{font-size:18px}.compare-line{height:10px;background:#eeeef4;border-radius:99px;margin:13px 0;overflow:hidden}.compare-line div{height:100%;width:0;background:linear-gradient(90deg,var(--primary),var(--primary2));border-radius:99px;transition:.7s}.compare-card p{font-size:11px;color:var(--muted);line-height:1.7}
+.goal-actions{display:flex;gap:7px;margin:12px 0}.goal-actions input{padding:10px;flex:1}.goal-actions button{background:var(--text);color:var(--card);padding:10px 12px;border-radius:12px;font-weight:800;font-size:11px}
+body.dark .goal-actions button{background:#fff;color:#171923}
+
+.v5-welcome{display:flex;justify-content:space-between;align-items:center;margin:4px 0 14px;padding:3px 2px}.v5-welcome small{color:var(--muted);font-size:10px}.v5-welcome h1{font-size:19px;margin-top:2px;letter-spacing:-.3px}.live-dot{font-size:10px;background:var(--card);border:1px solid var(--border);padding:7px 9px;border-radius:99px;color:var(--muted);display:flex;gap:5px;align-items:center}.live-dot i{width:7px;height:7px;border-radius:50%;background:var(--green);display:block;box-shadow:0 0 0 4px rgba(25,169,116,.1)}
+.v5-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.v5-tile{text-align:right;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:15px;box-shadow:0 7px 22px rgba(30,25,70,.04);color:var(--text);transition:.18s}.v5-tile:active{transform:scale(.97)}.v5-tile span{display:block;font-size:25px;margin-bottom:9px}.v5-tile b{display:block;font-size:14px}.v5-tile small{display:block;color:var(--muted);font-size:10px;margin-top:3px}
+.v5-banner{display:flex;gap:12px;align-items:center;background:linear-gradient(135deg,#efeaff,#fff);border:1px solid #ded6ff;border-radius:21px;padding:15px}.banner-icon{width:45px;height:45px;border-radius:15px;background:#fff;display:grid;place-items:center;font-size:23px;box-shadow:0 5px 15px rgba(80,60,150,.08)}.v5-banner b{font-size:14px}.v5-banner p{font-size:11px;color:#666;line-height:1.6;margin-top:3px}
+body.dark .v5-banner{background:#211d32;border-color:#383049}
+
+.pro-hero{background:linear-gradient(135deg,#171923,#3b2c65);color:#fff;border-radius:25px;padding:21px;position:relative;overflow:hidden;box-shadow:var(--shadow)}.pro-hero:after{content:"";position:absolute;width:170px;height:170px;border-radius:50%;background:#9b8cff;opacity:.13;left:-50px;top:-70px}.pro-badge{display:inline-block;background:#fff;color:#4d3ac6;font-size:10px;font-weight:950;padding:5px 9px;border-radius:99px;margin-bottom:10px}.pro-hero h3{font-size:20px}.pro-hero p{color:#d2cede;font-size:12px;line-height:1.8;margin-top:5px;max-width:340px}
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}.plan{background:var(--card);border:1px solid var(--border);border-radius:21px;padding:15px;position:relative;overflow:hidden}.plan.featured{border:2px solid var(--primary)}.plan-top{display:flex;justify-content:space-between;align-items:center}.plan-top b{font-size:14px}.plan-top span{font-size:9px;color:var(--muted);background:#f1f0f7;padding:4px 6px;border-radius:99px}.price{font-size:27px;font-weight:950;margin:10px 0 1px}.price small{font-size:9px;color:var(--muted);font-weight:700}.annual-note{font-size:9px;color:var(--green);font-weight:800;margin-bottom:5px}.plan ul{list-style:none;margin:9px 0}.plan li{font-size:10px;color:var(--muted);padding:4px 0}.plan-btn{width:100%;padding:11px;border-radius:13px;background:var(--text);color:var(--card);font-weight:900;font-size:11px}.featured .plan-btn{background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff}.save-tag{position:absolute;top:0;left:0;background:var(--primary);color:#fff;font-size:8px;padding:5px 8px;border-radius:0 0 10px 0;font-weight:900}.payment-note{text-align:center;color:var(--muted);font-size:9px;margin-top:9px;line-height:1.6}.confirm-plan{display:flex;justify-content:space-between;align-items:center;background:#f6f5fa;border-radius:15px;padding:14px;margin-bottom:10px}.confirm-plan span{font-size:12px;color:#777}.confirm-plan b{font-size:18px}.modal .sheet{max-height:90vh}.dark .confirm-plan{background:#20212c}
+
+.account-card{display:flex;align-items:center;gap:11px;background:var(--card);border:1px solid var(--border);padding:12px;border-radius:20px;box-shadow:0 6px 20px rgba(30,25,70,.04)}.avatar-v5{width:44px;height:44px;border-radius:15px;background:linear-gradient(135deg,#eeeaff,#fff);display:grid;place-items:center;font-size:22px}.account-copy{flex:1}.account-copy small,.account-copy span{display:block;color:var(--muted);font-size:10px}.account-copy b{display:block;font-size:14px;margin:2px 0}.account-copy span{color:var(--primary);font-weight:800}.account-btn{background:#f2f1f7;border-radius:12px;padding:9px;font-size:15px}
+.pro-dashboard{background:linear-gradient(135deg,#15161f,#3a2b61);color:#fff;border-radius:25px;padding:18px;box-shadow:var(--shadow);position:relative;overflow:hidden}.pro-dashboard:after{content:"";position:absolute;width:210px;height:210px;border-radius:50%;background:#9b8cff;opacity:.09;left:-90px;top:-100px}.pro-dashboard-top{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1}.pro-dashboard-top>div{display:flex;align-items:center;gap:9px}.pro-dashboard-top small{font-size:9px;color:#bdb9cf}.pro-dashboard-top h3{font-size:16px;margin-top:2px}.crown{font-size:29px}.pro-live{font-size:9px;font-weight:950;background:#fff;color:#4e3ac8;padding:6px 8px;border-radius:99px}.feature-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0;position:relative;z-index:1}.feature-list>div{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);border-radius:15px;padding:10px;font-size:12px}.feature-list b{font-size:11px}.feature-list small{display:block;color:#c5c1d1;font-size:9px;margin-top:3px}.upgrade-main{width:100%;background:#fff;color:#4934c2;border-radius:14px;padding:12px;font-weight:950;font-size:12px;position:relative;z-index:1}
+
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#171821;color:#fff;padding:12px 20px;border-radius:99px;font-size:13px;z-index:9999;opacity:0;animation:slideIn 0.3s ease forwards}
+@keyframes slideIn{from{opacity:0;transform:translateX(-50%) translateY(20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+</style>
+</head>
+<body>
+<div class="app">
+<header><div class="logo">💸 وين راحو دراهمي؟</div><div class="muted">V5 🇩🇿</div></header>
+<div class="v5-welcome">
+  <div>
+    <small>لوحة التحكم الشخصية</small>
+    <h1>تحكم في دراهمك، قبل ما يهربو 💸</h1>
+  </div>
+  <div class="live-dot"><i></i> مباشر</div>
+</div>
+
+
+<section class="hero">
+<small>الباقي هذا الشهر</small><div class="balance" id="balance">0 دج</div>
+<div class="stats"><div class="stat"><b id="income">0 دج</b><span>💰 الدخل</span></div><div class="stat"><b id="spent">0 دج</b><span>💸 المصاريف</span></div></div>
+</section>
+
+<div class="buttons">
+<button class="btn soft" onclick="openForm('income')">💰 الدخل</button>
+<button class="btn soft" onclick="openForm('goal')">🎯 هدف الادخار</button>
+</div>
+
+<section class="card">
+<div class="row"><h3>🎯 هدفك</h3><b id="goalName">مازال ما حددتش</b></div>
+<div class="barbg"><div class="bar" id="goalBar" style="width:0%"></div></div>
+<div class="muted" id="goalInfo" style="margin-top:7px">حدد هدف باش نعاونك توصل ليه.</div>
+</section>
+
+<section class="card">
+<h3>🚨 وين راه التسريب؟</h3>
+<div class="alert" id="alert"><b>👀 نحتاج مصاريفك</b><p>زيد أول مصروف ونبدأ نفتشلك على وين تروح الدراهم.</p></div>
+</section>
+
+<section class="card">
+<h3>📊 مصاريفك</h3>
+<div id="categories"><div class="muted">مازال ماكان والو.</div></div>
+</section>
+
+<section class="card">
+<h3>🧾 آخر المصاريف</h3>
+<div id="expenses"><div class="muted">أضف مصروف من الزر اللي لتحت.</div></div>
+</section>
+
+<section class="card">
+<h3>🧠 شخصيتك المالية</h3>
+<div class="row"><div style="font-size:30px" id="avatar">😎</div><div style="flex:1"><b id="personality">مازال بكري</b><div class="muted" id="personalityText">كي تسجل شوية مصاريف نكتشفها لك.</div></div></div>
+</section>
+
+
+<section class="card" id="smartCard">
+<h3>🧠 التحليل الذكي V5</h3>
+<div class="smart-score"><div><small>الصحة المالية</small><strong id="score">--/100</strong></div><span id="scoreLabel">نحللوك كي تزيد بياناتك</span></div>
+<div class="insight" id="insight">سجّل الدخل والمصاريف ونمدّلك قراءة واضحة لميزانيتك.</div>
+<div class="mini-grid">
+<div><small>📌 أكبر فئة</small><b id="topCat">—</b></div>
+<div><small>📉 متوسط الصرف/اليوم</small><b id="avgSpend">—</b></div>
+<div><small>💡 تقدر توفر تقريباً</small><b id="savePotential">—</b></div>
+<div><small>🎯 باقي للهدف</small><b id="goalLeft">—</b></div>
+</div>
+</section>
+
+<section class="card pro">
+<div class="row"><h3>⭐ PRO</h3><span class="muted">قريباً</span></div>
+<div class="muted">تقارير متقدمة • أهداف متعددة • تحليل أعمق • تصدير PDF</div>
+<button class="btn primary" onclick="showToast('سجلنا اهتمامك بالـPRO 🔥')">✨ نحب PRO</button>
+</section>
+</div>
+
+<div class="bottom">
+<button class="btn primary" onclick="openForm('expense')">➕ زيد مصروف</button>
+<button class="btn soft" onclick="resetMonth()">♻️ شهر جديد</button>
+</div>
+
+<div class="modal" id="modal"><div class="sheet">
+<h2 id="title">➕ زيد مصروف</h2>
+<div id="fields"></div>
+<button class="btn primary" style="width:100%" onclick="saveForm()">حفظ</button>
+<button class="btn soft" style="width:100%;margin-top:8px" onclick="closeForm()">إلغاء</button>
+</div></div>
+
+<script>
+const KEY='win_raho_v5';
+let data=JSON.parse(localStorage.getItem(KEY)||localStorage.getItem('win_raho_v4')||localStorage.getItem('win_raho_v3')||'{"income":0,"goal":0,"goalName":"مازال ما حددتش","expenses":[]}');
+let mode='expense';
+
+// تحديث خريطة الأيقونات والفئات
+const categories = {
+  '🍔 أكل': '🍔',
+  '☕ قهوة': '☕',
+  '🚕 نقل': '🚕',
+  '🛍️ شراء': '🛍️',
+  '🏠 دار': '🏠',
+  '📱 هاتف/إنترنت': '📱',
+  '🎮 ترفيه': '🎮',
+  '📚 دراسة': '📚',
+  '🧾 فواتير': '🧾',
+  '➕ أخرى': '➕'
+};
+
+const cats = Object.keys(categories);
+
+function money(n){
+  return Math.round(n).toLocaleString('fr-FR')+' دج';
+}
+
+function showToast(message){
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.textContent = message;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 2500);
+}
+
+function save(){
+  localStorage.setItem(KEY, JSON.stringify(data));
+}
+
+function openForm(m){
+  mode = m;
+  modal.classList.add('show');
+  fields.innerHTML = '';
+  
+  if(m === 'expense'){
+    title.textContent = '➕ زيد مصروف';
+    fields.innerHTML = `<label>المبلغ</label><input id="amount" type="number" inputmode="numeric" placeholder="مثلاً 1500"><label>التصنيف</label><select id="cat">${cats.map(c=>`<option>${c}</option>`).join('')}</select><label>ملاحظة</label><input id="note" placeholder="مثلاً قهوة مع الصحاب">`;
+    setTimeout(() => document.getElementById('amount').focus(), 100);
+  }
+  else if(m === 'income'){
+    title.textContent = '💰 الدخل الشهري';
+    fields.innerHTML = '<label>قداش تدخل في الشهر؟</label><input id="amount" type="number" inputmode="numeric" value="'+(data.income||'')+'" placeholder="مثلاً 80000">';
+    setTimeout(() => document.getElementById('amount').focus(), 100);
+  }
+  else if(m === 'goal'){
+    title.textContent = '🎯 هدف الادخار';
+    fields.innerHTML = '<label>قداش حاب تجمع؟</label><input id="amount" type="number" inputmode="numeric" value="'+(data.goal||'')+'" placeholder="مثلاً 200000">';
+    setTimeout(() => document.getElementById('amount').focus(), 100);
+  }
+}
+
+function closeForm(){
+  modal.classList.remove('show');
+}
+
+function saveForm(){
+  let v = Number(document.getElementById('amount').value);
+  if(!v){
+    showToast('دخل مبلغ صحيح ⚠️');
+    return;
+  }
+  
+  if(mode === 'expense'){
+    const cat = document.getElementById('cat').value;
+    const note = document.getElementById('note').value.trim();
+    data.expenses.push({
+      amount: v,
+      cat: cat,
+      note: note,
+      date: new Date().toLocaleDateString('ar-DZ')
+    });
+    showToast('مصروف زاد بنجاح ✅');
+  }
+  else if(mode === 'income'){
+    data.income = v;
+    showToast('الدخل تحدّث ✅');
+  }
+  else if(mode === 'goal'){
+    data.goal = v;
+    showToast('الهدف تحدّث 🎯');
+  }
+  
+  save();
+  render();
+  closeForm();
+}
+
+function resetMonth(){
+  if(confirm('تمسح مصاريف هذا الشهر؟')){
+    data.expenses = [];
+    save();
+    render();
+    showToast('المصاريف تمسحت 🗑️');
+  }
+}
+
+function render(){
+  // حساب الإجماليات
+  const spent = data.expenses.reduce((s, e) => s + e.amount, 0);
+  const bal = data.income - spent;
+  
+  // تحديث رؤوس الأقسام
+  document.getElementById('income').textContent = money(data.income);
+  document.getElementById('spent').textContent = money(spent);
+  document.getElementById('balance').textContent = money(bal);
+  
+  // تحديث الهدف
+  document.getElementById('goalName').textContent = data.goal ? money(data.goal) : 'مازال ما حددتش';
+  const pct = data.goal ? Math.min(100, Math.round(Math.max(0, bal) / data.goal * 100)) : 0;
+  document.getElementById('goalBar').style.width = pct + '%';
+  document.getElementById('goalInfo').textContent = data.goal 
+    ? 'راك قريب ' + pct + '% من هدفك. باقي ' + money(Math.max(0, data.goal - Math.max(0, bal))) + '.'
+    : 'حدد هدف باش نعاونك توصل ليه.';
+  
+  // حساب المصاريف حسب الفئة
+  let sums = {};
+  data.expenses.forEach(e => {
+    sums[e.cat] = (sums[e.cat] || 0) + e.amount;
+  });
+  
+  let sorted = Object.entries(sums).sort((a, b) => b[1] - a[1]);
+  let total = spent;
+  
+  // تحديث الفئات
+  document.getElementById('categories').innerHTML = sorted.length
+    ? sorted.map(([c, v]) => `<div class="cat"><div class="cathead"><b>${c}</b><span>${money(v)}</span></div><div class="catbar"><i style="width:${total ? v/total*100 : 0}%"></i></div></div>`).join('')
+    : '<div class="muted">مازال ماكان والو.</div>';
+  
+  // تحديث آخر المصاريف
+  document.getElementById('expenses').innerHTML = data.expenses.length
+    ? data.expenses.slice().reverse().slice(0, 8).map(e => {
+        const iconEmoji = categories[e.cat] || '➕';
+        const catName = e.cat.replace(/^\S+\s/, '');
+        return `<div class="exp"><div class="ico">${iconEmoji}</div><div class="grow"><b>${catName}</b><small>${e.note || e.date}</small></div><div class="amt">${money(e.amount)}</div></div>`;
+      }).join('')
+    : '<div class="muted">أضف مصروف من الزر اللي لتحت.</div>';
+  
+  // تحديث التنبيه
+  if(!spent){
+    document.getElementById('alert').innerHTML = '<b>👀 نحتاج مصاريفك</b><p>زيد أول مصروف ونبدأ نفتشلك على وين تروح الدراهم.</p>';
+  }
+  else {
+    let top = sorted[0];
+    document.getElementById('alert').innerHTML = `<b>🚨 أكبر تسريب: ${top[0]}</b><p>صرفـت ${money(top[1])} هنا، يعني حوالي ${Math.round(top[1]/spent*100)}% من كامل مصاريفك.</p>`;
+  }
+  
+  // تحديث الشخصية المالية
+  let p = '😎', name = 'الصرف المتوازن', txt = 'راك ماشي مليح، استمر هكذا.';
+  if(sorted[0]){
+    let t = sorted[0][0];
+    if(t.includes('قهوة')){
+      p = '☕';
+      name = 'ملك القهوة';
+      txt = 'القهوة راهي حاكمة الميزانية 😂';
+    }
+    else if(t.includes('أكل')){
+      p = '🍔';
+      name = 'سلطان الماكلة';
+      txt = 'المعدة عندها ميزانية خاصة بيها 😂';
+    }
+    else if(t.includes('شراء')){
+      p = '🛍️';
+      name = 'صياد التخفيضات';
+      txt = 'كل مرة تقول: غير هذي ونحبس 😅';
+    }
+  }
+  document.getElementById('avatar').textContent = p;
+  document.getElementById('personality').textContent = name;
+  document.getElementById('personalityText').textContent = txt;
+  
+  // التحليل الذكي V5
+  const days = Math.max(1, new Date().getDate());
+  const avg = spent / days;
+  const top = sorted[0];
+  const topPct = spent && top ? Math.round(top[1] / spent * 100) : 0;
+  
+  let score = 70;
+  if(data.income <= 0) score = 45;
+  else {
+    const r = spent / data.income;
+    if(r > 1) score = 25;
+    else if(r > .8) score = 45;
+    else if(r > .6) score = 60;
+    else if(r <= .4) score = 90;
+  }
+  if(topPct >= 50) score -= 10;
+  else if(topPct <= 30) score += 5;
+  
+  score = Math.max(0, Math.min(100, Math.round(score)));
+  
+  document.getElementById('score').textContent = score + '/100';
+  document.getElementById('scoreLabel').textContent = 
+    score >= 80 ? '🔥 ممتاز' :
+    score >= 60 ? '👍 مليح' :
+    score >= 40 ? '⚠️ لازم تنتبه' : '🚨 لازم تحبس التسريب';
+  
+  document.getElementById('topCat').textContent = top ? top[0] : '—';
+  document.getElementById('avgSpend').textContent = spent ? money(avg) : '—';
+  
+  const potential = top ? Math.round(top[1] * 0.15) : 0;
+  document.getElementById('savePotential').textContent = potential ? money(potential) : '—';
+  document.getElementById('goalLeft').textContent = data.goal ? money(Math.max(0, data.goal - Math.max(0, bal))) : '—';
+  
+  // الرسالة الذكية
+  let msg = 'زيد الدخل والمصاريف باش نعطيك تحليل أقوى.';
+  if(data.income && spent){
+    const r = spent / data.income;
+    if(r > 1){
+      msg = '🚨 راك صرفت أكثر من دخلك. أول أولوية: حبّس المصاريف غير الضرورية وخلي هامش أمان.';
+    }
+    else if(r > .8){
+      msg = `⚠️ راك صرفت حوالي ${Math.round(r*100)}% من دخلك. حاول تخلي جزء ثابت للادخار.`;
+    }
+    else if(topPct >= 40){
+      msg = `💡 أكبر فرصة للتوفير راهي في ${top[0]}. نقص منها 15% وتقدر توفر تقريباً ${money(potential)}.`;
+    }
+    else{
+      msg = '✅ وضعيتك مليحة. حافظ على العادة وخلي الادخار أولوية قبل المصروف.';
+    }
+  }
+  document.getElementById('insight').textContent = msg;
+}
+
+// تحميل البيانات عند فتح الصفحة
+render();
+</script>
+</body>
+</html>
