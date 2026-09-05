@@ -2,51 +2,171 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#171821">
-<title>وين راحو دراهمي؟</title>
+<title>وين راحو دراهمي؟ — V4</title>
 <style>
-:root{--bg:#f5f5fa;--card:#fff;--dark:#171821;--dark2:#242631;--purple:#6c55e8;--muted:#77798a}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Arial,sans-serif;color:#171821}
-.app{max-width:620px;margin:auto;padding:18px 16px 100px}.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-.logo{font-size:22px;font-weight:900}.month{color:var(--muted);font-size:13px}
-.balance{background:var(--dark);color:#fff;border-radius:30px;padding:25px 22px;margin-bottom:16px;box-shadow:0 12px 30px #17182118}
-.balance small{color:#bfc0ca;font-size:15px}.amount{font-size:43px;font-weight:900;margin:7px 0 20px}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}.stat{background:var(--dark2);border:1px solid #343744;border-radius:22px;padding:15px}.stat b{display:block;font-size:21px}.stat span{color:#aaaebb;font-size:13px}
-.card{background:var(--card);border-radius:25px;padding:20px;margin:14px 0;box-shadow:0 5px 22px #2222}.card h2{margin:0 0 14px;font-size:20px}
-.row{display:flex;justify-content:space-between;align-items:center}.progress{height:14px;background:#ececf2;border-radius:99px;overflow:hidden}.bar{height:100%;width:72%;background:var(--purple);border-radius:99px}
-.muted{color:var(--muted);font-size:13px;margin-top:10px}.buttons{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.btn{border:0;border-radius:20px;padding:17px;font-size:16px;font-weight:800;background:#eeeef5;color:#222;cursor:pointer}.btn.primary{background:var(--purple);color:#fff}
-.alert{background:#fff1f3;border:1px solid #ffd9de;border-radius:22px;padding:17px}.alert b{font-size:17px}.alert p{margin:9px 0 0;line-height:1.7;color:#565765}
-.profile{display:flex;align-items:center;gap:14px}.avatar{width:54px;height:54px;border-radius:18px;background:#eceafa;display:grid;place-items:center;font-size:28px}
-.pro{border:2px solid #ddd7ff;background:linear-gradient(135deg,#fff,#f4f1ff)}.pro .btn{width:100%;margin-top:12px}
-.bottom{position:fixed;bottom:0;left:0;right:0;background:#ffffffee;backdrop-filter:blur(12px);border-top:1px solid #ddd;padding:10px max(16px,calc((100vw - 620px)/2));display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.modal{display:none;position:fixed;inset:0;background:#0008;align-items:end;justify-content:center}.modal.show{display:flex}.sheet{background:#fff;width:min(620px,100%);border-radius:28px 28px 0 0;padding:22px}.sheet h2{margin-top:0}
-input{width:100%;padding:15px;border:1px solid #ddd;border-radius:15px;font-size:18px;margin:7px 0 14px}
-@media(min-width:700px){.bottom{position:static;background:none;border:0;backdrop-filter:none;margin-top:15px}}
+:root{--bg:#f4f5f9;--card:#fff;--text:#171821;--muted:#747786;--line:#e7e8ee;--dark:#171821;--dark2:#252733;--p:#6c55e8;--green:#16a36a;--red:#e34d67;--orange:#ef9b38;--shadow:0 8px 28px rgba(25,25,45,.08)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Tahoma,sans-serif}
+button,input,select{font:inherit}button{cursor:pointer}.app{max-width:720px;margin:auto;padding:16px 14px 105px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:14px}.logo{font-size:21px;font-weight:900}.version{font-size:11px;color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:18px;margin:12px 0;box-shadow:var(--shadow)}
+.hero{background:var(--dark);color:#fff;border:0}.hero small{color:#c6c7d0}.amount{font-size:38px;font-weight:900;margin:8px 0 18px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{background:var(--dark2);border:1px solid #363844;border-radius:17px;padding:11px}.stat b{display:block;font-size:15px;margin-bottom:4px}.stat span{font-size:11px;color:#b9bbc6}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.section-title h2{margin:0;font-size:18px}
+.tiny{font-size:12px;color:var(--muted)}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.btn{border:0;border-radius:17px;padding:14px 11px;background:#ececf3;color:#222;font-weight:800}.btn.primary{background:var(--p);color:#fff}.btn.green{background:#e6f8f0;color:#08774b}.btn.red{background:#fff0f2;color:#b82f49}
+.progress{height:12px;background:#ececf2;border-radius:99px;overflow:hidden}.bar{height:100%;width:0;background:var(--p);transition:.3s}
+.budget-line{display:flex;justify-content:space-between;font-size:13px;margin:10px 0}.categories{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.cat{border:1px solid var(--line);background:#fff;border-radius:17px;padding:10px 4px;text-align:center}.cat .ico{font-size:23px;display:block}.cat b{font-size:11px;display:block;margin-top:4px}.cat small{font-size:9px;color:var(--muted)}.cat.active{border:2px solid var(--p);background:#f5f2ff}
+.list{display:flex;flex-direction:column;gap:8px}.item{display:flex;align-items:center;gap:10px;padding:11px;border:1px solid var(--line);border-radius:17px}.item-icon{width:43px;height:43px;border-radius:14px;background:#f0eff8;display:grid;place-items:center;font-size:21px;flex:0 0 43px}.item-main{flex:1;min-width:0}.item-main b{display:block}.item-main small{color:var(--muted);font-size:10px}.item-amount{font-weight:900;white-space:nowrap}.empty{text-align:center;color:var(--muted);padding:20px 4px}
+.alert{border-radius:18px;padding:14px;background:#fff6e9;border:1px solid #ffe1b4}.alert b{display:block;margin-bottom:5px}.alert p{margin:0;color:#666;font-size:13px;line-height:1.7}
+.personality{display:flex;align-items:center;gap:12px}.avatar{width:52px;height:52px;border-radius:17px;background:#eeeaff;display:grid;place-items:center;font-size:27px}
+.search{width:100%;border:1px solid var(--line);background:#fff;border-radius:16px;padding:13px;outline:0}.filters{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:9px 0}
+select,.field input{width:100%;border:1px solid var(--line);background:#fff;border-radius:14px;padding:12px;outline:0}.bottom{position:fixed;z-index:20;bottom:0;left:0;right:0;background:rgba(255,255,255,.94);backdrop-filter:blur(15px);border-top:1px solid var(--line);padding:9px max(12px,calc((100vw - 720px)/2));display:grid;grid-template-columns:1fr 1.4fr;gap:8px}
+.modal{display:none;position:fixed;z-index:50;inset:0;background:rgba(0,0,0,.55);align-items:flex-end;justify-content:center}.modal.show{display:flex}.sheet{width:min(720px,100%);background:#fff;border-radius:27px 27px 0 0;padding:20px 16px 25px;max-height:92vh;overflow:auto}.sheet h2{margin:0 0 14px}
+.field{margin:10px 0}.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}.field input{padding:14px}.cat-picker{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.cat-pick{border:1px solid var(--line);background:#fff;border-radius:14px;padding:8px 3px;text-align:center}.cat-pick.selected{border:2px solid var(--p);background:#f5f2ff}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.pro{background:linear-gradient(135deg,#fff,#f4f1ff);border-color:#ddd7ff}.toast{position:fixed;z-index:100;top:16px;left:50%;transform:translateX(-50%) translateY(-20px);opacity:0;background:#171821;color:#fff;border-radius:15px;padding:11px 15px;font-size:13px;transition:.25s;pointer-events:none}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+footer{text-align:center;color:var(--muted);font-size:11px;margin:18px 0}@media(max-width:430px){.amount{font-size:33px}.stat{padding:9px}.stat b{font-size:13px}}
 </style>
 </head>
 <body>
+<div class="toast" id="toast"></div>
 <div class="app">
-<div class="top"><div class="logo">💸 وين راحو دراهمي؟</div><div class="month">سبتمبر 2026 • V3</div></div>
-<section class="balance"><small>الباقي هذا الشهر</small><div class="amount" id="balance">95 000 دج</div>
-<div class="stats"><div class="stat"><b id="income">100 000 دج</b><span>💰 الدخل</span></div><div class="stat"><b id="spent">5 000 دج</b><span>🛒 المصاريف</span></div></div></section>
-<section class="card"><div class="row"><h2>🎯 هدفي</h2><b>20 000 دج</b></div><div class="progress"><div class="bar" id="progress"></div></div><div class="muted" id="goalText">جمعت تقريباً 5 000 دج من الهدف.</div></section>
-<div class="buttons"><button class="btn" onclick="openModal('goal')">🎯 حدد الهدف</button><button class="btn" onclick="openModal('income')">💰 حدد الدخل</button></div>
-<section class="card"><h2>🚨 التقرير</h2><div class="alert"><b>🚨 لقينا التسريب!</b><p>أكثر تصنيف صرفت عليه هو 🍔 الأكل. نقص شوية من هنا وتلقى الفرق آخر الشهر 😉</p></div></section>
-<section class="card"><h2>🧠 شخصيتك المالية</h2><div class="profile"><div class="avatar">🍔</div><div><b style="font-size:21px">سلطان الماكلة</b><div class="muted">تحب تعيشها مليح… بصح المحفظة راهي تحس 😂</div></div></div></section>
-<section class="card pro"><div class="row"><h2>⭐ وين راحو دراهمي PRO</h2><b>قريباً</b></div><div class="muted">تقارير متقدمة • أهداف متعددة • تحليل ذكي • تصدير PDF</div><button class="btn primary" onclick="alert('نسخة PRO قادمة 🔥')">✨ خليني في القائمة</button></section>
+<div class="top"><div class="logo">💸 وين راحو دراهمي؟</div><div class="version">V4 • مصروفك بذكاء 🇩🇿</div></div>
+
+<section class="card hero">
+<small>الباقي هذا الشهر</small><div class="amount" id="balance">0 دج</div>
+<div class="stats"><div class="stat"><b id="income">0</b><span>💰 الدخل</span></div><div class="stat"><b id="spent">0</b><span>🛒 المصاريف</span></div><div class="stat"><b id="count">0</b><span>🧾 العمليات</span></div></div>
+</section>
+
+<section class="card">
+<div class="section-title"><h2>🎯 ميزانية الشهر</h2><button class="btn" style="padding:8px 11px;font-size:11px" onclick="openSettings()">⚙️ الإعدادات</button></div>
+<div class="budget-line"><span>الميزانية</span><b id="budgetText">0 دج</b></div>
+<div class="progress"><div class="bar" id="budgetBar"></div></div>
+<div class="tiny" id="budgetHint"></div>
+</section>
+
+<div class="grid2"><button class="btn primary" onclick="openExpense()">➕ زيد مصروف</button><button class="btn green" onclick="openIncome()">💰 زيد دخل</button></div>
+
+<section class="card"><div class="section-title"><h2>📂 وين راحو؟</h2><span class="tiny">التصنيفات</span></div><div class="categories" id="categories"></div></section>
+
+<section class="card"><div class="section-title"><h2>📊 التحليل السريع</h2></div><div class="alert" id="analysis"></div></section>
+
+<section class="card"><div class="section-title"><h2>🧾 آخر العمليات</h2><button class="btn" style="padding:8px 11px;font-size:11px" onclick="openHistory()">عرض الكل</button></div><div id="recent" class="list"></div></section>
+
+<section class="card"><div class="section-title"><h2>🧠 شخصيتك المالية</h2></div><div class="personality"><div class="avatar" id="personalityIcon">💰</div><div><b id="personalityName">بداية جديدة</b><div class="tiny" id="personalityText">سجّل مصاريفك باش نكتشف نمط صرفك.</div></div></div></section>
+
+<section class="card pro">
+<div class="section-title"><h2>⭐ أدوات V4</h2><span class="tiny">مجانية</span></div>
+<div class="grid2"><button class="btn" onclick="exportCSV()">📥 تصدير CSV</button><button class="btn" onclick="backupJSON()">💾 نسخة احتياطية</button><button class="btn" onclick="document.getElementById('restoreFile').click()">♻️ استرجاع</button><button class="btn red" onclick="resetAll()">🗑️ مسح البيانات</button></div>
+<input id="restoreFile" type="file" accept=".json" hidden onchange="restoreJSON(event)">
+</section>
+<footer>وين راحو دراهمي؟ — V4 • بياناتك محفوظة على جهازك</footer>
 </div>
-<div class="bottom"><button class="btn" onclick="newStart()">♻️ بداية جديدة</button><button class="btn primary" onclick="openModal('expense')">➕ زيد مصروف</button></div>
-<div class="modal" id="modal"><div class="sheet"><h2 id="modalTitle">إضافة مصروف</h2><label>المبلغ بالدينار</label><input id="value" type="number" inputmode="numeric" placeholder="مثلاً 1500"><button class="btn primary" style="width:100%" onclick="saveValue()">حفظ</button><button class="btn" style="width:100%;margin-top:8px" onclick="closeModal()">إلغاء</button></div></div>
+
+<div class="bottom"><button class="btn" onclick="newMonth()">🔄 شهر جديد</button><button class="btn primary" onclick="openExpense()">➕ سجّل مصروف</button></div>
+
+<div class="modal" id="entryModal"><div class="sheet">
+<h2 id="entryTitle">➕ زيد مصروف</h2>
+<div class="field"><label>المبلغ بالدينار</label><input id="entryAmount" type="number" min="1" inputmode="numeric" placeholder="مثلاً 1500"></div>
+<div class="field"><label>التصنيف</label><div class="cat-picker" id="catPicker"></div></div>
+<div class="field"><label>ملاحظة (اختياري)</label><input id="entryNote" maxlength="80" placeholder="مثلاً خبز وحليب"></div>
+<div class="field"><label>التاريخ</label><input id="entryDate" type="date"></div>
+<div class="actions"><button class="btn primary" onclick="saveEntry()">حفظ العملية</button><button class="btn" onclick="closeModal('entryModal')">إلغاء</button></div>
+</div></div>
+
+<div class="modal" id="settingsModal"><div class="sheet">
+<h2>⚙️ إعدادات الشهر</h2>
+<div class="field"><label>الدخل الشهري</label><input id="setIncome" type="number" min="0" inputmode="numeric"></div>
+<div class="field"><label>ميزانية المصاريف</label><input id="setBudget" type="number" min="0" inputmode="numeric"></div>
+<div class="field"><label>هدف الادخار</label><input id="setGoal" type="number" min="0" inputmode="numeric"></div>
+<div class="actions"><button class="btn primary" onclick="saveSettings()">حفظ</button><button class="btn" onclick="closeModal('settingsModal')">إلغاء</button></div>
+</div></div>
+
+<div class="modal" id="historyModal"><div class="sheet">
+<div class="section-title"><h2>📚 سجل العمليات</h2><button class="btn" style="padding:8px 11px" onclick="closeModal('historyModal')">✕</button></div>
+<input class="search" id="search" placeholder="🔎 قلب على مصروف..." oninput="renderHistory()">
+<div class="filters"><select id="filterCat" onchange="renderHistory()"><option value="">كل التصنيفات</option></select><select id="filterType" onchange="renderHistory()"><option value="">كل العمليات</option><option value="expense">مصاريف</option><option value="income">مداخيل</option></select></div>
+<div id="historyList" class="list"></div>
+</div></div>
+
 <script>
-let data={income:100000,spent:5000,goal:20000};let mode='expense';
-function fmt(n){return Math.max(0,n).toLocaleString('fr-FR')+' دج'}
-function render(){document.getElementById('balance').textContent=fmt(data.income-data.spent);document.getElementById('income').textContent=fmt(data.income);document.getElementById('spent').textContent=fmt(data.spent);let p=Math.min(100,Math.round(data.spent/data.goal*100));document.getElementById('progress').style.width=p+'%';document.getElementById('goalText').textContent='جمعت تقريباً '+fmt(data.spent)+' من الهدف ('+p+'%).'}
-function openModal(m){mode=m;document.getElementById('modal').classList.add('show');document.getElementById('value').value='';document.getElementById('modalTitle').textContent=m==='expense'?'➕ زيد مصروف':m==='income'?'💰 حدد الدخل':'🎯 حدد هدفك'}
-function closeModal(){document.getElementById('modal').classList.remove('show')}
-function saveValue(){let v=Number(document.getElementById('value').value);if(!v)return;if(mode==='expense')data.spent+=v;if(mode==='income')data.income=v;if(mode==='goal')data.goal=v;localStorage.setItem('moneyData',JSON.stringify(data));render();closeModal()}
-function newStart(){if(confirm('نبدأو شهر جديد ونرجعو المصاريف للصفر؟')){data.spent=0;localStorage.setItem('moneyData',JSON.stringify(data));render()}}
-try{let x=JSON.parse(localStorage.getItem('moneyData'));if(x)data=x}catch(e){} render();
+const CATS=[
+['food','الأكل','🍔'],['home','الدار','🏠'],['bills','فواتير','🧾'],['transport','النقل','🚕'],
+['health','الصحة','💊'],['clothes','ملابس','👕'],['education','قراية','📚'],['family','العائلة','👨‍👩‍👧'],
+['phone','هاتف/نت','📱'],['shopping','مشتريات','🛒'],['rent','كراء','🔑'],['leisure','خرجات','🎮'],
+['wedding','أعراس/مناسبات','💍'],['ramadan','رمضان/عيد','🌙'],['car','السيارة','🚗'],['work','الخدمة','💼'],['other','أخرى','📦']
+].map(x=>({id:x[0],name:x[1],icon:x[2]}));
+
+let state={month:new Date().toISOString().slice(0,7),income:100000,budget:80000,goal:20000,entries:[]};
+let mode='expense',selectedCat='food';
+
+function load(){try{let x=JSON.parse(localStorage.getItem('winRahoV4'));if(x)state={...state,...x}}catch(e){}render()}
+function save(){localStorage.setItem('winRahoV4',JSON.stringify(state))}
+function fmt(n){return Math.round(Number(n)||0).toLocaleString('fr-FR')+' دج'}
+function cat(id){return CATS.find(c=>c.id===id)||CATS[CATS.length-1]}
+function expenses(){return state.entries.filter(x=>x.type==='expense')}
+function incomes(){return state.entries.filter(x=>x.type==='income')}
+function spent(){return expenses().reduce((s,x)=>s+x.amount,0)}
+function totalIncome(){return state.income+incomes().reduce((s,x)=>s+x.amount,0)}
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+
+function render(){
+ let inc=totalIncome(),sp=spent(),bal=inc-sp,budget=Number(state.budget)||inc,pct=budget?Math.min(100,Math.round(sp/budget*100)):0;
+ balance.textContent=fmt(bal);income.textContent=fmt(inc);spentEl().textContent=fmt(sp);count.textContent=state.entries.length;
+ budgetText.textContent=fmt(budget);budgetBar.style.width=pct+'%';
+ budgetHint.textContent=sp>budget?'🚨 راك تعدّيت الميزانية بـ '+fmt(sp-budget)+'.':'باقيلك '+fmt(budget-sp)+' من الميزانية ('+pct+'%).';
+ renderCategories();renderRecent();renderAnalysis();renderPersonality();
+}
+function spentEl(){return document.getElementById('spent')}
+function renderCategories(){categories.innerHTML=CATS.map(c=>{let n=expenses().filter(x=>x.cat===c.id).reduce((s,x)=>s+x.amount,0);return `<button class="cat ${n?'active':''}" onclick="selectedCat='${c.id}';openExpense()"><span class="ico">${c.icon}</span><b>${c.name}</b><small>${n?fmt(n).replace(' دج',''):'0'} دج</small></button>`}).join('')}
+function itemHTML(x){let c=cat(x.cat),inc=x.type==='income';return `<div class="item"><div class="item-icon">${c.icon}</div><div class="item-main"><b>${esc(x.note||c.name)}</b><small>${c.name} • ${x.date}</small></div><div class="item-amount" style="color:${inc?'var(--green)':'var(--red)'}">${inc?'+':'-'}${fmt(x.amount)}</div></div>`}
+function renderRecent(){let a=[...state.entries].sort((x,y)=>y.id-x.id).slice(0,6);recent.innerHTML=a.length?a.map(itemHTML).join(''):'<div class="empty">مازال ما سجلت حتى عملية 👌<br>ابدأ بأول مصروف.</div>'}
+function renderAnalysis(){
+ let ex=expenses();if(!ex.length){analysis.innerHTML='<b>💡 نصيحة</b><p>سجّل مصاريفك باش نعطيوك تحليل حقيقي. راقب خصوصاً الأكل، النقل والفواتير.</p>';return}
+ let totals=CATS.map(c=>({c,n:ex.filter(x=>x.cat===c.id).reduce((s,x)=>s+x.amount,0)})).filter(x=>x.n).sort((a,b)=>b.n-a.n),t=totals[0],p=spent()?Math.round(t.n/spent()*100):0;
+ analysis.innerHTML=`<b>🔎 أكبر تسريب: ${t.c.icon} ${t.c.name}</b><p>صرفـت ${fmt(t.n)} فيها، حوالي ${p}% من مصاريفك. نقص منها شوية وتلقى الفرق آخر الشهر 😉</p>`
+}
+function renderPersonality(){
+ let ex=expenses(),s=spent(),inc=totalIncome(),icon='💰',name='بداية جديدة',text='سجّل مصاريفك باش نكتشف نمط صرفك.';
+ if(s>0){let t=CATS.map(c=>({c,n:ex.filter(x=>x.cat===c.id).reduce((a,x)=>a+x.amount,0)})).sort((a,b)=>b.n-a.n)[0].c;
+ if(inc&&s/inc<.35){icon='🧠';name='اقتصادي واعي';text='راك متحكم مليح في مصروفك.'}
+ else if(inc&&s/inc<.7){icon=t.icon;name='سلطان '+t.name;text='أغلب مصاريفك رايحة لـ '+t.name+'. تقدر توازنها أكثر.'}
+ else{icon='🔥';name='المحفظة سخنت';text='المصاريف طالعة. جرّب سقف أسبوعي.'}
+ if(s>Number(state.budget)){icon='🚨';name='تجاوزت الميزانية';text='فاتت المصاريف الميزانية. هذا الشهر لازم شوية فرامل 😅'}}
+ personalityIcon.textContent=icon;personalityName.textContent=name;personalityText.textContent=text;
+}
+
+function openExpense(){mode='expense';openEntry()}
+function openIncome(){mode='income';selectedCat='other';openEntry()}
+function openEntry(){
+ entryTitle.textContent=mode==='expense'?'➕ زيد مصروف':'💰 زيد دخل';entryAmount.value='';entryNote.value='';entryDate.value=new Date().toISOString().slice(0,10);renderCatPicker();entryModal.classList.add('show');setTimeout(()=>entryAmount.focus(),100)
+}
+function renderCatPicker(){catPicker.innerHTML=CATS.map(c=>`<button type="button" class="cat-pick ${selectedCat===c.id?'selected':''}" onclick="selectedCat='${c.id}';renderCatPicker()">${c.icon}<br><small>${c.name}</small></button>`).join('')}
+function saveEntry(){
+ let amount=Number(entryAmount.value);if(!amount||amount<=0){toast('دخل مبلغ صحيح ✋');return}
+ state.entries.push({id:Date.now(),type:mode,amount,cat:selectedCat||'other',note:entryNote.value.trim(),date:entryDate.value||new Date().toISOString().slice(0,10)});
+ save();closeModal('entryModal');render();toast(mode==='expense'?'تم تسجيل المصروف ✅':'تم تسجيل الدخل ✅')
+}
+function openSettings(){setIncome.value=state.income;setBudget.value=state.budget;setGoal.value=state.goal;settingsModal.classList.add('show')}
+function saveSettings(){state.income=Math.max(0,Number(setIncome.value)||0);state.budget=Math.max(0,Number(setBudget.value)||0);state.goal=Math.max(0,Number(setGoal.value)||0);save();closeModal('settingsModal');render();toast('تحدّثت الميزانية ⚙️')}
+function openHistory(){filterCat.innerHTML='<option value="">كل التصنيفات</option>'+CATS.map(c=>`<option value="${c.id}">${c.icon} ${c.name}</option>`).join('');search.value='';filterType.value='';renderHistory();historyModal.classList.add('show')}
+function renderHistory(){
+ let q=(search.value||'').toLowerCase(),fc=filterCat.value,ft=filterType.value;
+ let a=[...state.entries].reverse().filter(x=>(!q||((x.note||'')+' '+cat(x.cat).name).toLowerCase().includes(q))&&(!fc||x.cat===fc)&&(!ft||x.type===ft));
+ historyList.innerHTML=a.length?a.map(x=>itemHTML(x)+`<button class="btn red" style="margin-top:-3px;padding:7px" onclick="deleteEntry(${x.id})">حذف العملية</button>`).join(''):'<div class="empty">ما لقيتش عمليات بهذا البحث.</div>'
+}
+function deleteEntry(id){if(confirm('تحب تحذف هذي العملية؟')){state.entries=state.entries.filter(x=>x.id!==id);save();render();renderHistory();toast('تم الحذف 🗑️')}}
+function newMonth(){if(confirm('نبدأو شهر جديد؟ العمليات الحالية راح تتحذف من شاشة الشهر.')){state.entries=[];state.month=new Date().toISOString().slice(0,7);save();render();toast('شهر جديد 🚀')}}
+function resetAll(){if(confirm('راح تمسح كل البيانات من هذا الجهاز. متأكد؟')){localStorage.removeItem('winRahoV4');location.reload()}}
+function downloadBlob(content,type,name){let b=new Blob([content],{type}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
+function exportCSV(){let csv='\uFEFFالنوع,المبلغ,التصنيف,الملاحظة,التاريخ\n';state.entries.forEach(x=>csv+=`"${x.type==='expense'?'مصروف':'دخل'}",${x.amount},"${cat(x.cat).name}","${String(x.note||'').replace(/"/g,'""')}",${x.date}\n`);downloadBlob(csv,'text/csv;charset=utf-8','win-raho-drahmi-V4.csv');toast('تم التصدير 📥')}
+function backupJSON(){downloadBlob(JSON.stringify(state,null,2),'application/json','win-raho-drahmi-V4-backup.json');toast('تم إنشاء النسخة 💾')}
+function restoreJSON(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!Array.isArray(x.entries))throw Error();state={...state,...x};save();render();toast('رجعت البيانات ♻️')}catch(z){toast('النسخة غير صالحة ❌')}};r.readAsText(f);e.target.value=''}
+function closeModal(id){document.getElementById(id).classList.remove('show')}
+function toast(m){let t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(window.__t);window.__t=setTimeout(()=>t.classList.remove('show'),2200)}
+document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('show')}));load();
 </script>
-</body></html>
+</body>
+  </html>
