@@ -274,6 +274,7 @@ body.dark .plan.selected{background:#211c36}
 <p class="sub" style="margin:6px 0 10px">حوّل المبلغ للخطة اللي اخترتها، ومن بعد علّم العملية كمكتملة.</p>
 <div class="field"><label>CCP</label><div style="display:flex;gap:6px"><input id="payCcp" value="XXXXXXX clé XX" readonly><button class="btn ghost" onclick="copyPay('payCcp')">📋 نسخ</button></div></div>
 <div class="field"><label>RIP</label><div style="display:flex;gap:6px"><input id="payRip" value="XXXXXXXXXXXXXXXXXXXXXXXX" readonly><button class="btn ghost" onclick="copyPay('payRip')">📋 نسخ</button></div></div>
+<div class="field"><label>📸 وصل الدفع</label><input id="payReceipt" type="file" accept="image/*,.pdf"></div>
 <small style="color:var(--muted);line-height:1.7">⚠️ بدّل أرقام CCP وRIP لاحقاً من الكود إذا حبيت. ما نحطّوش معلومات بنكية حقيقية داخل الكود إذا راح يكون المستودع Public.</small>
 </div>
 <div class="actions"><button class="btn ghost" onclick="closeModal('paymentModal')">رجوع</button><button class="btn primary" onclick="paymentDone()">✅ أكملت التحويل</button></div>
@@ -435,10 +436,42 @@ async function copyPay(id){
  try{await navigator.clipboard.writeText(el.value);toast('✅ تنسخت المعلومات')}
  catch(e){el.select();document.execCommand('copy');toast('✅ تنسخت المعلومات')}
 }
-function paymentDone(){
- localStorage.setItem('premiumPaymentPending',JSON.stringify({plan:selectedPlan,amount:selectedPlan==='yearly'?2700:700,at:new Date().toISOString()}));
+async function paymentDone(){
+ if(!currentUser){toast('⚠️ لازم تكون داخل حسابك أولاً');return}
+
+ const receipt=$('payReceipt').files[0];
+ if(!receipt){toast('⚠️ صوّر/اختار وصل الدفع أولاً');return}
+ if(receipt.size>5*1024*1024){toast('⚠️ الوصل لازم يكون أقل من 5MB');return}
+
+ const amount=selectedPlan==='yearly'?2700:700;
+ const plan=selectedPlan;
+ const paymentId=(crypto.randomUUID?crypto.randomUUID():String(Date.now()));
+ const ext=(receipt.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
+ const path=currentUser.id+'/'+paymentId+'.'+ext;
+
+ toast('⏳ نرفع الوصل ونسجل الطلب...');
+
+ const {error:uploadError}=await sb.storage.from('payment-receipts').upload(path,receipt,{upsert:false,contentType:receipt.type||'application/octet-stream'});
+ if(uploadError){console.error(uploadError);toast('❌ ما قدرناش نرفع الوصل. تأكد من Storage');return}
+
+ const {error}=await sb.from('subscriptions').insert({
+  user_id:currentUser.id,
+  status:'pending',
+  payment_id:paymentId,
+  payment_method:'BaridiMob',
+  receipt_url:path
+ });
+
+ if(error){
+  console.error(error);
+  await sb.storage.from('payment-receipts').remove([path]);
+  toast('❌ ما تسجلش طلب الدفع. راجع صلاحيات subscriptions');
+  return;
+ }
+
  closeModal('paymentModal');
- toast('✅ تسجل طلب الدفع. التفعيل يتم بعد تأكيد التحويل');
+ $('payReceipt').value='';
+ toast('✅ وصل الدفع تبعث. طلبك راه في انتظار المراجعة');
 }
 function expenses(){return S.entries.filter(x=>x.type==='expense')}
 function incomes(){return S.entries.filter(x=>x.type==='income')}
