@@ -306,8 +306,8 @@ let S={income:0,budget:0,entries:[],goals:[],bills:[],shop:[],challengeSeed:0};
 let mode='expense',selectedCat='food';
 
 // --- Supabase ---
-const SUPABASE_URL='https://huhxesieurfbxvnpvbxe.supabase.co';
-const SUPABASE_ANON_KEY='sb_publishable_NmXaXDTz3B6pTWfHTiGkYw_rcB7pM-8';
+const SUPABASE_URL='https://nlezbzhyowkzunkceiaj.supabase.co';
+const SUPABASE_ANON_KEY='sb_publishable_9KK9I6CLy1IZW-HB6KnGwQ_3zTO5c8L';
 const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 let currentUser=null,isPremium=false,premiumUntil=null,authMode='login',selectedPlan='monthly',saveTimer=null;
 const PREMIUM_SECTIONS=['chartSection','challengesSection','adviceSection','goalsSection','billsSection','shopSection','scoreSection','dataSection'];
@@ -379,17 +379,11 @@ async function onAuthed(user){
   data=inserted;
  }
  S={income:Number(data.income)||0,budget:Number(data.budget)||0,entries:data.entries||[],goals:data.goals||[],bills:data.bills||[],shop:data.shop||[],challengeSeed:data.challenge_seed||0};
- // الاشتراك يقرأ من جدول subscriptions فقط. التطبيق لا يستطيع تفعيل Premium بنفسه.
- const subRes=await sb.from('subscriptions').select('status,expires_at,started_at').eq('user_id',user.id).maybeSingle();
- if(subRes.error){console.error(subRes.error);premiumUntil=null;isPremium=false;}
- else{
-  const sub=subRes.data;
-  premiumUntil=sub?.expires_at?new Date(sub.expires_at):null;
-  isPremium=!!sub && sub.status==='active' && !!premiumUntil && premiumUntil>new Date();
- }
+ premiumUntil=data.premium_until?new Date(data.premium_until):null;
+ isPremium=!!data.is_premium&&(!premiumUntil||premiumUntil>new Date());
  const meta=user.user_metadata||{};
  const displayName=(meta.full_name||[meta.first_name,meta.last_name].filter(Boolean).join(' ')).trim();
- $('settingsEmail').textContent=(displayName?'👤 '+displayName+'\n':'')+'📧 '+user.email;
+ $('settingsEmail').textContent=(displayName?'👤 '+displayName+' • ':'')+'📧 '+user.email;
  document.body.classList.add('app-ready');
  applyTheme();render();
 }
