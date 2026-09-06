@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#6d4df2">
+<title>وين راحو دراهمي؟ — V5.5.1</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+:root{--bg:#f4f5fa;--card:#fff;--text:#171822;--muted:#777b8c;--line:#e5e6ed;--primary:#6d4df2;--primary2:#8b6fff;--green:#17a56d;--red:#e04f68;--orange:#ef9b3d;--blue:#3985e8;--shadow:0 10px 30px rgba(30,25,70,.08)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Tahoma,sans-serif;transition:.2s}button,input,select{font:inherit}button{cursor:pointer;border:0}.app{width:min(760px,100%);margin:auto;padding:14px 14px 105px}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.brand{font-size:20px;font-weight:900}.brand small{display:block;font-size:9px;color:var(--muted);font-weight:600;margin-top:3px}.top-actions{display:flex;gap:6px}.iconbtn{width:40px;height:40px;border-radius:14px;background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);font-size:18px}
+.hero{position:relative;overflow:hidden;border-radius:28px;padding:22px;background:linear-gradient(135deg,#171822,#30265e);color:#fff;box-shadow:0 18px 40px rgba(67,45,150,.25);margin-bottom:11px}.hero:after{content:"";position:absolute;width:170px;height:170px;border-radius:50%;background:#8b6fff22;left:-55px;top:-65px}.hero small{color:#c9c7d7;font-size:11px}.balance{font-size:38px;font-weight:900;margin:7px 0 17px;letter-spacing:-1px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.stat{background:#ffffff12;border:1px solid #ffffff18;border-radius:16px;padding:10px}.stat b{display:block;font-size:12px}.stat span{font-size:9px;color:#c5c3cf}.section{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:15px;margin:10px 0;box-shadow:var(--shadow)}.section-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:11px}.section-head h2{font-size:16px;margin:0}.sub{font-size:9px;color:var(--muted)}
+.btn{padding:11px 13px;border-radius:14px;background:#eeedf4;color:var(--text);font-weight:800}.primary{background:var(--primary);color:#fff}.green{background:#e5f8f0;color:#08794d}.red{background:#fff0f3;color:#b72f49}.blue{background:#eaf2ff;color:#226bc4}.ghost{background:transparent;border:1px solid var(--line)}
+.quick{display:grid;grid-template-columns:1fr 1fr;gap:8px}.quick .btn{padding:14px}.budgetline{display:flex;justify-content:space-between;font-size:11px;margin-bottom:7px}.progress{height:10px;background:#ececf2;border-radius:99px;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,var(--primary),var(--primary2));border-radius:99px;transition:.35s}
+.cats{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.cat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:9px 3px;text-align:center;min-height:83px}.cat:hover{border-color:var(--primary)}.cat .emoji{font-size:23px;display:block}.cat b{display:block;font-size:10px;margin-top:3px}.cat small{font-size:8px;color:var(--muted)}
+.challenge{padding:12px;border:1px solid var(--line);border-radius:16px;margin:7px 0;background:linear-gradient(180deg,var(--card),#faf9ff)}.challenge .ctop{display:flex;justify-content:space-between;align-items:center;gap:8px}.challenge b{font-size:12px}.challenge p{font-size:10px;color:var(--muted);line-height:1.7;margin:6px 0 0}.tag{font-size:8px;padding:5px 7px;border-radius:9px;background:#eeeafa;color:#5a42ce}.tag.done{background:#e5f8f0;color:#08794d}
+.listitem{display:flex;align-items:center;gap:9px;padding:10px 2px;border-bottom:1px solid var(--line)}.listitem:last-child{border-bottom:0}.emojiBox{width:40px;height:40px;border-radius:13px;background:#f0eff6;display:grid;place-items:center;font-size:19px;flex:0 0 auto}.li-main{flex:1;min-width:0}.li-main b{display:block;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.li-main small{font-size:9px;color:var(--muted)}.li-amount{font-size:11px;font-weight:900;white-space:nowrap}.income{color:var(--green)}.expense{color:var(--red)}
+.goal{border:1px solid var(--line);border-radius:16px;padding:11px;margin:7px 0}.goaltop{display:flex;justify-content:space-between;font-size:11px}.goalmeta{font-size:9px;color:var(--muted);margin:6px 0}.goal-actions{display:flex;gap:5px;margin-top:7px}.goal-actions button{padding:7px 9px;border-radius:10px;font-size:9px;background:#eeeef3}.goal-actions .add{background:#e9e5ff;color:#553bd0}
+.bill{display:flex;align-items:center;gap:8px;padding:10px 2px;border-bottom:1px solid var(--line)}.bill:last-child{border-bottom:0}.bill .li-main{flex:1}.status{font-size:8px;padding:5px 7px;border-radius:8px}.paid{background:#e5f8f0;color:#08794d}.unpaid{background:#fff0f3;color:#b72f49}
+.shoprow{display:flex;align-items:center;gap:7px;padding:8px 0;border-bottom:1px solid var(--line)}.shoprow:last-child{border-bottom:0}.shoprow input{width:18px}.shopname{flex:1;font-size:11px}.shopdone{text-decoration:line-through;color:var(--muted)}.shopprice{font-weight:800;font-size:10px}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.field{margin:8px 0}.field label{display:block;font-size:9px;color:var(--muted);margin-bottom:4px}.field input,.field select,input.search{width:100%;padding:11px;border:1px solid var(--line);border-radius:13px;background:var(--card);color:var(--text);outline:0}.catpick{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.catpick button{padding:8px 2px;border:1px solid var(--line);background:var(--card);border-radius:12px;font-size:9px}.catpick button.selected{border:2px solid var(--primary);background:#f1eeff}
+.chart{height:190px;width:100%;display:block}.advice{background:#f7f4ff;border:1px solid #e6dfff;border-radius:15px;padding:12px;font-size:11px;line-height:1.8}.score{display:flex;align-items:center;gap:12px}.scorecircle{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;background:#eeeaff;color:var(--primary);font-size:22px;font-weight:900;flex:0 0 auto}
+.bottom{position:fixed;z-index:50;bottom:0;left:0;right:0;background:#ffffffee;backdrop-filter:blur(15px);border-top:1px solid var(--line);padding:8px max(10px,calc((100vw - 760px)/2));display:grid;grid-template-columns:repeat(4,1fr);gap:5px}.navbtn{background:transparent;border-radius:14px;padding:7px 2px;color:var(--muted);font-size:9px}.navbtn b{display:block;font-size:17px}.navbtn.active{background:#eeeaff;color:var(--primary)}
+.modal{display:none;position:fixed;z-index:80;inset:0;background:#0009;align-items:flex-end}.modal.show{display:flex}.sheet{width:min(760px,100%);max-height:92vh;overflow:auto;background:var(--card);border-radius:25px 25px 0 0;padding:18px 15px 28px;color:var(--text)}.sheethead{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.sheethead h3{margin:0;font-size:18px}.close{width:35px;height:35px;border-radius:12px;background:#eeeef3}.actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:12px}
+.toast{position:fixed;z-index:120;top:15px;left:50%;transform:translateX(-50%) translateY(-15px);opacity:0;background:#171822;color:#fff;padding:10px 14px;border-radius:13px;font-size:10px;transition:.25s;pointer-events:none}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.empty{text-align:center;padding:15px;color:var(--muted);font-size:10px}.hidden{display:none!important}
+body.dark{--bg:#0d0f15;--card:#171a23;--text:#f4f5fa;--muted:#a3a8b9;--line:#2a2e3a;--shadow:0 12px 35px #0005}
+body.dark .btn{background:#252936;color:#f4f5fa}body.dark .green{background:#123d2e;color:#7be4b4}body.dark .red{background:#411d28;color:#ff9cac}body.dark .blue{background:#172f52;color:#8fbaff}body.dark .catpick button,body.dark .cat{background:#171a23}body.dark .catpick button.selected{background:#29234a}body.dark .advice{background:#211c36;border-color:#3b315e}body.dark .challenge{background:#171a23}body.dark .bottom{background:#11141cf2}body.dark .challenge-click{background:var(--card);border-color:var(--line)}body.dark .close{background:#292d38}
+
+.daily-card{margin-top:9px;padding:12px 13px;border-radius:17px;background:#f5f2ff;border:1px solid #e5defc;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.daily-card b{font-size:13px}.daily-card small{display:block;color:var(--muted);font-size:9px;margin-top:3px}.daily-amount{font-size:18px;font-weight:900;color:var(--primary);white-space:nowrap}
+body.dark .daily-card{background:#211c36;border-color:#3b315e}
+@media(max-width:430px){.shoprow{display:grid;grid-template-columns:20px 1fr auto;gap:7px;align-items:center}.shoprow .shopname{min-width:0}.shoprow .shopprice{grid-column:2}.shoprow .btn{grid-column:3;grid-row:1 / span 2}.daily-card{padding:11px}.daily-amount{font-size:16px}}
+
+@media(max-width:430px){.app{padding-left:10px;padding-right:10px}.balance{font-size:34px}.cats{grid-template-columns:repeat(3,1fr);gap:6px}.cat{min-height:76px}.section{padding:12px;border-radius:20px}.stats{gap:5px}.stat{padding:8px 6px}.formgrid{grid-template-columns:1fr}.field input,.field select,input.search{font-size:16px;min-width:0}.catpick{grid-template-columns:repeat(3,1fr)}.quick{grid-template-columns:1fr 1fr}.listitem{gap:6px}.li-main{min-width:0}.mini-action{width:32px;height:32px}.sheet{padding:16px 12px 28px}.bottom{padding-left:6px;padding-right:6px}.navbtn{font-size:8px}}
+
+.challenge-click{width:100%;text-align:right;cursor:pointer;display:block;border:1px solid #eee;background:linear-gradient(180deg,#fff,#fbf9ff);font:inherit;color:inherit;padding:14px;border-radius:18px;margin:8px 0;transition:transform .15s,box-shadow .15s}
+.challenge-click:active{transform:scale(.985)}
+.challenge-click:hover{box-shadow:0 7px 22px rgba(90,70,180,.10)}
+.challenge-click small{display:block;margin-top:9px;color:#7b6bb0;font-weight:700}
+.mini-action{width:30px;height:30px;border-radius:10px;background:#eeeef3;font-size:12px;flex:0 0 auto}.mini-action.del{background:#fff0f3}.mini-action.edit{background:#eeeaff}
+
+body:not(.app-ready) .app,body:not(.app-ready) .bottom{display:none!important}
+#authGate{position:fixed;inset:0;z-index:200;background:linear-gradient(160deg,#171822,#30265e);display:flex;align-items:center;justify-content:center;padding:18px}
+body.app-ready #authGate{display:none}
+.authbox{width:min(380px,100%);background:var(--card);border-radius:24px;padding:22px 18px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.authbox h1{font-size:19px;margin:0 0 4px;text-align:center}
+.authbox p.sub{text-align:center;margin:0 0 16px}
+.authtabs{display:flex;background:#eeedf4;border-radius:14px;padding:4px;margin-bottom:14px}
+.authtabs button{flex:1;padding:9px;border-radius:11px;background:transparent;font-size:12px;font-weight:800;color:var(--muted)}
+.authtabs button.active{background:var(--primary);color:#fff}
+body.dark .authtabs{background:#252936}
+#authErrorBox{display:none;background:#fff0f3;color:#b72f49;border-radius:12px;padding:9px 11px;font-size:10px;margin-bottom:10px}
+body.dark #authErrorBox{background:#411d28;color:#ff9cac}
+#authHintBox{display:none;background:#e5f8f0;color:#08794d;border-radius:12px;padding:9px 11px;font-size:10px;margin-bottom:10px}
+body.dark #authHintBox{background:#123d2e;color:#7be4b4}
+
+.premiumbadge{font-size:9px;font-weight:800;background:linear-gradient(90deg,#f0b429,#f2994a);color:#3a2400;padding:6px 9px;border-radius:11px;display:inline-flex;align-items:center;gap:3px}
+.section.locked{position:relative;min-height:118px}
+.section.locked .locked-body{display:none}
+.lockedbox{text-align:center;padding:14px 8px}
+.lockedbox b{display:block;font-size:12px;margin-bottom:5px}
+.lockedbox button{margin-top:9px}
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:12px 0}
+.plan{border:2px solid var(--line);border-radius:16px;padding:13px 10px;text-align:center;cursor:pointer}
+.plan.selected{border-color:var(--primary);background:#f1eeff}
+body.dark .plan.selected{background:#211c36}
+.plan b{display:block;font-size:16px}
+.plan span{font-size:9px;color:var(--muted);display:block;margin-top:3px}
+.plan .save{color:var(--green);font-weight:800}
+.cat-locked{opacity:.5;position:relative}
+.catpick button.cat-locked{opacity:.45}
+</style>
+</head>
+<body>
+<div id="toast" class="toast"></div>
+
+<div id="authGate">
+<div class="authbox">
+<h1>💸 وين راحو دراهمي؟</h1>
+<p class="sub">خلي كل دينار عندو بلاصتو 🇩🇿</p>
+<div class="authtabs">
+<button class="active" id="tabLogin" onclick="switchAuthTab('login')">دخول</button>
+<button id="tabSignup" onclick="switchAuthTab('signup')">حساب جديد</button>
+</div>
+<div id="authErrorBox"></div>
+<div id="authHintBox"></div>
+<div class="field"><label>البريد الإلكتروني</label><input id="authEmail" type="email" placeholder="example@email.com" autocomplete="email"></div>
+<div class="field"><label>كلمة السر</label><input id="authPassword" type="password" placeholder="6 أحرف على الأقل" autocomplete="current-password"></div>
+<button class="btn primary" id="authSubmitBtn" style="width:100%;margin-top:6px" onclick="submitAuth()">دخول</button>
+</div>
+</div>
+
+<div class="app">
+<header class="top">
+<div class="brand">💸 وين راحو دراهمي؟<small>خلي كل دينار عندو بلاصتو 🇩🇿 • V5.5</small></div>
+<div class="top-actions">
+<span class="premiumbadge" id="premiumBadge" style="display:none">⭐ Premium</span>
+<button class="btn primary" id="upgradeBtn" style="display:none;padding:9px 12px;font-size:10px" onclick="openSubscribe()">⭐ ترقية</button>
+<button class="iconbtn" id="themeBtn" onclick="toggleTheme()">🌙</button><button class="iconbtn" onclick="openSettings()">⚙️</button>
+</div>
+</header>
+
+<section class="hero">
+<small>الرصيد المتاح دُرك</small>
+<div class="balance" id="balance">0 دج</div>
+<div class="stats">
+<div class="stat"><b id="incomeTotal">0 دج</b><span>💰 الدخل</span></div>
+<div class="stat"><b id="expenseTotal">0 دج</b><span>🛒 المصاريف</span></div>
+<div class="stat"><b id="leftTotal">0 دج</b><span>💎 الباقي</span></div>
+</div>
+</section>
+
+<div class="quick">
+<button class="btn primary" onclick="openEntry('expense')">➕ زيد مصروف</button>
+<button class="btn green" onclick="openEntry('income')">💰 سجّل دخل</button>
+</div>
+
+<section class="section" id="homeSection">
+<div class="section-head"><h2>🎯 ميزانية الشهر</h2><span class="sub" id="budgetHint">حدد الميزانية من ⚙️</span></div>
+<div class="budgetline"><span>المصاريف</span><b id="budgetText">0 / 0 دج</b></div>
+<div class="progress"><div class="bar" id="budgetBar"></div></div>
+<div class="daily-card" id="dailyCard"><div><b>💡 الصرف المسموح دُرك</b><small>نحسبوه حسب الميزانية والباقي من الأيام.</small></div><div class="daily-amount" id="dailyAmount">—</div></div>
+</section>
+
+<section class="section">
+<div class="section-head"><h2>📂 التصنيفات الجزائرية</h2><span class="sub">اضغط على الصنف باش تسجّل مباشرة</span></div>
+<div class="cats" id="categories"></div>
+</section>
+
+<section class="section" id="chartSection">
+<div class="locked-body">
+<div class="section-head"><h2>📊 مصاريفك</h2><span class="sub">الشهر الحالي</span></div>
+<canvas id="chart" class="chart" width="700" height="190"></canvas>
+</div>
+<div class="lockedbox" style="display:none"><b>📊 مصاريفك</b><span class="sub">الرسم البياني ميزة مميزة ⭐</span><button class="btn primary" onclick="openSubscribe()">فعّل Premium</button></div>
+</section>
+
+<section class="section" id="challengesSection">
+<div class="locked-body">
+<div class="section-head"><h2>🏆 تحدياتك</h2><button class="btn" style="padding:7px 9px;font-size:9px" onclick="refreshChallenge()">🔄 تحدي جديد</button></div>
+<div id="challenges"></div>
+</div>
+<div class="lockedbox" style="display:none"><b>🏆 تحدياتك</b><span class="sub">التحديات ميزة مميزة ⭐</span><button class="btn primary" onclick="openSubscribe()">فعّل Premium</button></div>
+</section>
+
+<section class="section" id="adviceSection">
+<div class="locked-body">
+<div class="section-head"><h2>🧠 واش راه صاري في صرفك؟</h2></div>
+<div id="advice" class="advice">سجّل أول مصروف ونحللوهالك بطريقة بسيطة.</div>
+</div>
+<div class="lockedbox" style="display:none"><b>🧠 واش راه صاري في صرفك؟</b><span class="sub">التحليل الذكي ميزة مميزة ⭐</span><button class="btn primary" onclick="openSubscribe()">فعّل Premium</button></div>
+</section>
+
+<section class="section" id="goalsSection">
+<div class="locked-body">
+<div class="section-head"><h2>🎯 أهداف الادخار</h2><button class="btn" style="padding:7px 9px;font-size:9px" onclick="openGoal()">➕ هدف</button></div>
+<div id="goals"></div>
+</div>
+<div class="lockedbox" style="display:none"><b>🎯 أهداف الادخار</b><span class="sub">أهداف الادخار ميزة مميزة ⭐</span><button class="btn primary" onclick="openSubscribe()">فعّل Premium</button></div>
+</section>
+
+<section class="section" id="billsSection">
+<div class="locked-body">
+<div class="section-head"><h2>🧾 الفواتير</h2><button class="btn" style="padding:7px 9px;font-size:9px" onclick="openBill()">➕ فاتورة</button></div>
+<div id="bills"></div>
+</div>
+<div class="lockedbox" style="display:none"><b>🧾 الفواتير</b><span class="sub">متابعة الفواتير ميزة مميزة ⭐</span><button class="btn primary" onclick="openSubscribe()">فعّل Premium</button></div>
+</section>
+
+<section class="section" id="shopSection">
+<div class="locked-body">
+<div class="section-head"><h2>🛒 قائمة السوق</h2><b id="shopTotal" class="sub">0 دج</b></div>
+<div class="formgrid"><input id="shopName" placeholder="مثلاً: حليب، خبز، دجاج"><input id="shopPrice" type="number" inputmode="numeric" placeholder="السعر بالدج"></div>
+<button class="btn primary" style="width:100%;margin-top:7px" onclick="addShopping()">➕ زيد للقائمة</button>
+<div id="shopping"></div>
+</div>
+<div class="lockedbox" style="display:none"><b>🛒 قائمة السوق</b><span class="sub">قائمة السوق ميزة مميزة ⭐</span><button class="btn primary" onclick="openSubscribe()">فعّل Premium</button></div>
+</section>
+
+<section class="section" id="scoreSection">
+<div class="locked-body">
+<div class="section-head"><h2>❤️ الصحة المالية</h2></div>
+<div class="score"><div class="scorecircle" id="score">0</div><div><b id="scoreTitle">نحسبوهالك</b><div class="sub" id="scoreText">كل ما تسجّل أكثر، التقييم يولي أدق.</div></div></div>
+</div>
+<div class="lockedbox" style="display:none"><b>❤️ الصحة المالية</b><span class="sub">تقييم الصحة المالية ميزة مميزة ⭐</span><button class="btn primary" onclick="openSubscribe()">فعّل Premium</button></div>
+</section>
+
+<section class="section">
+<div class="section-head"><h2>🧾 آخر العمليات</h2><button class="btn" style="padding:7px 9px;font-size:9px" onclick="openHistory()">عرض الكل</button></div>
+<div id="recent"></div>
+</section>
+
+<section class="section" id="dataSection">
+<div class="locked-body">
+<div class="section-head"><h2>💾 بياناتك</h2></div>
+<div class="formgrid"><button class="btn" onclick="backup()">💾 نسخة احتياطية</button><label class="btn" style="text-align:center">♻️ استرجاع <input type="file" accept=".json" hidden onchange="restore(event)"></label></div>
+<button class="btn blue" style="width:100%;margin-top:7px" onclick="exportCSV()">📥 تصدير المصاريف CSV</button>
+</div>
+<div class="lockedbox" style="display:none"><b>💾 بياناتك</b><span class="sub">النسخ الاحتياطي والتصدير ميزة مميزة ⭐</span><button class="btn primary" onclick="openSubscribe()">فعّل Premium</button></div>
+</section>
+</div>
+
+<nav class="bottom">
+<button class="navbtn active" onclick="goHome()"><b>🏠</b>الرئيسية</button>
+<button class="navbtn" onclick="openEntry('expense')"><b>➕</b>مصروف</button>
+<button class="navbtn" onclick="openGoal()"><b>🎯</b>ادخار</button>
+<button class="navbtn" onclick="openSettings()"><b>⚙️</b>إعدادات</button>
+</nav>
+
+<!-- Challenge modal -->
+<div class="modal" id="challengeModal"><div class="sheet">
+<div class="sheethead"><h3 id="challengeTitle">🏆 التحدي</h3><button class="close" onclick="closeModal('challengeModal')">✕</button></div>
+<div class="challenge-detail">
+ <div class="challenge-big">🏆</div>
+ <h3>راك داخل التحدي 💪</h3>
+ <p id="challengeDesc">اختار الخطوة اللي حاب تديرها باش نبدأو.</p>
+</div>
+<div class="actions"><button class="btn ghost" onclick="closeModal('challengeModal')">رجوع</button><button class="btn primary" id="challengeAction">ابدأ</button></div>
+</div></div>
+
+<!-- Entry modal -->
+<div class="modal" id="entryModal"><div class="sheet">
+<div class="sheethead"><h3 id="entryTitle">➕ زيد مصروف</h3><button class="close" onclick="closeModal('entryModal')">✕</button></div>
+<div class="field"><label id="entryAmountLabel">شحال صرفت؟ *</label><input id="entryAmount" type="number" inputmode="numeric" min="1" placeholder="مثلاً 1500"></div>
+<div class="field"><label id="entryNoteLabel">على واش صرفت؟</label><input id="entryNote" placeholder="مثلاً: قهوة، ماكلة، نقل..."></div>
+<div class="field"><label>التاريخ</label><input id="entryDate" type="date"></div>
+<div class="field"><label id="entryCatLabel">اختار الصنف</label><div id="catPick" class="catpick"></div></div>
+<div class="actions"><button class="btn ghost" onclick="closeModal('entryModal')">رجوع</button><button class="btn primary" id="entrySaveBtn" onclick="saveEntry()">✅ سجّلها دُرك</button></div>
+</div></div>
+
+<!-- Goal -->
+<div class="modal" id="goalModal"><div class="sheet">
+<div class="sheethead"><h3>🎯 هدف ادخار جديد</h3><button class="close" onclick="closeModal('goalModal')">✕</button></div>
+<div class="field"><label>اسم الهدف</label><input id="goalName" placeholder="مثلاً: هاتف، سفر، طوموبيل"></div>
+<div class="formgrid"><div class="field"><label>المبلغ المطلوب</label><input id="goalTarget" type="number" inputmode="numeric" placeholder="100000"></div><div class="field"><label>عندي منه دُرك</label><input id="goalSaved" type="number" inputmode="numeric" placeholder="0"></div></div>
+<div class="actions"><button class="btn ghost" onclick="closeModal('goalModal')">رجوع</button><button class="btn primary" onclick="saveGoal()">🎯 أنشئ الهدف</button></div>
+</div></div>
+
+<!-- Bill -->
+<div class="modal" id="billModal"><div class="sheet">
+<div class="sheethead"><h3>🧾 فاتورة جديدة</h3><button class="close" onclick="closeModal('billModal')">✕</button></div>
+<div class="field"><label>اسم الفاتورة</label><input id="billName" placeholder="كهرباء، ماء، إنترنت، هاتف..."></div>
+<div class="formgrid"><div class="field"><label>المبلغ</label><input id="billAmount" type="number" inputmode="numeric" placeholder="3000"></div><div class="field"><label>تاريخ الاستحقاق</label><input id="billDue" type="date"></div></div>
+<div class="actions"><button class="btn ghost" onclick="closeModal('billModal')">رجوع</button><button class="btn primary" onclick="saveBill()">🧾 زيد الفاتورة</button></div>
+</div></div>
+
+<!-- Subscribe -->
+<div class="modal" id="subscribeModal"><div class="sheet">
+<div class="sheethead"><h3>⭐ ترقية لـ Premium</h3><button class="close" onclick="closeModal('subscribeModal')">✕</button></div>
+<p class="sub">فتح كل تصنيفات المصاريف (غير الماكلة والنقل)، أهداف الادخار، الفواتير، قائمة السوق، التحديات، التحليل الذكي، الصحة المالية، الرسم البياني، والنسخ الاحتياطي.</p>
+<div class="plans">
+<div class="plan selected" id="planMonthly" onclick="selectPlan('monthly')">
+<b>700 دج</b><span>شهريا</span>
+</div>
+<div class="plan" id="planYearly" onclick="selectPlan('yearly')">
+<b>2700 دج</b><span>سنويا</span><span class="save">توفير ~900 دج</span>
+</div>
+</div>
+<div class="actions"><button class="btn ghost" onclick="closeModal('subscribeModal')">لا حاليا</button><button class="btn primary" onclick="startPayment()">💳 ادفع الآن</button></div>
+</div></div>
+
+<!-- History -->
+<div class="modal" id="historyModal"><div class="sheet">
+<div class="sheethead"><h3>🧾 سجل العمليات</h3><button class="close" onclick="closeModal('historyModal')">✕</button></div>
+<input id="historySearch" class="search" placeholder="🔎 قلب على عملية..." oninput="renderHistory()">
+<div class="formgrid"><select id="historyType" onchange="renderHistory()"><option value="">الكل</option><option value="expense">مصاريف</option><option value="income">مداخيل</option></select><select id="historyCat" onchange="renderHistory()"><option value="">كل التصنيفات</option></select></div>
+<div id="historyList"></div>
+</div></div>
+
+<!-- Settings -->
+<div class="modal" id="settingsModal"><div class="sheet">
+<div class="sheethead"><h3>⚙️ الإعدادات</h3><button class="close" onclick="closeModal('settingsModal')">✕</button></div>
+<div class="section" style="margin:0 0 12px;padding:12px">
+<b style="font-size:11px">👤 حسابك</b>
+<p class="sub" id="settingsEmail">—</p>
+<p class="sub" id="settingsPremiumStatus">⚪ حساب مجاني</p>
+<div class="actions">
+<button class="btn primary" id="settingsUpgradeBtn" onclick="closeModal('settingsModal');openSubscribe()">⭐ ترقية لـ Premium</button>
+<button class="btn ghost" onclick="logout()">🚪 تسجيل خروج</button>
+</div>
+</div>
+<div class="formgrid"><div class="field"><label>دخل ثابت/إضافي للشهر</label><input id="setIncome" type="number" inputmode="numeric"></div><div class="field"><label>ميزانية المصاريف</label><input id="setBudget" type="number" inputmode="numeric"></div></div>
+<div class="actions"><button class="btn primary" onclick="saveSettings()">💾 حفظ</button><button class="btn red" onclick="resetAll()">🗑️ مسح البيانات</button></div>
+<div class="section" style="margin-top:12px;padding:12px"><b style="font-size:11px">🌙 المظهر</b><p class="sub">الوضع الليلي محفوظ وحدو وما يضيعش كي تغلق الموقع.</p><button class="btn" onclick="toggleTheme()">تبديل الوضع 🌙/☀️</button></div>
+</div></div>
+
+<script>
+const C=[
+{id:'food',icon:'🍲',name:'الماكلة'},{id:'health',icon:'💊',name:'الصحة'},{id:'clothes',icon:'👕',name:'الملابس'},{id:'bills',icon:'🧾',name:'الفواتير'},
+{id:'transport',icon:'🚗',name:'النقل'},{id:'home',icon:'🏠',name:'الدار'},{id:'shopping',icon:'🛒',name:'السوق'},{id:'education',icon:'📚',name:'القراية'},
+{id:'family',icon:'👨‍👩‍👧',name:'العائلة'},{id:'fun',icon:'🎮',name:'الترفيه'},{id:'phone',icon:'📱',name:'الهاتف'},{id:'other',icon:'📦',name:'أخرى'}
+];
+const I=[
+{id:'salary',icon:'💼',name:'راتب'},{id:'business',icon:'🏪',name:'تجارة'},{id:'freelance',icon:'💻',name:'خدمة/فريلانس'},{id:'bonus',icon:'🎁',name:'منحة/هدية'},
+{id:'support',icon:'🤝',name:'مساعدة'},{id:'other_income',icon:'💰',name:'دخل آخر'}
+];
+const KEY='winRahoV54Real';
+let editingId=null;
+let S={income:0,budget:0,entries:[],goals:[],bills:[],shop:[],challengeSeed:0};
+let mode='expense',selectedCat='food';
+
+// --- Supabase ---
+const SUPABASE_URL='https://nlezbzhyowkzunkceiaj.supabase.co';
+const SUPABASE_ANON_KEY='sb_publishable_9KK9I6CLy1IZW-HB6KnGwQ_3zTO5c8L';
+const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+let currentUser=null,isPremium=false,premiumUntil=null,authMode='login',selectedPlan='monthly',saveTimer=null;
+const PREMIUM_SECTIONS=['chartSection','challengesSection','adviceSection','goalsSection','billsSection','shopSection','scoreSection','dataSection'];
+const FREE_CATS=['food','transport'];
+function isCatFree(id){return FREE_CATS.includes(id)}
+
+const $=id=>document.getElementById(id);
+function money(n){return Math.round(Number(n)||0).toLocaleString('fr-FR')+' دج'}
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function save(){
+ localStorage.setItem(KEY,JSON.stringify(S));
+ clearTimeout(saveTimer);
+ saveTimer=setTimeout(syncToCloud,600);
+}
+async function syncToCloud(){
+ if(!currentUser)return;
+ const payload={income:S.income,budget:S.budget,entries:S.entries,goals:S.goals,bills:S.bills,shop:S.shop,challenge_seed:S.challengeSeed,updated_at:new Date().toISOString()};
+ const {error}=await sb.from('user_data').update(payload).eq('user_id',currentUser.id);
+ if(error){console.error(error);toast('⚠️ ما تسجلاتش آخر تعديلاتك، تأكد من الإنترنت')}
+}
+
+// --- Auth ---
+function switchAuthTab(m){
+ authMode=m;
+ $('tabLogin').classList.toggle('active',m==='login');
+ $('tabSignup').classList.toggle('active',m==='signup');
+ $('authSubmitBtn').textContent=m==='login'?'دخول':'إنشاء حساب';
+ $('authErrorBox').style.display='none';$('authHintBox').style.display='none';
+}
+function authErr(m){const e=$('authErrorBox');e.textContent='⚠️ '+m;e.style.display='block';$('authHintBox').style.display='none'}
+function authHint(m){const e=$('authHintBox');e.textContent=m;e.style.display='block';$('authErrorBox').style.display='none'}
+async function submitAuth(){
+ const email=$('authEmail').value.trim(),pass=$('authPassword').value;
+ if(!email||pass.length<6){authErr('دخل بريد صحيح وكلمة سر 6 أحرف على الأقل');return}
+ $('authSubmitBtn').disabled=true;$('authSubmitBtn').textContent='...شوية صبر';
+ if(authMode==='signup'){
+  const {data,error}=await sb.auth.signUp({email,password:pass});
+  $('authSubmitBtn').disabled=false;$('authSubmitBtn').textContent='إنشاء حساب';
+  if(error){authErr(error.message==='User already registered'?'هذا البريد عندو حساب من قبل، جرب دخول':error.message);return}
+  if(data.session){await onAuthed(data.session.user)}
+  else{authHint('✅ تسجّل الحساب! شوف بريدك باش تأكدو، من بعد دخل من هنا.');switchAuthTab('login')}
+ }else{
+  const {data,error}=await sb.auth.signInWithPassword({email,password:pass});
+  $('authSubmitBtn').disabled=false;$('authSubmitBtn').textContent='دخول';
+  if(error){authErr(error.message==='Invalid login credentials'?'البريد أو كلمة السر غالطة':error.message);return}
+  await onAuthed(data.user);
+ }
+}
+async function logout(){document.body.classList.remove('app-ready');await sb.auth.signOut();location.reload()}
+async function onAuthed(user){
+ currentUser=user;
+ let {data,error}=await sb.from('user_data').select('*').eq('user_id',user.id).maybeSingle();
+ if(error){toast('❌ خطأ في تحميل البيانات');console.error(error);return}
+ if(!data){
+  const def={user_id:user.id,income:0,budget:0,entries:[],goals:[],bills:[],shop:[],challenge_seed:0,is_premium:false};
+  const {data:inserted,error:insErr}=await sb.from('user_data').insert(def).select().single();
+  if(insErr){toast('❌ ما قدرتش نجم نعمل حساب البيانات');console.error(insErr);return}
+  data=inserted;
+ }
+ S={income:Number(data.income)||0,budget:Number(data.budget)||0,entries:data.entries||[],goals:data.goals||[],bills:data.bills||[],shop:data.shop||[],challengeSeed:data.challenge_seed||0};
+ premiumUntil=data.premium_until?new Date(data.premium_until):null;
+ isPremium=!!data.is_premium&&(!premiumUntil||premiumUntil>new Date());
+ $('settingsEmail').textContent='📧 '+user.email;
+ document.body.classList.add('app-ready');
+ applyTheme();render();
+}
+async function initAuth(){
+ const {data:{session}}=await sb.auth.getSession();
+ if(session){await onAuthed(session.user)}
+}
+function load(){try{const x=JSON.parse(localStorage.getItem(KEY));if(x)S={...S,...x}}catch(e){}}
+
+// --- Premium gating ---
+function updatePremiumUI(){
+ $('premiumBadge').style.display=isPremium?'inline-flex':'none';
+ $('upgradeBtn').style.display=isPremium?'none':'inline-flex';
+ $('settingsUpgradeBtn').style.display=isPremium?'none':'inline-flex';
+ $('settingsPremiumStatus').textContent=isPremium?('⭐ حساب Premium مفعّل'+(premiumUntil?(' حتى '+premiumUntil.toLocaleDateString('fr-FR')):'')):'⚪ حساب مجاني — الميزات المتقدمة مقفولة';
+ PREMIUM_SECTIONS.forEach(id=>{
+  const sec=$(id);if(!sec)return;
+  sec.classList.toggle('locked',!isPremium);
+  const lb=sec.querySelector('.lockedbox');if(lb)lb.style.display=isPremium?'none':'block';
+ });
+}
+function openSubscribe(){selectPlan(selectedPlan);openModal('subscribeModal')}
+function selectPlan(p){selectedPlan=p;$('planMonthly').classList.toggle('selected',p==='monthly');$('planYearly').classList.toggle('selected',p==='yearly')}
+function startPayment(){
+ toast('🚧 الدفع الإلكتروني جاي في الخطوة الجاية (Chargily)');
+}
+function expenses(){return S.entries.filter(x=>x.type==='expense')}
+function incomes(){return S.entries.filter(x=>x.type==='income')}
+function spent(){return expenses().reduce((a,x)=>a+Number(x.amount),0)}
+function totalIncome(){return Number(S.income||0)+incomes().reduce((a,x)=>a+Number(x.amount),0)}
+function balance(){return totalIncome()-spent()}
+function cat(id){return C.find(c=>c.id===id)||I.find(c=>c.id===id)||C[C.length-1]}
+
+function render(){
+ const inc=totalIncome(),sp=spent(),bal=balance(),budget=Number(S.budget||0);
+ $('balance').textContent=money(bal);$('incomeTotal').textContent=money(inc);$('expenseTotal').textContent=money(sp);$('leftTotal').textContent=money(Math.max(0,bal));
+ $('budgetText').textContent=money(sp)+' / '+money(budget);
+ const pct=budget?Math.min(100,Math.round(sp/budget*100)):0;$('budgetBar').style.width=pct+'%';
+ $('budgetHint').textContent=budget?(sp>budget?'🚨 فاتت الميزانية بـ '+money(sp-budget):'باقيلك '+money(budget-sp)+' • '+pct+'% مستعمل'):'حدد الميزانية من الإعدادات ⚙️';
+ const now=new Date(), daysLeft=Math.max(1,new Date(now.getFullYear(),now.getMonth()+1,0).getDate()-now.getDate()+1);
+ const daily=budget?Math.max(0,Math.round((budget-sp)/daysLeft)):0;
+ $('dailyAmount').textContent=budget?money(daily)+'/نهار':'حدد الميزانية';
+ updatePremiumUI();
+ renderCats();renderRecent();
+ if(isPremium){renderChallenges();renderAdvice();renderGoals();renderBills();renderShop();renderScore();drawChart();}
+}
+function renderCats(){
+ $('categories').innerHTML=C.map(c=>{
+  const n=expenses().filter(x=>x.cat===c.id).reduce((a,x)=>a+Number(x.amount),0);
+  const free=isPremium||isCatFree(c.id);
+  return free
+   ?`<button class="cat" onclick="openEntry('expense','${c.id}')"><span class="emoji">${c.icon}</span><b>${c.name}</b><small>${money(n)}</small></button>`
+   :`<button class="cat cat-locked" onclick="openSubscribe()"><span class="emoji">${c.icon}</span><b>${c.name}</b><small>🔒 Premium</small></button>`;
+ }).join('');
+}
+function renderPick(){
+ const list=mode==='income'?I:C;
+ $('catPick').innerHTML=list.map(c=>{
+  const free=mode==='income'||isPremium||isCatFree(c.id);
+  return free
+   ?`<button class="${selectedCat===c.id?'selected':''}" onclick="selectedCat='${c.id}';renderPick()">${c.icon}<br>${c.name}</button>`
+   :`<button class="cat-locked" onclick="openSubscribe()">${c.icon}<br>${c.name} 🔒</button>`;
+ }).join('');
+}
+function openEntry(m,catId){
+ editingId=null; mode=m; selectedCat=catId||(m==='income'?'salary':'food');
+ const isIncome=m==='income';
+ $('entryTitle').textContent=isIncome?'💰 سجّل دخل':'➕ زيد مصروف';
+ $('entryAmountLabel').textContent=isIncome?'شحال دخل لك؟ *':'شحال صرفت؟ *';
+ $('entryNoteLabel').textContent=isIncome?'منين جاك الدخل؟':'على واش صرفت؟';
+ $('entryNote').placeholder=isIncome?'مثلاً: راتب سبتمبر، خدمة، بيع...':'مثلاً: قهوة، ماكلة، نقل...';
+ $('entryCatLabel').textContent=isIncome?'نوع الدخل':'اختار الصنف';
+ $('entrySaveBtn').textContent=isIncome?'✅ سجّل الدخل':'✅ سجّل المصروف';
+ $('entryAmount').value='';$('entryNote').value='';$('entryDate').value=new Date().toISOString().slice(0,10);
+ renderPick();openModal('entryModal');setTimeout(()=>$('entryAmount').focus(),150);
+}
+function editEntry(id){
+ const x=S.entries.find(e=>e.id===id); if(!x)return;
+ editingId=id; mode=x.type; selectedCat=x.cat||(mode==='income'?'salary':'food');
+ const isIncome=mode==='income';
+ $('entryTitle').textContent=isIncome?'✏️ عدّل الدخل':'✏️ عدّل المصروف';
+ $('entryAmountLabel').textContent=isIncome?'شحال دخل لك؟ *':'شحال صرفت؟ *';
+ $('entryNoteLabel').textContent=isIncome?'منين جاك الدخل؟':'على واش صرفت؟';
+ $('entryNote').placeholder=isIncome?'مثلاً: راتب سبتمبر، خدمة، بيع...':'مثلاً: قهوة، ماكلة، نقل...';
+ $('entryCatLabel').textContent=isIncome?'نوع الدخل':'اختار الصنف';
+ $('entrySaveBtn').textContent='💾 حفظ التعديل';
+ $('entryAmount').value=x.amount; $('entryNote').value=x.note||''; $('entryDate').value=x.date||new Date().toISOString().slice(0,10);
+ renderPick(); openModal('entryModal'); setTimeout(()=>$('entryAmount').focus(),150);
+}
+function saveEntry(){
+ const a=Number($('entryAmount').value);
+ if(!(a>0)){toast('⚠️ دخل المبلغ باش نسجلوه');return}
+ if(!selectedCat){toast(mode==='income'?'اختار نوع الدخل أولاً':'اختار الصنف أولاً');return}
+ if(mode==='expense'&&!isPremium&&!isCatFree(selectedCat)){closeModal('entryModal');openSubscribe();return}
+ const data={type:mode,amount:a,cat:selectedCat,note:$('entryNote').value.trim(),date:$('entryDate').value};
+ if(editingId){ const x=S.entries.find(e=>e.id===editingId); if(x)Object.assign(x,data); toast('✅ تبدلـت العملية بنجاح'); }
+ else { S.entries.push({id:Date.now(),...data}); toast(mode==='expense'?'✅ تسجّل المصروف':'✅ تسجّل الدخل'); }
+ save();closeModal('entryModal');editingId=null;render();
+}
+function renderChallenges(){
+ const sp=spent(),budget=Number(S.budget||0),food=expenses().filter(x=>x.cat==='food').reduce((a,x)=>a+Number(x.amount),0);
+ const income=totalIncome(), saved=Math.max(0,balance());
+ const list=[
+  {id:'budget',icon:'🎯',title:'تحدي الميزانية',done:budget>0&&sp<=budget,
+   text:budget?(sp<=budget?'راك داخل الميزانية! حاول تكمل هكذا.':'فاتت الميزانية، الهدف ترجع تحت السقف.'):'حدد ميزانية باش يبدأ التحدي.',
+   detail:budget?`المصاريف دُرك: ${money(sp)} من ${money(budget)}. ${sp<=budget?'باقيلك '+money(budget-sp)+' قبل ما توصل للسقف.':'لازم تنقص المصاريف أو ترفع الميزانية.'}`:'مازال ما حددتش ميزانية الشهر. دير سقف واضح باش نقدروا نقيسوا التقدم.',
+   action:'budget'},
+  {id:'food',icon:'🍲',title:'تحدي الماكلة',done:food>0&&food<=5000,
+   text:food?`مصاريف الماكلة: ${money(food)}. ${food<=5000?'ممتاز، راقبها هكذا.':'جرب تنقص شوية من الطلبات الجاهزة.'}`:'مازال ما سجلتش مصاريف الماكلة.',
+   detail:food?`راك صرفت ${money(food)} على الماكلة. الهدف التجريبي لهذا التحدي هو تبقى تحت 5000 دج.`:'سجّل أول مصروف في تصنيف الماكلة باش يبدأ التحدي ويحسبلك التقدم.',
+   action:'food'},
+  {id:'saving',icon:'💎',title:'تحدي الادخار',done:income>0&&saved>=income*.2,
+   text:income?`حاول تخلي 20% من دخلك. دُرك عندك ${money(saved)} متبقية.`:'سجّل دخلك باش نحسبولك هدف الادخار.',
+   detail:income?`الهدف: تخلي 20% من الدخل كادخار. دُرك الرصيد المحسوب هو ${money(saved)}.`:'لازم تسجّل دخل أولاً، ومن بعد نقدروا نحسبوا هدف 20%.',
+   action:'saving'},
+  {id:'bills',icon:'🧾',title:'تحدي الفواتير',done:S.bills.length>0&&S.bills.every(b=>b.paid),
+   text:S.bills.length?(S.bills.every(b=>b.paid)?'كل الفواتير مدفوعة 👌':'عندك فاتورة مازالت ما تخلصتش.'):'زيد فواتيرك باش ما تنساهاش.',
+   detail:S.bills.length?`عندك ${S.bills.length} فاتورة مسجلة. ${S.bills.filter(b=>!b.paid).length?'كاين فواتير لازم تراجعهم.':'كامل مخلّصين، برافو!'}`:'زيد الفواتير الشهرية (كهرباء، ماء، إنترنت...) باش نعاونك تتابعهم.',
+   action:'bills'}
+ ];
+ $('challenges').innerHTML=list.map(x=>`
+ <button class="challenge challenge-click" onclick="openChallenge('${x.id}')">
+  <div class="ctop"><b>${x.icon} ${x.title}</b><span class="tag ${x.done?'done':''}">${x.done?'مكتمل ✓':'نخدمو عليه'}</span></div>
+  <p>${x.text}</p>
+  <small>اضغط هنا باش تدخل للتحدي ←</small>
+ </button>`).join('');
+}
+function openChallenge(id){
+ const data={
+  budget:{icon:'🎯',title:'تحدي الميزانية',desc:'حط سقف لمصاريف الشهر وحاول ما تفوتوش.',action:'⚙️ نحدد الميزانية',fn:"closeModal('challengeModal');openSettings()"},
+  food:{icon:'🍲',title:'تحدي الماكلة',desc:'كل ما تسجل مصاريف الماكلة، نقرّبلك الصورة الحقيقية ونعاونك تبقى تحت السقف.',action:'➕ سجّل مصروف ماكلة',fn:"closeModal('challengeModal');openEntry('expense','food')"},
+  saving:{icon:'💎',title:'تحدي الادخار',desc:'الهدف المقترح: ادخر 20% من دخلك. تقدر دير هدف خاص بيك وتتابع النسبة.',action:'🎯 دير هدف ادخار',fn:"closeModal('challengeModal');openGoal()"},
+  bills:{icon:'🧾',title:'تحدي الفواتير',desc:'زيد فواتيرك وعلّم كل فاتورة كي تخلصها باش ما تنسا حتى وحدة.',action:'➕ زيد فاتورة',fn:"closeModal('challengeModal');openBill()"}
+ };
+ const d=data[id]; if(!d)return;
+ $('challengeTitle').textContent=d.icon+' '+d.title;
+ $('challengeDesc').textContent=d.desc;
+ $('challengeAction').textContent=d.action;
+ $('challengeAction').setAttribute('onclick',d.fn);
+ openModal('challengeModal');
+}
+function refreshChallenge(){if(!isPremium){openSubscribe();return}S.challengeSeed++;save();render();toast('🔄 تحدياتك تجددت');}
+function renderAdvice(){
+ const a=expenses();
+ if(!a.length){$('advice').innerHTML='<b>👋 نبدأو من الصفر</b><br>أول ما تزيد مصروف، نعطيك وين راه أكبر تسريب في الميزانية وكيفاش تقدر تتحكم فيه.<br><br><b>⚡ أسرع بداية:</b> اضغط «➕ زيد مصروف» وسجّل أول عملية. ما تحتاجش تعمّر كلش.';return}
+ const sums=C.map(c=>({c,n:a.filter(x=>x.cat===c.id).reduce((s,x)=>s+Number(x.amount),0)})).filter(x=>x.n).sort((x,y)=>y.n-x.n);
+ const t=sums[0],p=Math.round(t.n/spent()*100);
+ $('advice').innerHTML=`<b>${t.c.icon} أكبر مصروف عندك: ${t.c.name}</b><br>صرفـت ${money(t.n)} فيها، يعني حوالي ${p}% من مصاريفك. ${p>=40?'هنا ركّز شوية، راهي أكبر بلاصة يقدر يتسرّب منها الدراهم 😅':'التوزيع باين متوازن نسبيًا، واصل التسجيل 👌'}`;
+}
+function renderGoals(){
+ if(!S.goals.length){$('goals').innerHTML='<div class="empty">🎯 مازال ما عندك حتى هدف. دير هدف صغير وابدأ بيه.</div>';return}
+ $('goals').innerHTML=S.goals.map(g=>{const p=Math.min(100,Math.round(g.saved/g.target*100));return `<div class="goal"><div class="goaltop"><b>🎯 ${esc(g.name)}</b><b>${p}%</b></div><div class="goalmeta">${money(g.saved)} / ${money(g.target)}</div><div class="progress"><div class="bar" style="width:${p}%"></div></div><div class="goal-actions"><button class="add" onclick="addGoal(${g.id})">💰 زيد ادخار</button><button onclick="deleteGoal(${g.id})">🗑️ حذف</button></div></div>`}).join('');
+}
+function openGoal(){if(!isPremium){openSubscribe();return}$('goalName').value='';$('goalTarget').value='';$('goalSaved').value='';openModal('goalModal')}
+function saveGoal(){
+ const n=$('goalName').value.trim(),t=Number($('goalTarget').value),s=Number($('goalSaved').value)||0;
+ if(!n||!(t>0)){toast('⚠️ كمّل اسم الهدف والمبلغ');return}
+ S.goals.push({id:Date.now(),name:n,target:t,saved:s});save();closeModal('goalModal');render();toast('🎯 الهدف تزاد بنجاح');
+}
+function addGoal(id){const g=S.goals.find(x=>x.id===id),v=Number(prompt('شحال حاب تزيد للهدف بالدج؟')||0);if(g&&v>0){g.saved+=v;save();render();toast('💎 تزاد الادخار')}}
+function deleteGoal(id){if(confirm('تحب تحذف الهدف؟')){S.goals=S.goals.filter(g=>g.id!==id);save();render();toast('تم الحذف')}}
+function openBill(){if(!isPremium){openSubscribe();return}$('billName').value='';$('billAmount').value='';$('billDue').value=new Date().toISOString().slice(0,10);openModal('billModal')}
+function saveBill(){
+ const n=$('billName').value.trim(),a=Number($('billAmount').value),d=$('billDue').value;
+ if(!n||!(a>0)){toast('⚠️ كمّل اسم الفاتورة والمبلغ');return}
+ S.bills.push({id:Date.now(),name:n,amount:a,due:d,paid:false});save();closeModal('billModal');render();toast('🧾 زادت الفاتورة');
+}
+function renderBills(){
+ if(!S.bills.length){$('bills').innerHTML='<div class="empty">مازال ما عندك حتى فاتورة. زيد الكهرباء، الماء، الإنترنت... وما تنساش موعدها 😉</div>';return}
+ $('bills').innerHTML=S.bills.map(b=>{
+ const due=b.due?new Date(b.due+'T23:59:59'):null, diff=due?Math.ceil((due-new Date())/86400000):null;
+ const dueText=b.paid?'مخلّصة':(diff===null?'بلا موعد':diff<0?'فات الموعد':diff===0?'اليوم':`بعد ${diff} يوم`);
+ return `<div class="bill"><div class="emojiBox">🧾</div><div class="li-main"><b>${esc(b.name)}</b><small>${money(b.amount)} • ${b.due||'بدون تاريخ'} • ${dueText}</small></div><span class="status ${b.paid?'paid':'unpaid'}">${b.paid?'مدفوعة':diff!==null&&diff<=3?'قريبة':'غير مدفوعة'}</span><button class="btn" style="padding:6px 8px;font-size:9px" onclick="toggleBill(${b.id})">${b.paid?'↩️':'✅'}</button></div>`;
+}).join('');
+}
+function toggleBill(id){const b=S.bills.find(x=>x.id===id);if(b){b.paid=!b.paid;save();render();toast(b.paid?'✅ تخلصت الفاتورة':'↩️ رجعت غير مدفوعة')}}
+function addShopping(){
+ if(!isPremium){openSubscribe();return}
+ const n=$('shopName').value.trim(),p=Number($('shopPrice').value);
+ if(!n){toast('⚠️ اكتب واش حاب تشري');return}
+ S.shop.push({id:Date.now(),name:n,price:p||0,done:false});$('shopName').value='';$('shopPrice').value='';save();render();toast('🛒 تزادت للقائمة');
+}
+function renderShop(){
+ const total=S.shop.filter(x=>!x.done).reduce((a,x)=>a+Number(x.price),0);$('shopTotal').textContent=money(total);
+ $('shopping').innerHTML=S.shop.length?S.shop.map(x=>`<div class="shoprow"><input type="checkbox" ${x.done?'checked':''} onchange="toggleShop(${x.id})"><span class="shopname ${x.done?'shopdone':''}">${esc(x.name)}</span><span class="shopprice">${money(x.price)}</span><button class="btn red" style="padding:6px 8px;font-size:8px" onclick="deleteShop(${x.id})">حذف</button></div>`).join(''):'<div class="empty">🛒 زيد أول حاجة حاب تشريها.</div>';
+}
+function toggleShop(id){const x=S.shop.find(a=>a.id===id);if(x){x.done=!x.done;save();render()}}
+function deleteShop(id){S.shop=S.shop.filter(x=>x.id!==id);save();render()}
+function renderRecent(){
+ const a=[...S.entries].sort((x,y)=>y.id-x.id).slice(0,6);
+ $('recent').innerHTML=a.length?a.map(itemHTML).join(''):'<div class="empty">مازال ما سجلتش والو. اضغط «زيد مصروف» وابدأ 👌</div>';
+}
+function itemHTML(x){
+ const c=cat(x.cat),positive=x.type==='income';
+ return `<div class="listitem"><div class="emojiBox">${c.icon}</div><div class="li-main"><b>${esc(x.note||c.name)}</b><small>${c.name} • ${x.date}</small></div><span class="li-amount ${positive?'income':'expense'}">${positive?'+':'-'}${money(x.amount)}</span><button class="mini-action edit" onclick="editEntry(${x.id})">✏️</button><button class="mini-action del" onclick="deleteEntry(${x.id})">🗑️</button></div>`;
+}
+function openHistory(){
+ if(!isPremium){openSubscribe();return}
+ $('historyCat').innerHTML='<option value="">كل التصنيفات</option>'+C.concat(I).map(c=>`<option value="${c.id}">${c.icon} ${c.name}</option>`).join('');
+ $('historySearch').value='';$('historyType').value='';$('historyCat').value='';renderHistory();openModal('historyModal');
+}
+function renderHistory(){
+ const q=($('historySearch').value||'').toLowerCase(),t=$('historyType').value,cid=$('historyCat').value;
+ const a=[...S.entries].reverse().filter(x=>(!t||x.type===t)&&(!cid||x.cat===cid)&&(!q||((x.note||'')+' '+cat(x.cat).name).toLowerCase().includes(q)));
+ $('historyList').innerHTML=a.length?a.map(x=>itemHTML(x)).join(''):'<div class="empty">ما لقيتش هذي العملية.</div>';
+}
+function deleteEntry(id){if(confirm('تحب تحذف العملية؟')){S.entries=S.entries.filter(x=>x.id!==id);save();render();renderHistory();toast('تم حذف العملية')}}
+function renderScore(){
+ const inc=totalIncome(),sp=spent(),budget=Number(S.budget||0),count=S.entries.length;
+ if(count===0){
+  $('score').textContent='—';
+  $('scoreTitle').textContent='⚪ نبدأو من الصفر';
+  $('scoreText').textContent='ما نقدرش نحسب صحتك المالية حتى تسجّل دخل أو مصروف. أول تسجيل يبدأ التقييم الحقيقي.';
+  return;
+ }
+ let score=50;
+ if(inc>0)score+=20;
+ if(budget>0)score+=sp<=budget?20:-15;
+ if(inc>0&&sp/inc<=.6)score+=10;
+ else if(inc>0&&sp/inc>.9)score-=15;
+ score=Math.max(0,Math.min(100,score));
+ $('score').textContent=score;
+ $('scoreTitle').textContent=score>=85?'💚 ممتاز بزاف':score>=65?'🟡 مليح وتقدر تطور':score>=45?'🟠 لازم نراقبو الصرف':'🔴 لازم نراجعو الصرف';
+ $('scoreText').textContent=score>=85?'راك متحكم في فلوسك، كمل بنفس الريتم.':score>=65?'الوضع مليح، ركّز أكثر على أكبر مصروف عندك.':score>=45?'سجّل دخلك وحدد ميزانية باش نقدروا نعطيوك تقييم أدق.':'الصرف راه مرتفع مقارنة بالدخل. نراجعو الميزانية مع بعض.';
+}
+function drawChart(){
+ const cv=$('chart'),ctx=cv.getContext('2d'),w=cv.width=cv.clientWidth*2,h=cv.height=190*2;ctx.clearRect(0,0,w,h);ctx.scale(2,2);
+ const W=cv.clientWidth,H=190,days=7,now=new Date(),vals=[];
+ for(let i=days-1;i>=0;i--){const d=new Date(now);d.setDate(now.getDate()-i);const key=d.toISOString().slice(0,10);const e=expenses().filter(x=>x.date===key).reduce((a,x)=>a+Number(x.amount),0);vals.push(e)}
+ const max=Math.max(1000,...vals),pad=25,bottom=28,chartH=H-bottom-12,barW=(W-pad*2)/days*.58,gap=(W-pad*2)/days;
+ ctx.strokeStyle=getComputedStyle(document.body).getPropertyValue('--line');ctx.lineWidth=1;
+ ctx.beginPath();ctx.moveTo(pad,chartH);ctx.lineTo(W-pad,chartH);ctx.stroke();
+ vals.forEach((v,i)=>{const bh=v/max*chartH;const x=pad+i*gap+(gap-barW)/2;ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--primary');ctx.beginPath();ctx.roundRect(x,chartH-bh,barW,Math.max(3,bh),8);ctx.fill();ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--muted');ctx.font='9px Arial';ctx.textAlign='center';const d=new Date(now);d.setDate(now.getDate()-(days-1-i));ctx.fillText(String(d.getDate()),x+barW/2,H-8);if(v)ctx.fillText(Math.round(v).toLocaleString('fr-FR'),x+barW/2,chartH-bh-5)});
+}
+function openModal(id){$(id).classList.add('show')}
+function closeModal(id){$(id).classList.remove('show')}
+document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('show')}));
+function toggleTheme(){const dark=document.body.classList.toggle('dark');localStorage.setItem('wr_theme',dark?'dark':'light');$('themeBtn').textContent=dark?'☀️':'🌙';drawChart();toast(dark?'🌙 الوضع المظلم خدام':'☀️ رجعنا للوضع النهاري')}
+function applyTheme(){const dark=localStorage.getItem('wr_theme')==='dark';document.body.classList.toggle('dark',dark);$('themeBtn').textContent=dark?'☀️':'🌙'}
+function openSettings(){ $('setIncome').value=S.income||0;$('setBudget').value=S.budget||0;openModal('settingsModal')}
+$('setIncome').addEventListener('focus',()=>{}); 
+function saveSettings(){S.income=Number($('setIncome').value)||0;S.budget=Number($('setBudget').value)||0;save();closeModal('settingsModal');render();toast('⚙️ تحفّظت الإعدادات')}
+function resetAll(){if(confirm('⚠️ متأكد تحب تمسح كامل البيانات؟')){localStorage.removeItem(KEY);location.reload()}}
+function backup(){if(!isPremium){openSubscribe();return}const b=new Blob([JSON.stringify(S,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='win-raho-drahmi-V5.5.1-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500);toast('💾 خرجت النسخة الاحتياطية')}
+function restore(e){if(!isPremium){openSubscribe();e.target.value='';return}const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const x=JSON.parse(r.result);if(!Array.isArray(x.entries))throw Error();S={...S,...x};save();render();toast('♻️ رجعت بياناتك')}catch(z){toast('❌ الملف غير صالح')}};r.readAsText(f);e.target.value=''}
+function exportCSV(){if(!isPremium){openSubscribe();return}let s='\uFEFFالنوع,المبلغ,التصنيف,الملاحظة,التاريخ\n';S.entries.forEach(x=>s+=`"${x.type==='expense'?'مصروف':'دخل'}",${x.amount},"${cat(x.cat).name}","${String(x.note||'').replace(/"/g,'""')}",${x.date}\n`);const b=new Blob([s],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='win-raho-drahmi-V5.5.1.csv';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500);toast('📥 خرج الملف')}
+function goHome(){window.scrollTo({top:0,behavior:'smooth'})}
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(window.toastT);window.toastT=setTimeout(()=>t.classList.remove('show'),2200)}
+applyTheme();initAuth();
+</script>
+</body>
+</html>
