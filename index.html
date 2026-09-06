@@ -265,6 +265,20 @@ body.dark .plan.selected{background:#211c36}
 <div class="actions"><button class="btn ghost" onclick="closeModal('subscribeModal')">لا حاليا</button><button class="btn primary" onclick="startPayment()">💳 ادفع الآن</button></div>
 </div></div>
 
+<!-- Payment -->
+<div class="modal" id="paymentModal"><div class="sheet">
+<div class="sheethead"><h3>💳 الدفع لـ Premium</h3><button class="close" onclick="closeModal('paymentModal')">✕</button></div>
+<p class="sub" id="paymentPlanText">اختار الخطة من قبل</p>
+<div style="background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:13px;margin:10px 0">
+<b>🇩🇿 الدفع عبر BaridiMob</b>
+<p class="sub" style="margin:6px 0 10px">حوّل المبلغ للخطة اللي اخترتها، ومن بعد علّم العملية كمكتملة.</p>
+<div class="field"><label>CCP</label><div style="display:flex;gap:6px"><input id="payCcp" value="XXXXXXX clé XX" readonly><button class="btn ghost" onclick="copyPay('payCcp')">📋 نسخ</button></div></div>
+<div class="field"><label>RIP</label><div style="display:flex;gap:6px"><input id="payRip" value="XXXXXXXXXXXXXXXXXXXXXXXX" readonly><button class="btn ghost" onclick="copyPay('payRip')">📋 نسخ</button></div></div>
+<small style="color:var(--muted);line-height:1.7">⚠️ بدّل أرقام CCP وRIP لاحقاً من الكود إذا حبيت. ما نحطّوش معلومات بنكية حقيقية داخل الكود إذا راح يكون المستودع Public.</small>
+</div>
+<div class="actions"><button class="btn ghost" onclick="closeModal('paymentModal')">رجوع</button><button class="btn primary" onclick="paymentDone()">✅ أكملت التحويل</button></div>
+</div></div>
+
 <!-- History -->
 <div class="modal" id="historyModal"><div class="sheet">
 <div class="sheethead"><h3>🧾 سجل العمليات</h3><button class="close" onclick="closeModal('historyModal')">✕</button></div>
@@ -407,8 +421,24 @@ function updatePremiumUI(){
 }
 function openSubscribe(){selectPlan(selectedPlan);openModal('subscribeModal')}
 function selectPlan(p){selectedPlan=p;$('planMonthly').classList.toggle('selected',p==='monthly');$('planYearly').classList.toggle('selected',p==='yearly')}
+const PAYMENT_CCP='XXXXXXX clé XX';
+const PAYMENT_RIP='XXXXXXXXXXXXXXXXXXXXXXXX';
 function startPayment(){
- toast('🚧 الدفع الإلكتروني جاي في الخطوة الجاية (Chargily)');
+ $('payCcp').value=PAYMENT_CCP;
+ $('payRip').value=PAYMENT_RIP;
+ $('paymentPlanText').textContent=selectedPlan==='yearly'?'الخطة السنوية: 2700 دج':'الخطة الشهرية: 700 دج';
+ closeModal('subscribeModal');
+ openModal('paymentModal');
+}
+async function copyPay(id){
+ const el=$(id);
+ try{await navigator.clipboard.writeText(el.value);toast('✅ تنسخت المعلومات')}
+ catch(e){el.select();document.execCommand('copy');toast('✅ تنسخت المعلومات')}
+}
+function paymentDone(){
+ localStorage.setItem('premiumPaymentPending',JSON.stringify({plan:selectedPlan,amount:selectedPlan==='yearly'?2700:700,at:new Date().toISOString()}));
+ closeModal('paymentModal');
+ toast('✅ تسجل طلب الدفع. التفعيل يتم بعد تأكيد التحويل');
 }
 function expenses(){return S.entries.filter(x=>x.type==='expense')}
 function incomes(){return S.entries.filter(x=>x.type==='income')}
