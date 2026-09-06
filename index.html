@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#6d4df2">
-<title>وين راحو دراهمي؟ — V5.5.1</title>
+<title>وين راحو دراهمي؟ — V5.5.1-LIGHT-RESTORED</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
 :root{--bg:#f4f5fa;--card:#fff;--text:#171822;--muted:#777b8c;--line:#e5e6ed;--primary:#6d4df2;--primary2:#8b6fff;--green:#17a56d;--red:#e04f68;--orange:#ef9b3d;--blue:#3985e8;--shadow:0 10px 30px rgba(30,25,70,.08)}
@@ -280,6 +280,26 @@ body.dark .plan.selected{background:#211c36}
 <div class="actions"><button class="btn ghost" onclick="closeModal('paymentModal')">رجوع</button><button class="btn primary" onclick="paymentDone()">✅ أكملت التحويل</button></div>
 </div></div>
 
+<!-- Admin -->
+<div class="modal" id="adminModal"><div class="sheet">
+<div class="sheethead"><h3>👑 لوحة Admin</h3><button class="close" onclick="closeModal('adminModal')">✕</button></div>
+<p class="sub">من هنا تقدر تفعّل Premium لأي حساب عندك UUID تاعو، حتى بلا دفع.</p>
+<div class="section" style="margin:0 0 12px;padding:12px">
+<b style="font-size:11px">🔐 حساب Admin</b>
+<p class="sub" id="adminEmail">—</p>
+</div>
+<div class="field"><label>🆔 UUID تاع الحساب</label><input id="adminUserId" placeholder="مثلاً: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"></div>
+<div class="formgrid">
+ <div class="field"><label>⏳ مدة Premium بالأيام</label><input id="adminDays" type="number" min="1" value="30" inputmode="numeric"></div>
+ <div class="field"><label>الحالة</label><select id="adminStatus"><option value="active">تفعيل Premium</option><option value="inactive">إلغاء Premium</option></select></div>
+</div>
+<div class="actions">
+ <button class="btn ghost" onclick="closeModal('adminModal')">رجوع</button>
+ <button class="btn primary" onclick="adminApply()">💾 تطبيق</button>
+</div>
+<p class="sub" style="margin-top:10px">⚠️ لازم تدخل UUID صحيح للحساب. التفعيل يتم مباشرة في جدول <b>user_data</b>.</p>
+</div></div>
+
 <!-- History -->
 <div class="modal" id="historyModal"><div class="sheet">
 <div class="sheethead"><h3>🧾 سجل العمليات</h3><button class="close" onclick="closeModal('historyModal')">✕</button></div>
@@ -298,6 +318,7 @@ body.dark .plan.selected{background:#211c36}
 <div class="actions">
 <button class="btn primary" id="settingsUpgradeBtn" onclick="closeModal('settingsModal');openSubscribe()">⭐ ترقية لـ Premium</button>
 <button class="btn ghost" onclick="logout()">🚪 تسجيل خروج</button>
+<button class="btn" id="adminBtn" style="display:none" onclick="openAdmin()">👑 Admin</button>
 </div>
 </div>
 <div class="formgrid"><div class="field"><label>دخل ثابت/إضافي للشهر</label><input id="setIncome" type="number" inputmode="numeric"></div><div class="field"><label>ميزانية المصاريف</label><input id="setBudget" type="number" inputmode="numeric"></div></div>
@@ -325,6 +346,7 @@ const SUPABASE_URL='https://nlezbzhyowkzunkceiaj.supabase.co';
 const SUPABASE_ANON_KEY='sb_publishable_9KK9I6CLy1IZW-HB6KnGwQ_3zTO5c8L';
 const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 let currentUser=null,isPremium=false,premiumUntil=null,authMode='login',selectedPlan='monthly',saveTimer=null;
+const ADMIN_EMAIL='ilyeszoumedcine@gmail.com';
 const PREMIUM_SECTIONS=['chartSection','challengesSection','adviceSection','goalsSection','billsSection','shopSection','scoreSection','dataSection'];
 const FREE_CATS=['food','transport'];
 function isCatFree(id){return FREE_CATS.includes(id)}
@@ -395,10 +417,14 @@ async function onAuthed(user){
  }
  S={income:Number(data.income)||0,budget:Number(data.budget)||0,entries:data.entries||[],goals:data.goals||[],bills:data.bills||[],shop:data.shop||[],challengeSeed:data.challenge_seed||0};
  premiumUntil=data.premium_until?new Date(data.premium_until):null;
- isPremium=!!data.is_premium&&(!premiumUntil||premiumUntil>new Date());
+ // Admin is permanently exempt from Premium payment/expiry.
+ const adminAccount=(user.email||'').toLowerCase()===ADMIN_EMAIL.toLowerCase();
+ isPremium=adminAccount || (!!data.is_premium&&(!premiumUntil||premiumUntil>new Date()));
  const meta=user.user_metadata||{};
  const displayName=(meta.full_name||[meta.first_name,meta.last_name].filter(Boolean).join(' ')).trim();
  $('settingsEmail').textContent=(displayName?'👤 '+displayName+' • ':'')+'📧 '+user.email;
+ $('adminEmail').textContent='📧 '+user.email;
+ $('adminBtn').style.display=(user.email||'').toLowerCase()===ADMIN_EMAIL.toLowerCase()?'inline-flex':'none';
  document.body.classList.add('app-ready');
  applyTheme();render();
 }
@@ -407,6 +433,64 @@ async function initAuth(){
  if(session){await onAuthed(session.user)}
 }
 function load(){try{const x=JSON.parse(localStorage.getItem(KEY));if(x)S={...S,...x}}catch(e){}}
+
+// --- Admin ---
+function isAdmin(){
+ return !!currentUser && (currentUser.email||'').toLowerCase()===ADMIN_EMAIL.toLowerCase();
+}
+function openAdmin(){
+ if(!isAdmin()){toast('❌ ما عندكش صلاحية Admin');return}
+ $('adminUserId').value='';
+ $('adminDays').value='30';
+ $('adminStatus').value='active';
+ openModal('adminModal');
+}
+async function adminApply(){
+ if(!isAdmin()){toast('❌ ما عندكش صلاحية Admin');return}
+ const uid=$('adminUserId').value.trim();
+ const days=Math.max(1,Number($('adminDays').value)||30);
+ const status=$('adminStatus').value;
+ if(!uid){toast('❌ دخل UUID تاع الحساب');return}
+ if(!/^[0-9a-fA-F-]{36}$/.test(uid)){toast('❌ UUID غير صالح');return}
+
+ if(status==='inactive'){
+   const {data,error}=await sb.from('user_data').update({is_premium:false,premium_until:null,updated_at:new Date().toISOString()}).eq('user_id',uid).select('user_id').maybeSingle();
+   if(error){console.error(error);toast('❌ ما قدرناش نلغي Premium: '+error.message);return}
+   if(!data){toast('❌ ما لقيتش حساب بهذا UUID');return}
+   if(currentUser && uid===currentUser.id){
+     // The Admin account is always Premium, even when its database row is cancelled.
+     if(isAdmin()){
+       isPremium=true;
+       updatePremiumUI();
+       render();
+     }else{
+       isPremium=false;
+       premiumUntil=null;
+       updatePremiumUI();
+       render();
+     }
+   }
+   toast('✅ تلغى Premium للحساب');
+   return;
+ }
+
+ const until=new Date(Date.now()+days*86400000).toISOString();
+ const {data,error}=await sb.from('user_data').update({
+   is_premium:true,
+   premium_until:until,
+   updated_at:new Date().toISOString()
+ }).eq('user_id',uid).select('user_id').maybeSingle();
+
+ if(error){console.error(error);toast('❌ ما قدرناش نفعّل الحساب: '+error.message);return}
+ if(!data){toast('❌ ما لقيتش حساب بهذا UUID');return}
+ if(currentUser && uid===currentUser.id){
+   isPremium=true;
+   premiumUntil=new Date(until);
+   updatePremiumUI();
+   render();
+ }
+ toast('👑 تفعّل Premium بنجاح لمدة '+days+' يوم');
+}
 
 // --- Premium gating ---
 function updatePremiumUI(){
@@ -436,42 +520,10 @@ async function copyPay(id){
  try{await navigator.clipboard.writeText(el.value);toast('✅ تنسخت المعلومات')}
  catch(e){el.select();document.execCommand('copy');toast('✅ تنسخت المعلومات')}
 }
-async function paymentDone(){
- if(!currentUser){toast('⚠️ لازم تكون داخل حسابك أولاً');return}
-
- const receipt=$('payReceipt').files[0];
- if(!receipt){toast('⚠️ صوّر/اختار وصل الدفع أولاً');return}
- if(receipt.size>5*1024*1024){toast('⚠️ الوصل لازم يكون أقل من 5MB');return}
-
- const amount=selectedPlan==='yearly'?2700:700;
- const plan=selectedPlan;
- const paymentId=(crypto.randomUUID?crypto.randomUUID():String(Date.now()));
- const ext=(receipt.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
- const path=currentUser.id+'/'+paymentId+'.'+ext;
-
- toast('⏳ نرفع الوصل ونسجل الطلب...');
-
- const {error:uploadError}=await sb.storage.from('payment-receipts').upload(path,receipt,{upsert:false,contentType:receipt.type||'application/octet-stream'});
- if(uploadError){console.error(uploadError);toast('❌ ما قدرناش نرفع الوصل. تأكد من Storage');return}
-
- const {error}=await sb.from('subscriptions').insert({
-  user_id:currentUser.id,
-  status:'pending',
-  payment_id:paymentId,
-  payment_method:'BaridiMob',
-  receipt_url:path
- });
-
- if(error){
-  console.error(error);
-  await sb.storage.from('payment-receipts').remove([path]);
-  toast('❌ ما تسجلش طلب الدفع. راجع صلاحيات subscriptions');
-  return;
- }
-
+function paymentDone(){
+ localStorage.setItem('premiumPaymentPending',JSON.stringify({plan:selectedPlan,amount:selectedPlan==='yearly'?2700:700,at:new Date().toISOString()}));
  closeModal('paymentModal');
- $('payReceipt').value='';
- toast('✅ وصل الدفع تبعث. طلبك راه في انتظار المراجعة');
+ toast('✅ تسجل طلب الدفع. التفعيل يتم بعد تأكيد التحويل');
 }
 function expenses(){return S.entries.filter(x=>x.type==='expense')}
 function incomes(){return S.entries.filter(x=>x.type==='income')}
@@ -684,8 +736,8 @@ function drawChart(){
 function openModal(id){$(id).classList.add('show')}
 function closeModal(id){$(id).classList.remove('show')}
 document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('show')}));
-function toggleTheme(){const dark=document.body.classList.toggle('dark');localStorage.setItem('wr_theme',dark?'dark':'light');$('themeBtn').textContent=dark?'☀️':'🌙';drawChart();toast(dark?'🌙 الوضع المظلم خدام':'☀️ رجعنا للوضع النهاري')}
-function applyTheme(){const dark=localStorage.getItem('wr_theme')==='dark';document.body.classList.toggle('dark',dark);$('themeBtn').textContent=dark?'☀️':'🌙'}
+function toggleTheme(){const dark=document.body.classList.toggle('dark');localStorage.setItem('wr_theme_v2',dark?'dark':'light');$('themeBtn').textContent=dark?'☀️':'🌙';drawChart();toast(dark?'🌙 الوضع المظلم خدام':'☀️ رجعنا للوضع النهاري')}
+function applyTheme(){const dark=localStorage.getItem('wr_theme_v2')==='dark';document.body.classList.toggle('dark',dark);$('themeBtn').textContent=dark?'☀️':'🌙'}
 function openSettings(){ $('setIncome').value=S.income||0;$('setBudget').value=S.budget||0;openModal('settingsModal')}
 $('setIncome').addEventListener('focus',()=>{}); 
 function saveSettings(){S.income=Number($('setIncome').value)||0;S.budget=Number($('setBudget').value)||0;save();closeModal('settingsModal');render();toast('⚙️ تحفّظت الإعدادات')}
