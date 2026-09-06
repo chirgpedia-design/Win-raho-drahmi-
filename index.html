@@ -86,6 +86,10 @@ body.dark .plan.selected{background:#211c36}
 </div>
 <div id="authErrorBox"></div>
 <div id="authHintBox"></div>
+<div id="signupNames" style="display:none">
+<div class="field"><label>الاسم</label><input id="authFirstName" type="text" placeholder="مثال: محمد" autocomplete="given-name"></div>
+<div class="field"><label>اللقب</label><input id="authLastName" type="text" placeholder="مثال: بن علي" autocomplete="family-name"></div>
+</div>
 <div class="field"><label>البريد الإلكتروني</label><input id="authEmail" type="email" placeholder="example@email.com" autocomplete="email"></div>
 <div class="field"><label>كلمة السر</label><input id="authPassword" type="password" placeholder="6 أحرف على الأقل" autocomplete="current-password"></div>
 <button class="btn primary" id="authSubmitBtn" style="width:100%;margin-top:6px" onclick="submitAuth()">دخول</button>
@@ -302,8 +306,8 @@ let S={income:0,budget:0,entries:[],goals:[],bills:[],shop:[],challengeSeed:0};
 let mode='expense',selectedCat='food';
 
 // --- Supabase ---
-const SUPABASE_URL='https://nlezbzhyowkzunkceiaj.supabase.co';
-const SUPABASE_ANON_KEY='sb_publishable_9KK9I6CLy1IZW-HB6KnGwQ_3zTO5c8L';
+const SUPABASE_URL='https://huhxesieurfbxvnpvbxe.supabase.co';
+const SUPABASE_ANON_KEY='sb_publishable_NmXaXDTz3B6pTWfHTiGkYw_rcB7pM-8';
 const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 let currentUser=null,isPremium=false,premiumUntil=null,authMode='login',selectedPlan='monthly',saveTimer=null;
 const PREMIUM_SECTIONS=['chartSection','challengesSection','adviceSection','goalsSection','billsSection','shopSection','scoreSection','dataSection'];
@@ -331,6 +335,8 @@ function switchAuthTab(m){
  $('tabLogin').classList.toggle('active',m==='login');
  $('tabSignup').classList.toggle('active',m==='signup');
  $('authSubmitBtn').textContent=m==='login'?'دخول':'إنشاء حساب';
+ $('signupNames').style.display=m==='signup'?'block':'none';
+ $('authPassword').setAttribute('autocomplete',m==='signup'?'new-password':'current-password');
  $('authErrorBox').style.display='none';$('authHintBox').style.display='none';
 }
 function authErr(m){const e=$('authErrorBox');e.textContent='⚠️ '+m;e.style.display='block';$('authHintBox').style.display='none'}
@@ -338,9 +344,18 @@ function authHint(m){const e=$('authHintBox');e.textContent=m;e.style.display='b
 async function submitAuth(){
  const email=$('authEmail').value.trim(),pass=$('authPassword').value;
  if(!email||pass.length<6){authErr('دخل بريد صحيح وكلمة سر 6 أحرف على الأقل');return}
+ if(authMode==='signup'){
+  const first=$('authFirstName').value.trim(),last=$('authLastName').value.trim();
+  if(!first||!last){authErr('دخل الاسم واللقب باش نكملو إنشاء الحساب');return}
+ }
  $('authSubmitBtn').disabled=true;$('authSubmitBtn').textContent='...شوية صبر';
  if(authMode==='signup'){
-  const {data,error}=await sb.auth.signUp({email,password:pass});
+  const first=$('authFirstName').value.trim(),last=$('authLastName').value.trim();
+  const fullName=(first+' '+last).trim();
+  const {data,error}=await sb.auth.signUp({
+   email,password:pass,
+   options:{data:{first_name:first,last_name:last,full_name:fullName}}
+  });
   $('authSubmitBtn').disabled=false;$('authSubmitBtn').textContent='إنشاء حساب';
   if(error){authErr(error.message==='User already registered'?'هذا البريد عندو حساب من قبل، جرب دخول':error.message);return}
   if(data.session){await onAuthed(data.session.user)}
@@ -364,9 +379,17 @@ async function onAuthed(user){
   data=inserted;
  }
  S={income:Number(data.income)||0,budget:Number(data.budget)||0,entries:data.entries||[],goals:data.goals||[],bills:data.bills||[],shop:data.shop||[],challengeSeed:data.challenge_seed||0};
- premiumUntil=data.premium_until?new Date(data.premium_until):null;
- isPremium=!!data.is_premium&&(!premiumUntil||premiumUntil>new Date());
- $('settingsEmail').textContent='📧 '+user.email;
+ // الاشتراك يقرأ من جدول subscriptions فقط. التطبيق لا يستطيع تفعيل Premium بنفسه.
+ const subRes=await sb.from('subscriptions').select('status,expires_at,started_at').eq('user_id',user.id).maybeSingle();
+ if(subRes.error){console.error(subRes.error);premiumUntil=null;isPremium=false;}
+ else{
+  const sub=subRes.data;
+  premiumUntil=sub?.expires_at?new Date(sub.expires_at):null;
+  isPremium=!!sub && sub.status==='active' && !!premiumUntil && premiumUntil>new Date();
+ }
+ const meta=user.user_metadata||{};
+ const displayName=(meta.full_name||[meta.first_name,meta.last_name].filter(Boolean).join(' ')).trim();
+ $('settingsEmail').textContent=(displayName?'👤 '+displayName+'\n':'')+'📧 '+user.email;
  document.body.classList.add('app-ready');
  applyTheme();render();
 }
