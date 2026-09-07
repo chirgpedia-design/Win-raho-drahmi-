@@ -274,8 +274,8 @@ body.dark .plan.selected{background:#211c36}
 <p class="sub" style="margin:6px 0 10px">حوّل المبلغ للخطة اللي اخترتها، ومن بعد علّم العملية كمكتملة.</p>
 <div class="field"><label>CCP</label><div style="display:flex;gap:6px"><input id="payCcp" value="XXXXXXX clé XX" readonly><button class="btn ghost" onclick="copyPay('payCcp')">📋 نسخ</button></div></div>
 <div class="field"><label>RIP</label><div style="display:flex;gap:6px"><input id="payRip" value="XXXXXXXXXXXXXXXXXXXXXXXX" readonly><button class="btn ghost" onclick="copyPay('payRip')">📋 نسخ</button></div></div>
-<div class="field"><label>📸 وصل الدفع</label><input id="payReceipt" type="file" accept="image/*,.pdf"></div>
-<small style="color:var(--muted);line-height:1.7">⚠️ بدّل أرقام CCP وRIP لاحقاً من الكود إذا حبيت. ما نحطّوش معلومات بنكية حقيقية داخل الكود إذا راح يكون المستودع Public.</small>
+<div class="field"><label>📧 ابعث صورة وصل الدفع على هذا الإيميل</label><div style="display:flex;gap:6px"><input id="payEmail" value="ilyeszoumedcine@gmail.com" readonly><button class="btn ghost" onclick="copyPay('payEmail')">📋 نسخ</button></div></div>
+<small style="color:var(--muted);line-height:1.7">1️⃣ حوّل المبلغ لـ CCP/RIP فوق. 2️⃣ خد صورة (Capture) لوصل التحويل. 3️⃣ ابعثها من تطبيق البريد تاعك (Gmail مثلا) على الإيميل فوق.</small>
 </div>
 <div class="actions"><button class="btn ghost" onclick="closeModal('paymentModal')">رجوع</button><button class="btn primary" onclick="paymentDone()">✅ أكملت التحويل</button></div>
 </div></div>
@@ -523,7 +523,7 @@ async function copyPay(id){
 function paymentDone(){
  localStorage.setItem('premiumPaymentPending',JSON.stringify({plan:selectedPlan,amount:selectedPlan==='yearly'?2700:700,at:new Date().toISOString()}));
  closeModal('paymentModal');
- toast('✅ تسجل طلب الدفع. التفعيل يتم بعد تأكيد التحويل');
+ toast('✅ تمام! ابعث صورة الوصل على الإيميل، وحسابك يتفعل بعد التأكد يدويا');
 }
 function expenses(){return S.entries.filter(x=>x.type==='expense')}
 function incomes(){return S.entries.filter(x=>x.type==='income')}
