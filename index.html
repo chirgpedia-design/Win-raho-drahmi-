@@ -456,7 +456,7 @@ async function adminApply(){
  if(status==='inactive'){
    const {data,error}=await sb.from('user_data').update({is_premium:false,premium_until:null,updated_at:new Date().toISOString()}).eq('user_id',uid).select('user_id').maybeSingle();
    if(error){console.error(error);toast('❌ ما قدرناش نلغي Premium: '+error.message);return}
-   if(!data){toast('❌ ما لقيتش حساب بهذا UUID');return}
+   if(!data){toast('❌ الحساب موجود بصح ما عندوش بيانات user_data');return}
    if(currentUser && uid===currentUser.id){
      // The Admin account is always Premium, even when its database row is cancelled.
      if(isAdmin()){
@@ -482,7 +482,7 @@ async function adminApply(){
  }).eq('user_id',uid).select('user_id').maybeSingle();
 
  if(error){console.error(error);toast('❌ ما قدرناش نفعّل الحساب: '+error.message);return}
- if(!data){toast('❌ ما لقيتش حساب بهذا UUID');return}
+ if(!data){toast('❌ الحساب موجود بصح ما عندوش بيانات user_data');return}
  if(currentUser && uid===currentUser.id){
    isPremium=true;
    premiumUntil=new Date(until);
